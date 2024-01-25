@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public class UserService {
     private UserRepository userRepository;
+    private static int id = 1;
     private CurrentUser currentUser;
 
     public UserService(UserRepository userRepository) {
@@ -15,29 +16,28 @@ public class UserService {
     }
 
     public void registerUser(String username, String password) {
-        Optional<User> existingUser = userRepository.findByUsername(username);
-        if (existingUser.isPresent()) {
-            System.out.println("User with username " + username + " already exist.");
+        Optional<User> existUser = userRepository.findByUsername(username);
+        if (existUser.isPresent()) {
+            System.out.println("User with username  " + username + " already exist");
         } else {
-            User newUser = new User(username, password);
+            id++;
+            User newUser = new User(id, username, password, false);
             userRepository.save(newUser);
-            System.out.println("User with username" + username + " registred successfully !");
         }
     }
 
-    public void loginUser(String username, String password) {
-        Optional<User> userLogin = userRepository.findByUsername(username);
-        if (userLogin.isPresent()) {
-            User user = userLogin.get();
+    public void authenticationUser (String username, String password) {
+        Optional<User> existUser = userRepository.findByUsername(username);
+        if (existUser.isPresent()) {
+            User user = existUser.get();
             if (user.getPassword().equals(password)) {
-                user.setAuthenticated(true);
                 currentUser.setCurrentUser(user);
                 System.out.println("User with username " + username + " logging successfully!");
             } else {
                 System.out.println("Incorrect password");
             }
         } else {
-            System.out.println("User with username " + username + " not found");
+            System.out.println("User with username " + username + " is not registred!");
         }
     }
 }

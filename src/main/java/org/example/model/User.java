@@ -4,16 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private String username;
-    private String password;
-    private List<CounterReading> counterReadings;
-    private boolean isAuthenticated;
+    private int id;
 
-    public User(String username, String password) {
+    private String username;
+
+    private String password;
+
+    private boolean isAdmin;
+
+    public User(int id, String username, String password, boolean isAdmin) {
+        this.id = id;
         this.username = username;
         this.password = password;
-        this.counterReadings = new ArrayList<>();
-        this.isAuthenticated = false;
+        this.isAdmin = isAdmin;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -32,19 +43,11 @@ public class User {
         this.password = password;
     }
 
-    public List<CounterReading> getCounterReadings() {
-        return counterReadings;
+    public boolean isAdmin() {
+        return isAdmin;
     }
 
-    public void setCounterReadings(List<CounterReading> counterReadings) {
-        this.counterReadings = counterReadings;
-    }
-
-    public boolean isAuthenticated() {
-        return isAuthenticated;
-    }
-
-    public void setAuthenticated(boolean authenticated) {
-        isAuthenticated = authenticated;
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

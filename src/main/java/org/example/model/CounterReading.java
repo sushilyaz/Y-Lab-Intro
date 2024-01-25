@@ -1,14 +1,24 @@
 package org.example.model;
 
 public class CounterReading {
+    private int userId;
     private int year;
     private int month;
     private TypeOfCounter typeOfCounter;
 
-    public CounterReading(int year, int month, TypeOfCounter typeOfCounter) {
+    public CounterReading(int userId, int year, int month, TypeOfCounter typeOfCounter) {
+        this.userId = userId;
         this.year = year;
         this.month = month;
         this.typeOfCounter = typeOfCounter;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getYear() {

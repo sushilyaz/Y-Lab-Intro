@@ -6,8 +6,7 @@ public class CounterReading {
     private int month;
     private TypeOfCounter typeOfCounter;
 
-    public CounterReading(int userId, int year, int month, TypeOfCounter typeOfCounter) {
-        this.userId = userId;
+    public CounterReading( int year, int month, TypeOfCounter typeOfCounter) {
         this.year = year;
         this.month = month;
         this.typeOfCounter = typeOfCounter;
@@ -43,5 +42,14 @@ public class CounterReading {
 
     public void setTypeOfCounter(TypeOfCounter typeOfCounter) {
         this.typeOfCounter = typeOfCounter;
+    }
+
+    @Override
+    public String toString() {
+        return "CounterReading{" +
+                "year=" + year +
+                ", month=" + month +
+                ", typeOfCounter=" + typeOfCounter +
+                '}';
     }
 }

@@ -34,4 +34,13 @@ public class TypeOfCounter {
     public void setHeating(double heating) {
         this.heating = heating;
     }
+
+    @Override
+    public String toString() {
+        return "TypeOfCounter{" +
+                "hotWater=" + hotWater +
+                ", coldWater=" + coldWater +
+                ", heating=" + heating +
+                '}';
+    }
 }

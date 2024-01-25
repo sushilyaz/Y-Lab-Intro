@@ -26,18 +26,21 @@ public class UserService {
         }
     }
 
-    public void authenticationUser (String username, String password) {
+    public User authenticationUser (String username, String password) {
         Optional<User> existUser = userRepository.findByUsername(username);
         if (existUser.isPresent()) {
             User user = existUser.get();
             if (user.getPassword().equals(password)) {
-                currentUser.setCurrentUser(user);
+//                currentUser.setCurrentUser(user);
                 System.out.println("User with username " + username + " logging successfully!");
+                return user;
             } else {
                 System.out.println("Incorrect password");
+                return null;
             }
         } else {
             System.out.println("User with username " + username + " is not registred!");
+            return null;
         }
     }
 }

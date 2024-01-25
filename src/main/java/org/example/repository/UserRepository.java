@@ -9,7 +9,7 @@ import java.util.Optional;
 public class UserRepository {
     private List<User> users = new ArrayList<>();
 
-    public UserRepository(List<User> users) {
+    public UserRepository() {
         User admin = new User(1, "admin", "admin", true);
         users.add(admin);
     }

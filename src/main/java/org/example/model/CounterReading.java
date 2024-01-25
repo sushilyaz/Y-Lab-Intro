@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.util.Objects;
+
 public class CounterReading {
     private int userId;
     private int year;
@@ -51,5 +53,19 @@ public class CounterReading {
                 ", month=" + month +
                 ", typeOfCounter=" + typeOfCounter +
                 '}';
+    }
+
+    // for tests
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CounterReading that = (CounterReading) o;
+        return userId == that.userId && year == that.year && month == that.month && Objects.equals(typeOfCounter, that.typeOfCounter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, year, month, typeOfCounter);
     }
 }

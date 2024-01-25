@@ -5,16 +5,16 @@ import org.example.model.TypeOfCounter;
 import org.example.model.User;
 import org.example.repository.CounterReadingRepository;
 import org.example.repository.UserRepository;
+import org.example.service.AdminService;
 import org.example.service.CounterReadingService;
 import org.example.service.UserService;
-import org.example.util.CurrentUser;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ConsoleApp {
-    private static CurrentUser currentUser;
+    private static User currentUser;
     private static UserService userService = new UserService(new UserRepository());
+    private static AdminService adminService = new AdminService(new UserRepository());
     private static CounterReadingService counterReadingService = new CounterReadingService(new CounterReadingRepository());
 
     public static void main(String[] args) {
@@ -48,10 +48,10 @@ public class ConsoleApp {
                 String authPassword = scanner.nextLine();
                 User user = userService.authenticationUser(authUsername, authPassword);
                 if (user != null && !user.isAdmin()) {
-                    currentUser = new CurrentUser(user);
+                    currentUser = user;
                     menu();
                 } else if (user != null && user.isAdmin()) {
-
+                    menuAdmin();
                 } else {
                     start();
                 }
@@ -67,7 +67,7 @@ public class ConsoleApp {
 
     public static void menu() {
         System.out.println("Выберите действие: ");
-        System.out.println("1 - Get current counter readings");
+        System.out.println("1 - Get actual counter readings");
         System.out.println("2 - Submit counter readings");
         System.out.println("3 - Get counter readings for specific month");
         System.out.println("4 - Get all counter readings");
@@ -102,6 +102,38 @@ public class ConsoleApp {
                     counterReadingService.getCounterReadingForMonth(currentUser, monthCR, yearCR);
                     break;
                 case 4:
+                    counterReadingService.getAllCounterReadingForUser(currentUser);
+                    break;
+            }
+        }
+    }
+    public static void menuAdmin() {
+        System.out.println("Выберите действие: ");
+        System.out.println("1 - Get actual user counter readings");
+        System.out.println("2 - Get user counter readings for specific month");
+        System.out.println("3 - Get all counter readings users");
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter username:");
+                    String username = scanner.nextLine();
+                    User user = adminService.getUser(username);
+                    counterReadingService.getLatestCounterReading(user);
+                    break;
+                case 2:
+                    System.out.println("Enter username:");
+                    username = scanner.nextLine();
+                    System.out.println("Enter month:");
+                    int monthCR = scanner.nextInt();
+                    System.out.println("Enter year:");
+                    int yearCR = scanner.nextInt();
+                    user = adminService.getUser(username);
+                    counterReadingService.getCounterReadingForMonth(user, monthCR, yearCR);
+                    break;
+                case 3:
                     counterReadingService.getAllCounterReadingForUser(currentUser);
                     break;
             }

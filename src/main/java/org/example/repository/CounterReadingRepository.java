@@ -11,6 +11,10 @@ import java.util.stream.Collectors;
 public class CounterReadingRepository {
     private List<CounterReading> counterReadings = new ArrayList<>();
 
+    public List<CounterReading> getCounterReadings() {
+        return counterReadings;
+    }
+
     public List<CounterReading> findAllByUserId(int userId) {
         return counterReadings.stream()
                 .filter(counterReading -> counterReading.getUserId() == userId)

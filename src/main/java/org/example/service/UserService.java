@@ -2,24 +2,28 @@ package org.example.service;
 
 import org.example.model.User;
 import org.example.repository.UserRepository;
-import org.example.util.CurrentUser;
 
 import java.util.Optional;
 
 public class UserService {
     private UserRepository userRepository;
-    private static int id = 1;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    private static int id = 1;
 
     public void registerUser(String username, String password) {
         Optional<User> existUser = userRepository.findByUsername(username);
         if (existUser.isPresent()) {
             System.out.println("User with username  " + username + " already exist");
         } else {
-            id++;
+            id = userRepository.findLastId() + 1;
             User newUser = new User(id, username, password, false);
             userRepository.save(newUser);
             System.out.println("User with username " + username + " registred successfully!");

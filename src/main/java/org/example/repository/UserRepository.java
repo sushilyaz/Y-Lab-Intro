@@ -9,6 +9,10 @@ import java.util.Optional;
 public class UserRepository {
     private List<User> users = new ArrayList<>();
 
+    public List<User> getUsers() {
+        return users;
+    }
+
     public UserRepository() {
         User admin = new User(1, "admin", "admin", true);
         users.add(admin);
@@ -22,6 +26,10 @@ public class UserRepository {
         return users.stream()
                 .filter(user -> user.getUsername().equals(username))
                 .findFirst();
+    }
+
+    public int findLastId() {
+        return users.size();
     }
 
 

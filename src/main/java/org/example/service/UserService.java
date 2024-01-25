@@ -9,7 +9,6 @@ import java.util.Optional;
 public class UserService {
     private UserRepository userRepository;
     private static int id = 1;
-    private CurrentUser currentUser;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -23,6 +22,7 @@ public class UserService {
             id++;
             User newUser = new User(id, username, password, false);
             userRepository.save(newUser);
+            System.out.println("User with username " + username + " registred successfully!");
         }
     }
 
@@ -31,7 +31,6 @@ public class UserService {
         if (existUser.isPresent()) {
             User user = existUser.get();
             if (user.getPassword().equals(password)) {
-//                currentUser.setCurrentUser(user);
                 System.out.println("User with username " + username + " logging successfully!");
                 return user;
             } else {

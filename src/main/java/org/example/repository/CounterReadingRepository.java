@@ -27,7 +27,12 @@ public class CounterReadingRepository {
                 .sorted(Comparator.comparingInt(CounterReading::getYear)
                         .thenComparingInt(CounterReading::getMonth))
                 .toList();
-        return sortedList.get(sortedList.size() - 1);
+
+        CounterReading lastElement = sortedList.stream()
+                .reduce((first, second) -> second)
+                .orElse(null);
+
+        return lastElement;
     }
 
     public CounterReading findCounterReadingForMonth(int userId, int month, int year) {

@@ -1,10 +1,14 @@
 plugins {
-    id("java")
     application
+    id("java")
 }
 
 application {
-    mainClass="org.example.CounterServiceApp"
+    mainClass="org.example.ConsoleApp"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 group = "org.example"
@@ -15,11 +19,10 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/info.picocli/picocli
-    implementation("info.picocli:picocli:4.7.5")
-
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.assertj:assertj-core:3.24.2")
+
 }
 
 tasks.test {

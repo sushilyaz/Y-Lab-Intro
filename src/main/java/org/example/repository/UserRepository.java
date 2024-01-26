@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepository {
-    private List<User> users = new ArrayList<>();
+    private static List<User> users = new ArrayList<>();
 
     public List<User> getUsers() {
         return users;

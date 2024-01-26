@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.in.controller;
 
 import org.example.dto.UserInfoDTO;
 import org.example.model.User;
@@ -11,9 +11,16 @@ import java.util.Scanner;
 
 public class AdminController {
 
-    private UserRepository userRepository = new UserRepository();
-    private CounterReadingRepository counterReadingRepository = new CounterReadingRepository();
-    private AdminService adminService = new AdminService(userRepository, counterReadingRepository);
+    private UserRepository userRepository;
+    private CounterReadingRepository counterReadingRepository;
+
+    private AdminService adminService;
+
+    public AdminController(UserRepository userRepository, CounterReadingRepository counterReadingRepository) {
+        this.userRepository = userRepository;
+        this.counterReadingRepository = counterReadingRepository;
+        adminService = new AdminService(userRepository, counterReadingRepository);
+    }
 
     public void getActualCRUser() {
         Scanner scanner = new Scanner(System.in);
@@ -21,7 +28,7 @@ public class AdminController {
         String username = scanner.nextLine();
         var counterReading = adminService.getUserInfo(username);
         if (counterReading != null) {
-            System.out.println("Counter reading of user '" + username + "' for last month: ");
+            System.out.println("Counter reading of user '" + username + "' for last month: " + counterReading);
         } else {
             System.out.println("User not found or user has no data");
         }

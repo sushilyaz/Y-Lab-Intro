@@ -12,10 +12,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserRepository getUserRepository() {
-        return userRepository;
-    }
-
     private static int id = 1;
 
     public User registerUser(String username, String password) {

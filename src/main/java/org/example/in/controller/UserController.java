@@ -1,7 +1,6 @@
-package org.example.controller;
+package org.example.in.controller;
 
-import com.sun.tools.javac.Main;
-import org.example.Engine;
+import org.example.in.Engine;
 import org.example.model.User;
 import org.example.repository.UserRepository;
 import org.example.service.UserService;
@@ -11,8 +10,14 @@ import java.util.Scanner;
 public class UserController {
 
     private User currentUser;
-    private UserRepository userRepository = new UserRepository();
-    private UserService userService = new UserService(userRepository);
+    private UserRepository userRepository;
+
+    private UserService userService;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        userService = new UserService(userRepository);
+    }
 
     public void registration() {
         Scanner scanner = new Scanner(System.in);

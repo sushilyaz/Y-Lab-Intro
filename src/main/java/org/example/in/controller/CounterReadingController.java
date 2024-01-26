@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.in.controller;
 
 
 import org.example.model.CounterReading;
@@ -12,8 +12,14 @@ import org.example.service.UserService;
 import java.util.Scanner;
 
 public class CounterReadingController {
-    private CounterReadingRepository counterReadingRepository = new CounterReadingRepository();
-    private CounterReadingService counterReadingService = new CounterReadingService(counterReadingRepository);
+    private CounterReadingRepository counterReadingRepository;
+
+    private CounterReadingService counterReadingService;
+
+    public CounterReadingController(CounterReadingRepository counterReadingRepository) {
+        this.counterReadingRepository = counterReadingRepository;
+        counterReadingService = new CounterReadingService(counterReadingRepository);
+    }
 
     public void getLatestData(User currentUser) {
         var lastCountingReading = counterReadingService.getLatestCounterReading(currentUser);
@@ -70,7 +76,7 @@ public class CounterReadingController {
         if (listOfCR.isEmpty()) {
             System.out.println("User has no data");
         } else {
-            System.out.println("User with username + '" + currentUser.getUsername() + "' has data: ");
+            System.out.println("User with username '" + currentUser.getUsername() + "' has data: ");
             for (var counter : listOfCR) {
                 System.out.println(counter);
             }

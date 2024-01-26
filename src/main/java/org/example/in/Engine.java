@@ -1,18 +1,20 @@
-package org.example;
+package org.example.in;
 
-import org.example.controller.AdminController;
-import org.example.controller.CounterReadingController;
-import org.example.controller.UserController;
-import org.example.model.CounterReading;
-import org.example.model.TypeOfCounter;
+import org.example.in.controller.AdminController;
+import org.example.in.controller.CounterReadingController;
+import org.example.in.controller.UserController;
 import org.example.model.User;
+import org.example.repository.CounterReadingRepository;
+import org.example.repository.UserRepository;
 
 import java.util.Scanner;
 
 public class Engine {
-    private static UserController userController = new UserController();
-    private static CounterReadingController controllerReadingController = new CounterReadingController();
-    private static AdminController adminController = new AdminController();
+    private static UserRepository userRepository = new UserRepository();
+    private static CounterReadingRepository counterReadingRepository = new CounterReadingRepository();
+    private static UserController userController = new UserController(userRepository);
+    private static CounterReadingController controllerReadingController = new CounterReadingController(counterReadingRepository);
+    private static AdminController adminController = new AdminController(userRepository, counterReadingRepository);
     public static void start() {
         System.out.println("At first you need to register or log in. Choose an action");
         System.out.println("1 - Registration user (enter \"1\")");

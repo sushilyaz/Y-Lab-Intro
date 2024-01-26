@@ -4,10 +4,7 @@ package org.example.in.controller;
 import org.example.model.CounterReading;
 import org.example.model.TypeOfCounter;
 import org.example.model.User;
-import org.example.repository.CounterReadingRepository;
-import org.example.repository.UserRepository;
 import org.example.service.CounterReadingService;
-import org.example.service.UserService;
 
 import java.util.Scanner;
 

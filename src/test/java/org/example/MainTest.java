@@ -42,13 +42,13 @@ public class MainTest {
         TypeOfCounter typeOfCounter = new TypeOfCounter(300.1, 322.5, 268.4);
         CounterReading counterReading1 = new CounterReading(2020, 4, typeOfCounter);
         counterReading1.setUserId(2);
-        counterReadingRepository.submit(counterReading1);
+        counterReadingService.submitCounterReading(user1, counterReading1);
         CounterReading counterReading2 = new CounterReading(2021, 6, typeOfCounter);
         counterReading2.setUserId(2);
-        counterReadingRepository.submit(counterReading2);
+        counterReadingService.submitCounterReading(user1, counterReading2);
         CounterReading counterReading3 = new CounterReading(2024, 1, typeOfCounter);
         counterReading3.setUserId(3);
-        counterReadingRepository.submit(counterReading3);
+        counterReadingService.submitCounterReading(user2, counterReading3);
     }
 
     @AfterEach

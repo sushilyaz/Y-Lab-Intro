@@ -11,22 +11,18 @@ public class UserRepository {
     private List<User> users = new ArrayList<>();
 
     private UserRepository() {
-        // Приватный конструктор для предотвращения создания экземпляров извне
-        initializeUsers(); // Можете здесь инициализировать список пользователей
+        initializeUsers();
     }
 
     private void initializeUsers() {
         User admin = new User(1, "admin", "admin", true);
         users.add(admin);
-        // Добавьте другую логику инициализации, если необходимо
     }
 
     public static UserRepository getInstance() {
-        // Если экземпляр еще не создан, создаем его
         if (instance == null) {
             instance = new UserRepository();
         }
-        // Возвращаем существующий экземпляр
         return instance;
     }
     // для тестов

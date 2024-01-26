@@ -5,8 +5,6 @@ import org.example.model.CounterReading;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class CounterReadingRepository{
     private static CounterReadingRepository instance;
@@ -39,28 +37,28 @@ public class CounterReadingRepository{
 
 
     /**
-     * Одно из требований к Д\З: "Последние поданые показания считаются актуальными". Я сделал так, как написано,
-     * как по мне логичнее было бы выводить за последний месяц, поэтому ниже закомментировал часть, которая сортирует
-     * сначала по году, потом по месяцу и возвращает последнюю запись по времени.
+     * Одно из требований к Д\З: "Последние поданые показания считаются актуальными".
+     * Если проецировать на жизненную, ситуацию, то правильнее будет возвращать последнее по дате,
+     * но я на всякий случай оставил закомментированное решение согласно ТЗ
      */
     public CounterReading findLastCounterReading(int userId) {
         var list = findAllByUserId(userId);
-        CounterReading lastElement;
-        if (list.isEmpty()) {
-            return null;
-        } else {
-            lastElement = list.get(list.size()-1);
-            return lastElement;
-        }
-//        var sortedList = list.stream()
-//                .sorted(Comparator.comparingInt(CounterReading::getYear)
-//                        .thenComparingInt(CounterReading::getMonth))
-//                .toList();
-//
-//        CounterReading lastElement = sortedList.stream()
-//                .reduce((first, second) -> second)
-//                .orElse(null);
+//        CounterReading lastElement;
+//        if (list.isEmpty()) {
+//            return null;
+//        } else {
+//            lastElement = list.get(list.size()-1);
+//            return lastElement;
+//        }
+        var sortedList = list.stream()
+                .sorted(Comparator.comparingInt(CounterReading::getYear)
+                        .thenComparingInt(CounterReading::getMonth))
+                .toList();
 
+        CounterReading lastElement = sortedList.stream()
+                .reduce((first, second) -> second)
+                .orElse(null);
+        return lastElement;
 
     }
 

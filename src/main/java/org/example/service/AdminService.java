@@ -1,5 +1,7 @@
 package org.example.service;
 
+import org.example.audit.AuditLog;
+import org.example.audit.UserAction;
 import org.example.dto.UserInfoDTO;
 import org.example.model.CounterReading;
 import org.example.model.User;
@@ -10,16 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminService {
+    private AuditLog auditLog;
     private UserRepository userRepository;
     private CounterReadingRepository counterReadingRepository;
 
     public AdminService() {
-        if (this.userRepository == null) {
-            this.userRepository = UserRepository.getInstance();
-        }
-        if (this.counterReadingRepository == null) {
-            this.counterReadingRepository = CounterReadingRepository.getInstance();
-        }
+        this.userRepository = UserRepository.getInstance();
+        this.counterReadingRepository = CounterReadingRepository.getInstance();
+        this.auditLog = AuditLog.getInstance();
+    }
+
+    public List<UserAction> getLogs() {
+        return auditLog.getUserActions();
     }
 
     public CounterReading getUserInfo(String username) {

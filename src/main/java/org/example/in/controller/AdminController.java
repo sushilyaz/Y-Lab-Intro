@@ -1,9 +1,6 @@
 package org.example.in.controller;
 
 import org.example.dto.UserInfoDTO;
-import org.example.model.User;
-import org.example.repository.CounterReadingRepository;
-import org.example.repository.UserRepository;
 import org.example.service.AdminService;
 
 import java.util.List;
@@ -14,6 +11,10 @@ public class AdminController {
 
     public AdminController() {
         adminService = new AdminService();
+    }
+
+    public void getAudit() {
+        System.out.println(adminService.getLogs());
     }
 
     public void getActualCRUser() {

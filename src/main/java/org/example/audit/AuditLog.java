@@ -4,10 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuditLog {
+    private static AuditLog instance;
     private List<UserAction> userActions;
 
-    public AuditLog() {
+    private AuditLog() {
         this.userActions = new ArrayList<>();
+    }
+
+    public static AuditLog getInstance() {
+        if (instance == null) {
+            instance = new AuditLog();
+        }
+        return instance;
     }
 
     public void logAction(UserAction userAction) {
@@ -18,4 +26,5 @@ public class AuditLog {
         return userActions;
     }
 }
+
 

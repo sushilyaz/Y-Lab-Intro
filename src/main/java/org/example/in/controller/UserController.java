@@ -2,7 +2,6 @@ package org.example.in.controller;
 
 import org.example.in.Engine;
 import org.example.model.User;
-import org.example.repository.UserRepository;
 import org.example.service.UserService;
 
 import java.util.Scanner;
@@ -52,7 +51,7 @@ public class UserController {
         return null;
     }
 
-    public User logout() {
-        return null;
+    public User logout(User user) {
+        return userService.logoutUser(user);
     }
 }

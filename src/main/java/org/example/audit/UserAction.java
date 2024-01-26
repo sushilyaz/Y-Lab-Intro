@@ -36,4 +36,13 @@ public class UserAction {
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "UserAction\n" +
+                "username='" + username + '\'' +
+                ", action='" + action + '\'' +
+                ", timestamp=" + timestamp +
+                '\n';
+    }
 }

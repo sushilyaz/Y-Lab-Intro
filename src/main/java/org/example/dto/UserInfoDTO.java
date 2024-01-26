@@ -69,14 +69,14 @@ public class UserInfoDTO {
 
     @Override
     public String toString() {
-        return "UserInfoDTO{" +
+        return "UsersInfo: \n" +
                 "username='" + username + '\'' +
                 ", year=" + year +
                 ", month=" + month +
                 ", hotWater=" + hotWater +
                 ", coldWater=" + coldWater +
                 ", heating=" + heating +
-                '}';
+                '\n';
     }
 
     // for tests

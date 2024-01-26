@@ -64,19 +64,23 @@ public class Engine {
                     menu(currentUser);
                     break;
                 case 5:
-                    currentUser = userController.logout();
+                    currentUser = userController.logout(currentUser);
                     start();
                     break;
+                default:
+                    System.out.println("Invalid number");
+                    menu(currentUser);
             }
         }
     }
 
     public static void menuAdmin() {
-        System.out.println("Выберите действие: ");
+        System.out.println("Choose action");
         System.out.println("1 - Get actual user counter readings");
         System.out.println("2 - Get user counter readings for specific month");
         System.out.println("3 - Get all counter readings users");
-        System.out.println("4 - Log out");
+        System.out.println("4 - Get audit");
+        System.out.println("5 - Log out");
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("Enter: ");
@@ -96,7 +100,15 @@ public class Engine {
                     menuAdmin();
                     break;
                 case 4:
+                    adminController.getAudit();
+                    menuAdmin();
+                    break;
+                case 5:
                     start();
+                    break;
+                default:
+                    System.out.println("Invalid number");
+                    menuAdmin();
             }
         }
     }

@@ -4,17 +4,13 @@ import org.example.in.controller.AdminController;
 import org.example.in.controller.CounterReadingController;
 import org.example.in.controller.UserController;
 import org.example.model.User;
-import org.example.repository.CounterReadingRepository;
-import org.example.repository.UserRepository;
 
 import java.util.Scanner;
 
 public class Engine {
-    private static UserRepository userRepository = new UserRepository();
-    private static CounterReadingRepository counterReadingRepository = new CounterReadingRepository();
-    private static UserController userController = new UserController(userRepository);
-    private static CounterReadingController controllerReadingController = new CounterReadingController(counterReadingRepository);
-    private static AdminController adminController = new AdminController(userRepository, counterReadingRepository);
+    private static UserController userController = new UserController();
+    private static CounterReadingController controllerReadingController = new CounterReadingController();
+    private static AdminController adminController = new AdminController();
     public static void start() {
         System.out.println("At first you need to register or log in. Choose an action");
         System.out.println("1 - Registration user (enter \"1\")");
@@ -40,7 +36,7 @@ public class Engine {
     }
 
     public static void menu(User currentUser) {
-        System.out.println("Выберите действие: ");
+        System.out.println("Choose action: ");
         System.out.println("1 - Get actual counter readings");
         System.out.println("2 - Submit counter readings");
         System.out.println("3 - Get counter readings for specific month");

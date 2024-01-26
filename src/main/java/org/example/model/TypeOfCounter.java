@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.util.Objects;
+
 public class TypeOfCounter {
     private double hotWater;
     private double coldWater;
@@ -33,6 +35,19 @@ public class TypeOfCounter {
 
     public void setHeating(double heating) {
         this.heating = heating;
+    }
+    // for tests
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeOfCounter that = (TypeOfCounter) o;
+        return Double.compare(hotWater, that.hotWater) == 0 && Double.compare(coldWater, that.coldWater) == 0 && Double.compare(heating, that.heating) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hotWater, coldWater, heating);
     }
 
     @Override

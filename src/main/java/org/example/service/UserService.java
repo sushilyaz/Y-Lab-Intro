@@ -7,12 +7,13 @@ import java.util.Optional;
 
 public class UserService {
     private UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     private static int id = 1;
+
+    public UserService() {
+        if (this.userRepository == null) {
+            this.userRepository = UserRepository.getInstance();
+        }
+    }
 
     public User registerUser(String username, String password) {
         Optional<User> existUser = userRepository.findByUsername(username);

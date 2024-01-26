@@ -10,13 +10,10 @@ import java.util.Scanner;
 public class UserController {
 
     private User currentUser;
-    private UserRepository userRepository;
-
     private UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-        userService = new UserService(userRepository);
+    public UserController() {
+        userService = new UserService();
     }
 
     public void registration() {

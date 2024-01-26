@@ -12,13 +12,11 @@ import org.example.service.UserService;
 import java.util.Scanner;
 
 public class CounterReadingController {
-    private CounterReadingRepository counterReadingRepository;
 
     private CounterReadingService counterReadingService;
 
-    public CounterReadingController(CounterReadingRepository counterReadingRepository) {
-        this.counterReadingRepository = counterReadingRepository;
-        counterReadingService = new CounterReadingService(counterReadingRepository);
+    public CounterReadingController() {
+        counterReadingService = new CounterReadingService();
     }
 
     public void getLatestData(User currentUser) {

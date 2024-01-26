@@ -10,16 +10,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AdminController {
-
-    private UserRepository userRepository;
-    private CounterReadingRepository counterReadingRepository;
-
     private AdminService adminService;
 
-    public AdminController(UserRepository userRepository, CounterReadingRepository counterReadingRepository) {
-        this.userRepository = userRepository;
-        this.counterReadingRepository = counterReadingRepository;
-        adminService = new AdminService(userRepository, counterReadingRepository);
+    public AdminController() {
+        adminService = new AdminService();
     }
 
     public void getActualCRUser() {

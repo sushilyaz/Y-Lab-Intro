@@ -9,8 +9,11 @@ import java.util.List;
 public class CounterReadingService {
     private CounterReadingRepository counterReadingRepository;
 
-    public CounterReadingService(CounterReadingRepository counterReadingRepository) {
-        this.counterReadingRepository = counterReadingRepository;
+
+    public CounterReadingService() {;
+        if (this.counterReadingRepository == null) {
+            this.counterReadingRepository = CounterReadingRepository.getInstance();
+        }
     }
 
     public CounterReading submitCounterReading(User currentUser, CounterReading counterReading) {

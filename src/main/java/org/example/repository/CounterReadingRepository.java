@@ -8,9 +8,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CounterReadingRepository {
-    private static List<CounterReading> counterReadings = new ArrayList<>();
+public class CounterReadingRepository{
+    private static CounterReadingRepository instance;
+    private List<CounterReading> counterReadings = new ArrayList<>();
 
+    private CounterReadingRepository() {
+    }
+    public static CounterReadingRepository getInstance() {
+        if (instance == null) {
+            instance = new CounterReadingRepository();
+        }
+        return instance;
+    }
+    public static void reset() {
+        instance = null;
+    }
     public List<CounterReading> getCounterReadings() {
         return counterReadings;
     }

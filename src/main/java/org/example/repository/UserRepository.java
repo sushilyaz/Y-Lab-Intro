@@ -7,15 +7,35 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepository {
-    private static List<User> users = new ArrayList<>();
+    private static UserRepository instance;
+    private List<User> users = new ArrayList<>();
+
+    private UserRepository() {
+        // Приватный конструктор для предотвращения создания экземпляров извне
+        initializeUsers(); // Можете здесь инициализировать список пользователей
+    }
+
+    private void initializeUsers() {
+        User admin = new User(1, "admin", "admin", true);
+        users.add(admin);
+        // Добавьте другую логику инициализации, если необходимо
+    }
+
+    public static UserRepository getInstance() {
+        // Если экземпляр еще не создан, создаем его
+        if (instance == null) {
+            instance = new UserRepository();
+        }
+        // Возвращаем существующий экземпляр
+        return instance;
+    }
+    // для тестов
+    public static void reset() {
+        instance = null;
+    }
 
     public List<User> getUsers() {
         return users;
-    }
-
-    public UserRepository() {
-        User admin = new User(1, "admin", "admin", true);
-        users.add(admin);
     }
 
     public void save(User user) {

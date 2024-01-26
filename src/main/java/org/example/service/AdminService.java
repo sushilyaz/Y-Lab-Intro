@@ -13,9 +13,13 @@ public class AdminService {
     private UserRepository userRepository;
     private CounterReadingRepository counterReadingRepository;
 
-    public AdminService(UserRepository userRepository, CounterReadingRepository counterReadingRepository) {
-        this.userRepository = userRepository;
-        this.counterReadingRepository = counterReadingRepository;
+    public AdminService() {
+        if (this.userRepository == null) {
+            this.userRepository = UserRepository.getInstance();
+        }
+        if (this.counterReadingRepository == null) {
+            this.counterReadingRepository = CounterReadingRepository.getInstance();
+        }
     }
 
     public CounterReading getUserInfo(String username) {

@@ -56,7 +56,7 @@ public class User {
     public String toString() {
         return "User with " +
                 "username = '" + username + '\'' +
-                "has: ";
+                " has: ";
     }
 
     // for tests
@@ -65,11 +65,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && isAdmin == user.isAdmin && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return isAdmin == user.isAdmin && Objects.equals(username, user.username) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, isAdmin);
+        return Objects.hash(username, password, isAdmin);
     }
 }

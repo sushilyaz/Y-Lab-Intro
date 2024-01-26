@@ -37,10 +37,10 @@ public class TypeOfCounter {
 
     @Override
     public String toString() {
-        return "TypeOfCounter{" +
-                "hotWater=" + hotWater +
-                ", coldWater=" + coldWater +
-                ", heating=" + heating +
-                '}';
+        return "TypeOfCounter: " +
+                "hotWater = " + hotWater +
+                ", coldWater = " + coldWater +
+                ", heating = " + heating +
+                "";
     }
 }

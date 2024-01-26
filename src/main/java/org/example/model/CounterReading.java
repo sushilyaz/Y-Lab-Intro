@@ -48,11 +48,10 @@ public class CounterReading {
 
     @Override
     public String toString() {
-        return "CounterReading{" +
-                "year=" + year +
-                ", month=" + month +
-                ", typeOfCounter=" + typeOfCounter +
-                '}';
+        return "Counter Reading: " +
+                "year = " + year +
+                ", month = " + month +
+                ", " + typeOfCounter;
     }
 
     // for tests

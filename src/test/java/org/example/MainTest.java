@@ -1,10 +1,12 @@
 package org.example;
 
+import org.example.dto.UserInfoDTO;
 import org.example.model.CounterReading;
 import org.example.model.TypeOfCounter;
 import org.example.model.User;
 import org.example.repository.CounterReadingRepository;
 import org.example.repository.UserRepository;
+import org.example.service.AdminService;
 import org.example.service.CounterReadingService;
 import org.example.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +23,7 @@ public class MainTest {
     private UserService userService = new UserService(userRepository);
     private CounterReadingRepository counterReadingRepository = new CounterReadingRepository();
     private CounterReadingService counterReadingService = new CounterReadingService(counterReadingRepository);
+    private AdminService adminService = new AdminService(userRepository, counterReadingRepository);
 
     @BeforeEach
     public void setUp() {
@@ -109,6 +112,8 @@ public class MainTest {
     }
     @Test
     public void testAdmin() {
-
+        var list = adminService.getAllUserInfo();
+        UserInfoDTO userInfoCheck = new UserInfoDTO("lol", 2020, 4, 300.1, 322.5, 268.4);
+        assertThat(list).contains(userInfoCheck);
     }
 }

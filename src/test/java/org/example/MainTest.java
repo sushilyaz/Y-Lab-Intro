@@ -19,7 +19,9 @@ import java.util.PrimitiveIterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Тестировал только пограничные значения
+ */
 public class MainTest {
     private UserRepository userRepository;
     private UserService userService;
@@ -27,6 +29,9 @@ public class MainTest {
     private CounterReadingService counterReadingService;
     private AdminService adminService;
 
+    /**
+     * Инициализация данных перед каждым тестом
+     */
     @BeforeEach
     public void setUp() {
         userRepository = UserRepository.getInstance();
@@ -50,13 +55,17 @@ public class MainTest {
         counterReading3.setUserId(3);
         counterReadingService.submitCounterReading(user2, counterReading3);
     }
-
+    /**
+     * Откат репозитория
+     */
     @AfterEach
     public void clear() {
-        // Сброс состояния текущего userRepository
-        userRepository.reset();
+        UserRepository.reset();
+        CounterReadingRepository.reset();
     }
-
+    /**
+     * Неудачная регистрация (пользователь уже существует)
+     */
     @Test
     public void testRegisterFailed() {
         String username = "lol";
@@ -66,17 +75,25 @@ public class MainTest {
         int sizeAfter = userRepository.getUsers().size();
         assertEquals(sizeBefore, sizeAfter);
     }
-
+    /**
+     * Удачная регистрация
+     */
     @Test
     public void testRegisterSuccess() {
         String username = "user1";
         String password = "user1";
         User userCheck = new User(4, username, password, false);
+        int sizeBefore = userRepository.getUsers().size();
         userService.registerUser(username, password);
+        int sizeAfter = userRepository.getUsers().size();
         var users = userRepository.getUsers();
         assertThat(users).contains(userCheck);
+        assertNotEquals(sizeBefore, sizeAfter);
     }
 
+    /**
+     * Неудачная аутентификация (неверный пароль, несуществующий пользователь)
+     */
     @Test
     public void testLoginFailed() {
         String username1 = "lol";
@@ -89,6 +106,9 @@ public class MainTest {
         assertThat(user2).isNull();
     }
 
+    /**
+     * Удачный логин
+     */
     @Test
     public void testLoginSuccess() {
         String username = "lol";
@@ -97,6 +117,9 @@ public class MainTest {
         assertThat(user).isNotNull();
     }
 
+    /**
+     * Удачное внесение данных счетчика пользователя
+     */
     @Test
     public void testSubmitCounterReadingSuccess() {
         User user = userRepository.findByUsername("lol").get();
@@ -112,6 +135,9 @@ public class MainTest {
         assertNotEquals(sizeAfter, sizeBefore);
     }
 
+    /**
+     * Неудачное внесение данных пользователя (Данные за этот месяц уже существуют)
+     */
     @Test
     public void testSubmitCounterReadingFailed() {
         User user = userRepository.findByUsername("lol").get();
@@ -124,6 +150,10 @@ public class MainTest {
 
         assertEquals(sizeAfter, sizeBefore);
     }
+
+    /**
+     * Валидация вносимых данных - Удача
+     */
     @Test
     public void testValidationCounterSuccess() {
         User user = userRepository.findByUsername("lol").get();
@@ -133,6 +163,10 @@ public class MainTest {
         var counter = counterReadingService.validationCounter(user, counterReading1);
         assertThat(counter).isNotNull();
     }
+
+    /**
+     * Неудачная валидация. За текущий месяц значения hotWater меньше, чем у предыдущего месяца)
+     */
     @Test
     public void testValidationCounterFailed() {
         User user = userRepository.findByUsername("lol").get();
@@ -143,6 +177,9 @@ public class MainTest {
         assertThat(counter).isNull();
     }
 
+    /**
+     * Удачное получение последних внесенных показателей
+     */
     @Test
     public void testGetLatestCounterReadingSuccess() {
         User user = userRepository.findByUsername("lol").get();
@@ -153,6 +190,10 @@ public class MainTest {
         assertEquals(counterReading1, counterReading2);
     }
 
+    /**
+     * Удачное получение последних внесенных показателей
+     * Здесь counterReading1 является не последним показателем
+     */
     @Test
     public void testGetLatestCounterReadingFailed() {
         User user = userRepository.findByUsername("lol").get();
@@ -162,7 +203,9 @@ public class MainTest {
         CounterReading counterReading2 = counterReadingService.getLatestCounterReading(user);
         assertNotEquals(counterReading1, counterReading2);
     }
-
+    /**
+     * Удачное получение показателей за конкретный месяц
+     */
     @Test
     public void testGetCounterReadingForMonthSuccess() {
         User user = userRepository.findByUsername("lol").get();
@@ -171,14 +214,19 @@ public class MainTest {
         assertThat(counterReading.getMonth()).isEqualTo(4);
         assertThat(counterReading.getYear()).isEqualTo(2020);
     }
-
+    /**
+     * Неудачное получение показателей за конкретный месяц
+     * У пользователя с данным username нет данных за этот месяц
+     */
     @Test
     public void testGetCounterReadingForMonthFailed() {
         User user = userRepository.findByUsername("lol").get();
         var counterReading = counterReadingService.getCounterReadingForMonth(user, 1, 2024);
         assertThat(counterReading).isNull();
     }
-
+    /**
+     * Удачное получение всех показателей пользователя
+     */
     @Test
     public void testGetAllCounterReadingForUserSuccess() {
         User user = userRepository.findByUsername("lol").get();
@@ -194,6 +242,9 @@ public class MainTest {
         assertThat(counterReading).contains(counterReading1);
         assertThat(counterReading).contains(counterReading2);
     }
+    /**
+     * Неудачное получение показателей
+     */
     @Test
     public void testGetAllCounterReadingForUserFailed() {
         User user = userRepository.findByUsername("lol").get();
@@ -205,7 +256,9 @@ public class MainTest {
 
         assertFalse(counterReading1.contains(counterReading2));
     }
-
+    /**
+     * Удачное получение всей информации пользователей для администратора
+     */
     @Test
     public void testAdmin() {
         var list = adminService.getAllUserInfo();

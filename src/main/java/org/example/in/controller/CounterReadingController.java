@@ -16,6 +16,9 @@ public class CounterReadingController {
         counterReadingService = new CounterReadingService();
     }
 
+    /**
+     * Контроллер получения показателей аутентифицированного пользователя
+     */
     public void getLatestData(User currentUser) {
         var lastCountingReading = counterReadingService.getLatestCounterReading(currentUser);
         if (lastCountingReading != null) {
@@ -24,7 +27,9 @@ public class CounterReadingController {
             System.out.println("Error! User '" + currentUser.getUsername() + "' has not data");
         }
     }
-
+    /**
+     * Контроллер внесения показателей аутентифицированного пользователя
+     */
     public void putData(User currentUser) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter month: ");
@@ -51,7 +56,9 @@ public class CounterReadingController {
             System.out.println("Data no valid. Latest counter cant be less than current");
         }
     }
-
+    /**
+     * Контроллер получения последних внесенных показателей аутентифицированного пользователя
+     */
     public void getDataForMonth(User currentUser) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter month: ");
@@ -70,6 +77,9 @@ public class CounterReadingController {
         }
     }
 
+    /**
+     * Контроллер получения внесенных за все время показателей аутентифицированного пользователя
+     */
     public void getAllData(User currentUser) {
         var listOfCR = counterReadingService.getAllCounterReadingForUser(currentUser);
         System.out.println();

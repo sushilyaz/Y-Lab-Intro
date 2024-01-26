@@ -2,6 +2,11 @@ package org.example.model;
 
 import java.util.Objects;
 
+/**
+ * Модель показаний счетчика.
+ * Зависимость от User по userId
+ * Поле TypeOfCounter для последующего расширения, если необходимо добавить еще какие-то значения
+ */
 public class CounterReading {
     private int userId;
     private int year;
@@ -14,6 +19,10 @@ public class CounterReading {
         this.typeOfCounter = typeOfCounter;
     }
 
+    /**
+     * Метод сравнения для валидации.
+     * Текущие показатели должны быть не меньше чем за предыдущий месяц
+     */
     public boolean compare(CounterReading lastCounterReading) {
         if (this.typeOfCounter.getHotWater() >= lastCounterReading.typeOfCounter.getHotWater() &&
                 this.typeOfCounter.getColdWater() >= lastCounterReading.typeOfCounter.getColdWater() &&
@@ -56,6 +65,9 @@ public class CounterReading {
         this.typeOfCounter = typeOfCounter;
     }
 
+    /**
+     * Для sout
+     */
     @Override
     public String toString() {
         return "Counter Reading: " +
@@ -64,7 +76,9 @@ public class CounterReading {
                 ", " + typeOfCounter;
     }
 
-    // for tests
+    /**
+     * Для тестирования
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

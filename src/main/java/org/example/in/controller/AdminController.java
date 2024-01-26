@@ -13,15 +13,21 @@ public class AdminController {
         adminService = new AdminService();
     }
 
+    /**
+     * Контроллер вывода аудита (только для администратора)
+     */
     public void getAudit() {
         System.out.println(adminService.getLogs());
     }
 
+    /**
+     * Контроллер получения последних внесенных показаний счетчика определенного пользователя (по username)
+     */
     public void getActualCRUser() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
-        var counterReading = adminService.getUserInfo(username);
+        var counterReading = adminService.getLastUserInfo(username);
         if (counterReading != null) {
             System.out.println("Counter reading of user '" + username + "' for last month: " + counterReading);
         } else {
@@ -29,6 +35,9 @@ public class AdminController {
         }
     }
 
+    /**
+     * Контроллер получения показаний счетчика за определенный месяц определенного пользователя (по username)
+     */
     public void getCRUserForMonth() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username: ");
@@ -45,6 +54,10 @@ public class AdminController {
             System.out.println("User not found or user has no data");
         }
     }
+
+    /**
+     * Контроллер получения показаний всех пользователей
+     */
     public void getAllInfo() {
         List<UserInfoDTO> users = adminService.getAllUserInfo();
         if (!users.isEmpty()) {

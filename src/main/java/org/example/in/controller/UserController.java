@@ -15,6 +15,9 @@ public class UserController {
         userService = new UserService();
     }
 
+    /**
+     * Контроллер регистрации пользователя
+     */
     public void registration() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username: ");
@@ -30,6 +33,9 @@ public class UserController {
         Engine.start();
     }
 
+    /**
+     * Контроллер аутентификации пользователя
+     */
     public User autentification() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username: ");
@@ -51,6 +57,9 @@ public class UserController {
         return null;
     }
 
+    /**
+     * Контроллер завершения сессии пользователя
+     */
     public User logout(User user) {
         return userService.logoutUser(user);
     }

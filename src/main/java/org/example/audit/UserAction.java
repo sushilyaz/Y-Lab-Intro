@@ -2,6 +2,9 @@ package org.example.audit;
 
 import java.time.LocalDateTime;
 
+/**
+ * Класс действий пользователя
+ */
 public class UserAction {
     private String username;
     private String action;
@@ -37,6 +40,9 @@ public class UserAction {
         this.timestamp = timestamp;
     }
 
+    /**
+     * Для sout
+     */
     @Override
     public String toString() {
         return "UserAction\n" +

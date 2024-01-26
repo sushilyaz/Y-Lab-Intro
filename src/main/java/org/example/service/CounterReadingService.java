@@ -9,17 +9,25 @@ import org.example.repository.CounterReadingRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Обработчик методов показателя счетчика, также аудит на каждом действии
+ */
 public class CounterReadingService {
     private CounterReadingRepository counterReadingRepository;
     private AuditLog auditLog;
 
 
+    /**
+     * Во время инстанса класса также инициализируется аудит и репозиторий показателей счетчика
+     */
     public CounterReadingService() {
         this.auditLog = AuditLog.getInstance();
         this.counterReadingRepository = CounterReadingRepository.getInstance();
 
     }
-
+    /**
+     * Валидация вводимых показаний. Ни одно показание за этот месяц не должно быть меньше показаний предыдущего
+     */
     public CounterReading validationCounter(User currentUser, CounterReading counterReading) {
         int id = currentUser.getId();
         var latestCounter = counterReadingRepository.findLastCounterReading(id);
@@ -31,6 +39,10 @@ public class CounterReadingService {
                 return counterReading;
             }
     }
+
+    /**
+     * Обработчик внесения данных аутентифицированного пользователя
+     */
     public CounterReading submitCounterReading(User currentUser, CounterReading counterReading) {
         int id = currentUser.getId();
         var counterList = counterReadingRepository.findAllByUserId(id);
@@ -48,6 +60,9 @@ public class CounterReadingService {
         return counterReading;
     }
 
+    /**
+     * Обработчик получения последних внесенных данных аутентифицированного пользователя
+     */
     public CounterReading getLatestCounterReading(User currentUser) {
         int id = currentUser.getId();
         var lastCountingReading = counterReadingRepository.findLastCounterReading(id);
@@ -62,6 +77,9 @@ public class CounterReadingService {
         }
     }
 
+    /**
+     * Обработчик получения данных за последний месяц аутентифицированного пользователя
+     */
     public CounterReading getCounterReadingForMonth(User currentUser, int month, int year) {
         int id = currentUser.getId();
         var counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, month, year);
@@ -76,6 +94,9 @@ public class CounterReadingService {
         }
     }
 
+    /**
+     * Обработчик получения истории вносимых данных аутентифицированного пользователя
+     */
     public List<CounterReading> getAllCounterReadingForUser(User currentUser) {
         int id = currentUser.getId();
         var list = counterReadingRepository.findAllByUserId(id);

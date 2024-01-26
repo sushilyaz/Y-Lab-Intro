@@ -8,12 +8,16 @@ import org.example.model.User;
 import java.util.Scanner;
 
 /**
- *
+ * Так как приложение консольное, добавил навигацию по обработчикам
  */
 public class Engine {
     private static UserController userController = new UserController();
     private static CounterReadingController controllerReadingController = new CounterReadingController();
     private static AdminController adminController = new AdminController();
+
+    /**
+     * Главное меню. Из вариантов: Регистрация, аутентификация, выход из приложения
+     */
     public static void start() {
         System.out.println("At first you need to register or log in. Choose an action");
         System.out.println("1 - Registration user (enter \"1\")");
@@ -27,6 +31,7 @@ public class Engine {
                 userController.registration();
                 break;
             case 2:
+                // при аутентификации обычного пользователя вызывается метод menu и в параметре передается аутентифицированный пользователь (currentUser)
                 var currentUser = userController.autentification();
                 menu(currentUser);
                 break;
@@ -41,6 +46,9 @@ public class Engine {
         }
     }
 
+    /**
+     * Меню обычного пользователя
+     */
     public static void menu(User currentUser) {
         System.out.println("Choose action: ");
         System.out.println("1 - Get actual counter readings");
@@ -80,6 +88,9 @@ public class Engine {
         }
     }
 
+    /**
+     * Меню админа
+     */
     public static void menuAdmin() {
         System.out.println("Choose action");
         System.out.println("1 - Get actual user counter readings");
@@ -91,7 +102,6 @@ public class Engine {
         while (true) {
             System.out.print("Enter: ");
             int choice = scanner.nextInt();
-
             switch (choice) {
                 case 1:
                     adminController.getActualCRUser();

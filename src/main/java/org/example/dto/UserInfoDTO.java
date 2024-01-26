@@ -2,6 +2,10 @@ package org.example.dto;
 
 import java.util.Objects;
 
+/**
+ * DTO для вывода всей информации о всех пользователях (для админа)
+ * Не включил поле password, хотя для администратора можно было бы и добавить (наверное)
+ */
 public class UserInfoDTO {
     private String username;
     private int year;
@@ -67,6 +71,9 @@ public class UserInfoDTO {
         this.heating = heating;
     }
 
+    /**
+     * Для sout
+     */
     @Override
     public String toString() {
         return "UsersInfo: \n" +
@@ -79,8 +86,9 @@ public class UserInfoDTO {
                 '\n';
     }
 
-    // for tests
-
+    /**
+     * Для тестирования
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

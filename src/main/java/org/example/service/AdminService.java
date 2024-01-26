@@ -22,11 +22,17 @@ public class AdminService {
         this.auditLog = AuditLog.getInstance();
     }
 
+    /**
+     * Обработчик получения логов
+     */
     public List<UserAction> getLogs() {
         return auditLog.getUserActions();
     }
 
-    public CounterReading getUserInfo(String username) {
+    /**
+     * Обработчик получения последних внесенных показателей пользователя
+     */
+    public CounterReading getLastUserInfo(String username) {
         var user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             int id = user.get().getId();
@@ -41,6 +47,9 @@ public class AdminService {
         }
     }
 
+    /**
+     * Обработчик получения показателей пользователя за конкретный месяц
+     */
     public CounterReading getUserInfoForMonth(String username, int month, int year) {
         var user = userRepository.findByUsername(username);
         if (user.isPresent()) {
@@ -56,6 +65,9 @@ public class AdminService {
         }
     }
 
+    /**
+     * Обработчик получения всех показателей всех пользователей
+     */
     public List<UserInfoDTO> getAllUserInfo() {
         var users = userRepository.getUsers();
         var counters = counterReadingRepository.getCounterReadings();

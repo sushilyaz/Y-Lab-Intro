@@ -2,6 +2,10 @@ package org.example.model;
 
 import java.util.Objects;
 
+/**
+ * Класс User.
+ * Поле isAdmin необходимо для проверки при аутентификации, какую роль назначить
+ */
 public class User {
     private int id;
 
@@ -50,6 +54,9 @@ public class User {
         isAdmin = admin;
     }
 
+    /**
+     * Для sout
+     */
     @Override
     public String toString() {
         return "User with " +
@@ -57,7 +64,9 @@ public class User {
                 " has: ";
     }
 
-    // for tests
+    /**
+     * Для тестирования
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

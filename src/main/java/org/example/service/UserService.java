@@ -8,16 +8,25 @@ import org.example.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * Обработчик методов пользователя, также аудит на каждом действии
+ */
 public class UserService {
     private UserRepository userRepository;
     private AuditLog auditLog;
     private static int id = 1;
 
+    /**
+     * Во время инстанса класса также инициализируется аудит и репозиторий пользователя
+     */
     public UserService() {
         this.auditLog = AuditLog.getInstance();
         this.userRepository = UserRepository.getInstance();
     }
 
+    /**
+     * Обработчик регистрации пользователя
+     */
     public User registerUser(String username, String password) {
         Optional<User> existUser = userRepository.findByUsername(username);
         if (existUser.isPresent()) {
@@ -31,7 +40,9 @@ public class UserService {
             return newUser;
         }
     }
-
+    /**
+     * Обработчик аутентицикации пользователя. Возвращает "текущего пользователя"
+     */
     public User authenticationUser (String username, String password) {
         Optional<User> existUser = userRepository.findByUsername(username);
         if (existUser.isPresent()) {
@@ -51,6 +62,9 @@ public class UserService {
             return null;
         }
     }
+    /**
+     * Обработчик закрытия сессии
+     */
     public User logoutUser(User user) {
         UserAction userAction = new UserAction(user.getUsername(), "Log out user", LocalDateTime.now());
         auditLog.logAction(userAction);

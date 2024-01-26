@@ -2,6 +2,9 @@ package org.example.model;
 
 import java.util.Objects;
 
+/**
+ * Данный класс можно расширять, добавляя необходимые поля для счетчика
+ */
 public class TypeOfCounter {
     private double hotWater;
     private double coldWater;
@@ -36,7 +39,22 @@ public class TypeOfCounter {
     public void setHeating(double heating) {
         this.heating = heating;
     }
-    // for tests
+
+    /**
+     * Для sout
+     */
+    @Override
+    public String toString() {
+        return "TypeOfCounter: " +
+                "hotWater = " + hotWater +
+                ", coldWater = " + coldWater +
+                ", heating = " + heating +
+                "";
+    }
+
+    /**
+     * Для тестирования
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,12 +68,5 @@ public class TypeOfCounter {
         return Objects.hash(hotWater, coldWater, heating);
     }
 
-    @Override
-    public String toString() {
-        return "TypeOfCounter: " +
-                "hotWater = " + hotWater +
-                ", coldWater = " + coldWater +
-                ", heating = " + heating +
-                "";
-    }
+
 }

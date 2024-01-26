@@ -124,6 +124,24 @@ public class MainTest {
 
         assertEquals(sizeAfter, sizeBefore);
     }
+    @Test
+    public void testValidationCounterSuccess() {
+        User user = userRepository.findByUsername("lol").get();
+        TypeOfCounter typeOfCounter = new TypeOfCounter(900.1, 322.5, 268.4);
+        CounterReading counterReading1 = new CounterReading(2022, 9, typeOfCounter);
+        counterReading1.setUserId(user.getId());
+        var counter = counterReadingService.validationCounter(user, counterReading1);
+        assertThat(counter).isNotNull();
+    }
+    @Test
+    public void testValidationCounterFailed() {
+        User user = userRepository.findByUsername("lol").get();
+        TypeOfCounter typeOfCounter = new TypeOfCounter(200, 322.5, 268.4);
+        CounterReading counterReading1 = new CounterReading(2022, 9, typeOfCounter);
+        counterReading1.setUserId(user.getId());
+        var counter = counterReadingService.validationCounter(user, counterReading1);
+        assertThat(counter).isNull();
+    }
 
     @Test
     public void testGetLatestCounterReadingSuccess() {

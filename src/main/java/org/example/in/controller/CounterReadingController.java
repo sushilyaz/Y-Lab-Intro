@@ -39,11 +39,16 @@ public class CounterReadingController {
         double heating = scanner.nextDouble();
         TypeOfCounter typeOfCounter = new TypeOfCounter(hw, cw, heating);
         CounterReading counterReading = new CounterReading(year, month, typeOfCounter);
-        var counter = counterReadingService.submitCounterReading(currentUser, counterReading);
-        if (counter != null) {
-            System.out.println("Data entered successfully!");
+        var validCounterReading = counterReadingService.validationCounter(currentUser, counterReading);
+        if (validCounterReading != null) {
+            var counter = counterReadingService.submitCounterReading(currentUser, validCounterReading);
+            if (counter != null) {
+                System.out.println("Data entered successfully!");
+            } else {
+                System.out.println("Error! Data for this month already exists.");
+            }
         } else {
-            System.out.println("Error! Data for this month already exists.");
+            System.out.println("Data no valid. Latest counter cant be less than current");
         }
     }
 

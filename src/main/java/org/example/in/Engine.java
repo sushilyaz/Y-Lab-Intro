@@ -7,6 +7,9 @@ import org.example.model.User;
 
 import java.util.Scanner;
 
+/**
+ *
+ */
 public class Engine {
     private static UserController userController = new UserController();
     private static CounterReadingController controllerReadingController = new CounterReadingController();
@@ -32,6 +35,9 @@ public class Engine {
                 System.out.println("Exit");
                 System.exit(0);
                 break;
+            default:
+                start();
+                System.out.println("Invalid number");
         }
     }
 

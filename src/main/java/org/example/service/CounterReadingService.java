@@ -20,10 +20,19 @@ public class CounterReadingService {
 
     }
 
-    public CounterReading submitCounterReading(User currentUser, CounterReading counterReading) {
+    public CounterReading validationCounter(User currentUser, CounterReading counterReading) {
         int id = currentUser.getId();
         var latestCounter = counterReadingRepository.findLastCounterReading(id);
-
+            if (!counterReading.compare(latestCounter)){
+                UserAction userAction = new UserAction(currentUser.getUsername(), "Error of validation", LocalDateTime.now());
+                auditLog.logAction(userAction);
+                return null;
+            } else {
+                return counterReading;
+            }
+    }
+    public CounterReading submitCounterReading(User currentUser, CounterReading counterReading) {
+        int id = currentUser.getId();
         var counterList = counterReadingRepository.findAllByUserId(id);
         for (var counter : counterList) {
             if (counter.getMonth() == counterReading.getMonth() && counter.getYear() == counterReading.getYear()) {

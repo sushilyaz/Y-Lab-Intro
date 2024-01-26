@@ -14,6 +14,16 @@ public class CounterReading {
         this.typeOfCounter = typeOfCounter;
     }
 
+    public boolean compare(CounterReading lastCounterReading) {
+        if (this.typeOfCounter.getHotWater() >= lastCounterReading.typeOfCounter.getHotWater() &&
+                this.typeOfCounter.getColdWater() >= lastCounterReading.typeOfCounter.getColdWater() &&
+                this.typeOfCounter.getHeating() >= lastCounterReading.typeOfCounter.getHeating()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public int getUserId() {
         return userId;
     }

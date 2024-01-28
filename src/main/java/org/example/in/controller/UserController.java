@@ -19,6 +19,7 @@ public class UserController {
      * Контроллер регистрации пользователя
      */
     public void registration() {
+        System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -37,6 +38,7 @@ public class UserController {
      * Контроллер аутентификации пользователя
      */
     public User autentification() {
+        System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username: ");
         String authUsername = scanner.nextLine();

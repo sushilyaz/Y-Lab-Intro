@@ -17,6 +17,7 @@ public class AdminController {
      * Контроллер вывода аудита (только для администратора)
      */
     public void getAudit() {
+        System.out.println();
         System.out.println(adminService.getLogs());
     }
 
@@ -24,6 +25,7 @@ public class AdminController {
      * Контроллер получения последних внесенных показаний счетчика определенного пользователя (по username)
      */
     public void getActualCRUser() {
+        System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -39,6 +41,7 @@ public class AdminController {
      * Контроллер получения показаний счетчика за определенный месяц определенного пользователя (по username)
      */
     public void getCRUserForMonth() {
+        System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -59,6 +62,7 @@ public class AdminController {
      * Контроллер получения показаний всех пользователей
      */
     public void getAllInfo() {
+        System.out.println();
         List<UserInfoDTO> users = adminService.getAllUserInfo();
         if (!users.isEmpty()) {
             System.out.println(users);

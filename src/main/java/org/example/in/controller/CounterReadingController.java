@@ -20,6 +20,7 @@ public class CounterReadingController {
      * Контроллер получения показателей аутентифицированного пользователя
      */
     public void getLatestData(User currentUser) {
+        System.out.println();
         var lastCountingReading = counterReadingService.getLatestCounterReading(currentUser);
         if (lastCountingReading != null) {
             System.out.println(lastCountingReading);
@@ -31,6 +32,7 @@ public class CounterReadingController {
      * Контроллер внесения показателей аутентифицированного пользователя
      */
     public void putData(User currentUser) {
+        System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter month: ");
         int month = scanner.nextInt();
@@ -60,6 +62,7 @@ public class CounterReadingController {
      * Контроллер получения последних внесенных показателей аутентифицированного пользователя
      */
     public void getDataForMonth(User currentUser) {
+        System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter month: ");
         int month = scanner.nextInt();
@@ -67,7 +70,7 @@ public class CounterReadingController {
             System.out.println("Invalid month. Please provide a valid month (1-12).");
             getDataForMonth(currentUser);
         }
-        System.out.print("Enter year:");
+        System.out.print("Enter year: ");
         int year = scanner.nextInt();
         var counterReadingForMonth = counterReadingService.getCounterReadingForMonth(currentUser, month, year);
         if (counterReadingForMonth != null) {
@@ -81,6 +84,7 @@ public class CounterReadingController {
      * Контроллер получения внесенных за все время показателей аутентифицированного пользователя
      */
     public void getAllData(User currentUser) {
+        System.out.println();
         var listOfCR = counterReadingService.getAllCounterReadingForUser(currentUser);
         System.out.println();
         if (listOfCR.isEmpty()) {

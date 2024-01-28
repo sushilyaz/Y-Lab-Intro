@@ -31,6 +31,7 @@ public class CounterReadingService {
     public CounterReading validationCounter(User currentUser, CounterReading counterReading) {
         int id = currentUser.getId();
         var latestCounter = counterReadingRepository.findLastCounterReading(id);
+        if (latestCounter != null) {
             if (!counterReading.compare(latestCounter)){
                 UserAction userAction = new UserAction(currentUser.getUsername(), "Error of validation", LocalDateTime.now());
                 auditLog.logAction(userAction);
@@ -38,6 +39,9 @@ public class CounterReadingService {
             } else {
                 return counterReading;
             }
+        } else {
+            return counterReading;
+        }
     }
 
     /**

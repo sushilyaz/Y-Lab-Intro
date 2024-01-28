@@ -19,6 +19,7 @@ public class Engine {
      * Главное меню. Из вариантов: Регистрация, аутентификация, выход из приложения
      */
     public static void start() {
+        System.out.println();
         System.out.println("At first you need to register or log in. Choose an action");
         System.out.println("1 - Registration user (enter \"1\")");
         System.out.println("2 - Login user (enter \"2\")");
@@ -50,6 +51,7 @@ public class Engine {
      * Меню обычного пользователя
      */
     public static void menu(User currentUser) {
+        System.out.println();
         System.out.println("Choose action: ");
         System.out.println("1 - Get actual counter readings");
         System.out.println("2 - Submit counter readings");
@@ -92,6 +94,7 @@ public class Engine {
      * Меню админа
      */
     public static void menuAdmin() {
+        System.out.println();
         System.out.println("Choose action");
         System.out.println("1 - Get actual user counter readings");
         System.out.println("2 - Get user counter readings for specific month");

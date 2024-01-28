@@ -1,18 +1,17 @@
 plugins {
-    application
     id("java")
+    application
 }
 
 application {
-    mainClass="org.example.ConsoleApp"
+    mainClass="org.example.Main"
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
 }
-
 group = "org.example"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()

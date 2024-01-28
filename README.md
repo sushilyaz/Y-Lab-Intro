@@ -35,4 +35,4 @@ Password: admin
 ## Пример использования приложения:
 
 [![asciicast](https://asciinema.org/a/633979.svg)](https://asciinema.org/a/633979)
-
+PR

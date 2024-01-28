@@ -21,6 +21,19 @@ public class AdminController {
         System.out.println(adminService.getLogs());
     }
 
+    public void addNewReading() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter new type of reading: ");
+        String newKey = scanner.nextLine();
+        if (adminService.addNewKey(newKey)) {
+            System.out.println("New type of reading: " + newKey + "adding success!");
+        } else {
+            System.out.println("This key alrady exist");
+        }
+    }
+    public void viewAllKey() {
+        System.out.println(adminService.getAllKey());
+    }
     /**
      * Контроллер получения последних внесенных показаний счетчика определенного пользователя (по username)
      */

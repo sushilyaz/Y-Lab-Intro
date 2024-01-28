@@ -2,10 +2,10 @@ package org.example.in.controller;
 
 
 import org.example.model.CounterReading;
-import org.example.model.TypeOfCounter;
 import org.example.model.User;
 import org.example.service.CounterReadingService;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class CounterReadingController {
@@ -38,14 +38,13 @@ public class CounterReadingController {
         int month = scanner.nextInt();
         System.out.print("Enter year: ");
         int year = scanner.nextInt();
-        System.out.print("Enter readings for Hot Water: ");
-        double hw = scanner.nextDouble();
-        System.out.print("Enter readings for Cold Water: ");
-        double cw = scanner.nextDouble();
-        System.out.print("Enter readings for Heating: ");
-        double heating = scanner.nextDouble();
-        TypeOfCounter typeOfCounter = new TypeOfCounter(hw, cw, heating);
-        CounterReading counterReading = new CounterReading(year, month, typeOfCounter);
+        var commonMap = CounterReading.getCommonTypeOfCounter();
+        for (Map.Entry<String, Double> map : commonMap.entrySet()) {
+            System.out.println("Enter readings for " + map.getKey() + ": ");
+            double buf = scanner.nextDouble();
+            map.setValue(buf);
+        }
+        CounterReading counterReading = new CounterReading(year, month, commonMap);
         var validCounterReading = counterReadingService.validationCounter(currentUser, counterReading);
         if (validCounterReading != null) {
             var counter = counterReadingService.submitCounterReading(currentUser, validCounterReading);

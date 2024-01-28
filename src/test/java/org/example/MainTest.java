@@ -1,8 +1,8 @@
+
 package org.example;
 
 import org.example.dto.UserInfoDTO;
 import org.example.model.CounterReading;
-import org.example.model.TypeOfCounter;
 import org.example.model.User;
 import org.example.repository.CounterReadingRepository;
 import org.example.repository.UserRepository;
@@ -10,12 +10,11 @@ import org.example.service.AdminService;
 import org.example.service.CounterReadingService;
 import org.example.service.UserService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.PrimitiveIterator;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,14 +43,17 @@ public class MainTest {
         userRepository.save(user1);
         User user2 = new User(3, "kek", "kek", false);
         userRepository.save(user2);
-        TypeOfCounter typeOfCounter = new TypeOfCounter(300.1, 322.5, 268.4);
-        CounterReading counterReading1 = new CounterReading(2020, 4, typeOfCounter);
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 300.1);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+        CounterReading counterReading1 = new CounterReading(2020, 4, testMap1);
         counterReading1.setUserId(2);
         counterReadingService.submitCounterReading(user1, counterReading1);
-        CounterReading counterReading2 = new CounterReading(2021, 6, typeOfCounter);
+        CounterReading counterReading2 = new CounterReading(2021, 6, testMap1);
         counterReading2.setUserId(2);
         counterReadingService.submitCounterReading(user1, counterReading2);
-        CounterReading counterReading3 = new CounterReading(2024, 1, typeOfCounter);
+        CounterReading counterReading3 = new CounterReading(2024, 1, testMap1);
         counterReading3.setUserId(3);
         counterReadingService.submitCounterReading(user2, counterReading3);
     }
@@ -123,8 +125,11 @@ public class MainTest {
     @Test
     public void testSubmitCounterReadingSuccess() {
         User user = userRepository.findByUsername("lol").get();
-        TypeOfCounter typeOfCounter = new TypeOfCounter(300.1, 322.5, 268.4);
-        CounterReading counterReading1 = new CounterReading(2019, 4, typeOfCounter);
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 300.1);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+        CounterReading counterReading1 = new CounterReading(2019, 4, testMap1);
         counterReading1.setUserId(user.getId());
         int sizeBefore = counterReadingRepository.getCounterReadings().size();
         counterReadingService.submitCounterReading(user, counterReading1);
@@ -141,8 +146,12 @@ public class MainTest {
     @Test
     public void testSubmitCounterReadingFailed() {
         User user = userRepository.findByUsername("lol").get();
-        TypeOfCounter typeOfCounter = new TypeOfCounter(300.1, 322.5, 268.4);
-        CounterReading counterReading1 = new CounterReading(2021, 6, typeOfCounter);
+
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 300.1);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+        CounterReading counterReading1 = new CounterReading(2021, 6, testMap1);
         counterReading1.setUserId(user.getId());
         int sizeBefore = counterReadingRepository.getCounterReadings().size();
         counterReadingService.submitCounterReading(user, counterReading1);
@@ -157,8 +166,12 @@ public class MainTest {
     @Test
     public void testValidationCounterSuccess() {
         User user = userRepository.findByUsername("lol").get();
-        TypeOfCounter typeOfCounter = new TypeOfCounter(900.1, 322.5, 268.4);
-        CounterReading counterReading1 = new CounterReading(2022, 9, typeOfCounter);
+
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 900.1);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+        CounterReading counterReading1 = new CounterReading(2022, 9, testMap1);
         counterReading1.setUserId(user.getId());
         var counter = counterReadingService.validationCounter(user, counterReading1);
         assertThat(counter).isNotNull();
@@ -170,8 +183,13 @@ public class MainTest {
     @Test
     public void testValidationCounterFailed() {
         User user = userRepository.findByUsername("lol").get();
-        TypeOfCounter typeOfCounter = new TypeOfCounter(200, 322.5, 268.4);
-        CounterReading counterReading1 = new CounterReading(2022, 9, typeOfCounter);
+
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 200.0);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+
+        CounterReading counterReading1 = new CounterReading(2022, 9, testMap1);
         counterReading1.setUserId(user.getId());
         var counter = counterReadingService.validationCounter(user, counterReading1);
         assertThat(counter).isNull();
@@ -183,8 +201,12 @@ public class MainTest {
     @Test
     public void testGetLatestCounterReadingSuccess() {
         User user = userRepository.findByUsername("lol").get();
-        TypeOfCounter typeOfCounter = new TypeOfCounter(300.1, 322.5, 268.4);
-        CounterReading counterReading1 = new CounterReading(2021, 6, typeOfCounter);
+
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 300.1);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+        CounterReading counterReading1 = new CounterReading(2021, 6, testMap1);
         counterReading1.setUserId(user.getId());
         CounterReading counterReading2 = counterReadingService.getLatestCounterReading(user);
         assertEquals(counterReading1, counterReading2);
@@ -197,8 +219,13 @@ public class MainTest {
     @Test
     public void testGetLatestCounterReadingFailed() {
         User user = userRepository.findByUsername("lol").get();
-        TypeOfCounter typeOfCounter = new TypeOfCounter(300.1, 322.5, 268.4);
-        CounterReading counterReading1 = new CounterReading(2020, 4, typeOfCounter);
+
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 300.1);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+
+        CounterReading counterReading1 = new CounterReading(2020, 4, testMap1);
         counterReading1.setUserId(user.getId());
         CounterReading counterReading2 = counterReadingService.getLatestCounterReading(user);
         assertNotEquals(counterReading1, counterReading2);
@@ -232,10 +259,14 @@ public class MainTest {
         User user = userRepository.findByUsername("lol").get();
         var counterReading = counterReadingService.getAllCounterReadingForUser(user);
 
-        TypeOfCounter typeOfCounter = new TypeOfCounter(300.1, 322.5, 268.4);
-        CounterReading counterReading1 = new CounterReading(2020, 4, typeOfCounter);
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 300.1);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+
+        CounterReading counterReading1 = new CounterReading(2020, 4, testMap1);
         counterReading1.setUserId(2);
-        CounterReading counterReading2 = new CounterReading(2021, 6, typeOfCounter);
+        CounterReading counterReading2 = new CounterReading(2021, 6, testMap1);
         counterReading2.setUserId(2);
 
         assertThat(counterReading.size()).isEqualTo(2);
@@ -250,8 +281,12 @@ public class MainTest {
         User user = userRepository.findByUsername("lol").get();
         var counterReading1 = counterReadingService.getAllCounterReadingForUser(user);
 
-        TypeOfCounter typeOfCounter = new TypeOfCounter(300.1, 322.5, 268.4);
-        CounterReading counterReading2 = new CounterReading(2024, 1, typeOfCounter);
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 300.1);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+
+        CounterReading counterReading2 = new CounterReading(2024, 1, testMap1);
         counterReading2.setUserId(3);
 
         assertFalse(counterReading1.contains(counterReading2));
@@ -260,9 +295,13 @@ public class MainTest {
      * Удачное получение всей информации пользователей для администратора
      */
     @Test
-    public void testAdmin() {
+    public void testAdminAllUserInfo() {
         var list = adminService.getAllUserInfo();
-        UserInfoDTO userInfoCheck = new UserInfoDTO("lol", 2020, 4, 300.1, 322.5, 268.4);
+        Map<String, Double> testMap1 = new HashMap<>();
+        testMap1.put("Cold Water", 300.1);
+        testMap1.put("Hot Water", 322.5);
+        testMap1.put("Heating", 268.4);
+        UserInfoDTO userInfoCheck = new UserInfoDTO("lol", 2020, 4, testMap1);
         assertThat(list).contains(userInfoCheck);
     }
 }

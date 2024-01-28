@@ -98,9 +98,10 @@ public class Engine {
         System.out.println("Choose action");
         System.out.println("1 - Get actual user counter readings");
         System.out.println("2 - Get user counter readings for specific month");
-        System.out.println("3 - Get all counter readings users");
-        System.out.println("4 - Get audit");
-        System.out.println("5 - Log out");
+        System.out.println("3 - Add new readings");
+        System.out.println("4 - Get all counter readings users");
+        System.out.println("5 - Get audit");
+        System.out.println("6 - Log out");
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("Enter: ");
@@ -115,14 +116,22 @@ public class Engine {
                     menuAdmin();
                     break;
                 case 3:
-                    adminController.getAllInfo();
+                    adminController.viewAllKey();
                     menuAdmin();
                     break;
                 case 4:
-                    adminController.getAudit();
+                    adminController.addNewReading();
                     menuAdmin();
                     break;
                 case 5:
+                    adminController.getAllInfo();
+                    menuAdmin();
+                    break;
+                case 6:
+                    adminController.getAudit();
+                    menuAdmin();
+                    break;
+                case 7:
                     start();
                     break;
                 default:

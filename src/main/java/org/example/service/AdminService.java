@@ -10,6 +10,7 @@ import org.example.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class AdminService {
     private AuditLog auditLog;
@@ -65,6 +66,18 @@ public class AdminService {
         }
     }
 
+    public Set<String> getAllKey() {
+        return CounterReading.getCommonTypeOfCounter().keySet();
+    }
+    public boolean addNewKey(String newKey) {
+        var map = CounterReading.getCommonTypeOfCounter();
+        if (map.containsKey(newKey)) {
+            return false;
+        } else {
+            CounterReading.addNewKey(newKey);
+            return true;
+        }
+    }
     /**
      * Обработчик получения всех показателей всех пользователей
      */
@@ -80,9 +93,7 @@ public class AdminService {
                                 user.getUsername(),
                                 counterReading.getYear(),
                                 counterReading.getMonth(),
-                                counterReading.getTypeOfCounter().getHotWater(),
-                                counterReading.getTypeOfCounter().getColdWater(),
-                                counterReading.getTypeOfCounter().getHeating()
+                                counterReading.getTypeOfCounter()
                         );
                         userInfos.add(userInfoDTO);
                     }

@@ -39,3 +39,4 @@ class TypeOfCounter:
 * Пример использования приложения:
 
   [![asciicast](https://asciinema.org/a/633829.svg)](https://asciinema.org/a/633829)
+PR

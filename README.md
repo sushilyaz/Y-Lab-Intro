@@ -8,8 +8,10 @@
 * Месяц и год вводить цифрами (валидация на ввод цифры месяца присутствует. Пример:
 Enter month: 4
 Enter year: 2020
-* При запуске приложения в репозитории создается админ. 
+* При запуске приложения в репозитории создается админ:
+
 Login: admin
+
 Password: admin
 
 ## Модель
@@ -22,5 +24,5 @@ Password: admin
 
 ## Пример использования приложения:
 
-  [![asciicast](https://asciinema.org/a/633829.svg)](https://asciinema.org/a/633829)
-PR
+[![asciicast](https://asciinema.org/a/633979.svg)](https://asciinema.org/a/633979)
+

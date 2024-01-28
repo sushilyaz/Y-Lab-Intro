@@ -40,7 +40,7 @@ public class CounterReadingController {
         int year = scanner.nextInt();
         var commonMap = CounterReading.getCommonTypeOfCounter();
         for (Map.Entry<String, Double> map : commonMap.entrySet()) {
-            System.out.println("Enter readings for " + map.getKey() + ": ");
+            System.out.print("Enter readings for " + map.getKey() + ": ");
             double buf = scanner.nextDouble();
             map.setValue(buf);
         }

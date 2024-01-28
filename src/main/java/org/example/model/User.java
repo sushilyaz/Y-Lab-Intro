@@ -7,14 +7,30 @@ import java.util.Objects;
  * Поле isAdmin необходимо для проверки при аутентификации, какую роль назначить
  */
 public class User {
+
+    /**
+     * id пользователя (необходимо для связки с показанием счетчиков
+     */
     private int id;
 
+    /**
+     * Имя пользователя
+     */
     private String username;
 
+    /**
+     * пароль пользователя
+     */
     private String password;
 
+    /**
+     * Проверка на админа. True - админ. False - пользователь
+     */
     private boolean isAdmin;
 
+    /**
+     * Конструктор
+     */
     public User(int id, String username, String password, boolean isAdmin) {
         this.id = id;
         this.username = username;
@@ -22,6 +38,9 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
+    /**
+     * Геттеры и сеттеры
+     */
     public int getId() {
         return id;
     }

@@ -8,47 +8,30 @@ import java.util.Objects;
  * Не включил поле password, хотя для администратора можно было бы и добавить (наверное)
  */
 public class UserInfoDTO {
+    /**
+     * Имя пользователя
+     */
     private String username;
+    /**
+     * Год внесения показаний
+     */
     private int year;
+    /**
+     * Месяц внесения показаний
+     */
     private int month;
+    /**
+     * Показания
+     */
     private Map<String, Double> typeOfCounter;
 
+    /**
+     * Конструктор
+     */
     public UserInfoDTO(String username, int year, int month, Map<String, Double> typeOfCounter) {
         this.username = username;
         this.year = year;
         this.month = month;
-        this.typeOfCounter = typeOfCounter;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public Map<String, Double> getTypeOfCounter() {
-        return typeOfCounter;
-    }
-
-    public void setTypeOfCounter(Map<String, Double> typeOfCounter) {
         this.typeOfCounter = typeOfCounter;
     }
 
@@ -66,7 +49,7 @@ public class UserInfoDTO {
     }
 
     /**
-     * For tests
+     * Для тестов
      */
     @Override
     public boolean equals(Object o) {

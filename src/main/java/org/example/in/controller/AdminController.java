@@ -6,9 +6,18 @@ import org.example.service.AdminService;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Контроллер админа
+ */
 public class AdminController {
+    /**
+     * Поле
+     */
     private AdminService adminService;
 
+    /**
+     * Конструктор класса
+     */
     public AdminController() {
         adminService = new AdminService();
     }
@@ -21,6 +30,10 @@ public class AdminController {
         System.out.println(adminService.getLogs());
     }
 
+    /**
+     * Добавление новых показаний, вызывает булев метод addNewKey. Если тру - значит добавляем,
+     * если фолс - значит такой ключ в мапе уже существует
+     */
     public void addNewReading() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter new type of reading: ");
@@ -31,9 +44,14 @@ public class AdminController {
             System.out.println("This key alrady exist");
         }
     }
+
+    /**
+     *  Просмотр всех показаний
+     */
     public void viewAllKey() {
         System.out.println(adminService.getAllKey());
     }
+
     /**
      * Контроллер получения последних внесенных показаний счетчика определенного пользователя (по username)
      */

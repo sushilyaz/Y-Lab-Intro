@@ -8,13 +8,25 @@ import java.util.List;
  * Также реализовал паттерн Синглтон, потому что используется в разных сервисах
  */
 public class AuditLog {
+    /**
+     * для синглтона
+     */
     private static AuditLog instance;
+    /**
+     * Хранение действий пользователей
+     */
     private List<UserAction> userActions;
 
+    /**
+     * приватный конструктор для синглтона
+     */
     private AuditLog() {
         this.userActions = new ArrayList<>();
     }
 
+    /**
+     * Для синглтона
+     */
     public static AuditLog getInstance() {
         if (instance == null) {
             instance = new AuditLog();

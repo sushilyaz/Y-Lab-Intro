@@ -8,8 +8,14 @@ import org.example.service.CounterReadingService;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Класс контроллера показаний
+ */
 public class CounterReadingController {
 
+    /**
+     * Поле и инициализация сервиса
+     */
     private CounterReadingService counterReadingService;
 
     public CounterReadingController() {
@@ -28,8 +34,14 @@ public class CounterReadingController {
             System.out.println("Error! User '" + currentUser.getUsername() + "' has not data");
         }
     }
+
     /**
      * Контроллер внесения показателей аутентифицированного пользователя
+     * Показания считываются со статического поля показаний в CounterReading (вдруг админ добавил новые ключи,
+     * когда уже юзеры вносили показания до этого изменения и надо будет вносить их еще раз уже после изменения)
+     * Далее в цикле считывание данных с консоли , потом валидация и отправка в сервис для обработки и занесения
+     * в так называемую БД (в лист в репозитории)
+     * Также обработка результата выполнения функции submitCounterReading.
      */
     public void putData(User currentUser) {
         System.out.println();
@@ -57,8 +69,10 @@ public class CounterReadingController {
             System.out.println("Data no valid. Latest counter cant be less than current");
         }
     }
+
     /**
-     * Контроллер получения последних внесенных показателей аутентифицированного пользователя
+     * Контроллер получения последних внесенных показателей аутентифицированного пользователя,
+     * также присутствует валидация на ввод месяца и обработка результатов выполнения сервиса
      */
     public void getDataForMonth(User currentUser) {
         System.out.println();

@@ -6,9 +6,19 @@ import org.example.service.UserService;
 
 import java.util.Scanner;
 
+/**
+ * Контроллер пользователя
+ */
 public class UserController {
 
+    /**
+     * Поле текущего пользователя (для реализации сессии
+     */
     private User currentUser;
+
+    /**
+     * поле и инициализация сервиса
+     */
     private UserService userService;
 
     public UserController() {
@@ -16,7 +26,7 @@ public class UserController {
     }
 
     /**
-     * Контроллер регистрации пользователя
+     * Контроллер регистрации пользователя и обработка результатов выполнения сервиса
      */
     public void registration() {
         System.out.println();
@@ -35,7 +45,7 @@ public class UserController {
     }
 
     /**
-     * Контроллер аутентификации пользователя
+     * Контроллер аутентификации обычного пользователя или админа и обработка результатов выполнения сервиса
      */
     public User autentification() {
         System.out.println();

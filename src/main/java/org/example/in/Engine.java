@@ -11,6 +11,10 @@ import java.util.Scanner;
  * Так как приложение консольное, добавил навигацию по обработчикам
  */
 public class Engine {
+
+    /**
+     * поля инициализации контроллеров
+     */
     private static UserController userController = new UserController();
     private static CounterReadingController controllerReadingController = new CounterReadingController();
     private static AdminController adminController = new AdminController();

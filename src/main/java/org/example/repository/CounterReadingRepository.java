@@ -6,31 +6,64 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Репозиторий показаний. Данные хранятся в листе. Реализован паттерн синглтон, вроде как множественного
+ *  * доступа к этому приложению не планируется, поэтому реализовал не потокобезопасный вариант
+ */
 public class CounterReadingRepository{
+
+    /**
+     * Для синглтона
+     */
     private static CounterReadingRepository instance;
+
+    /**
+     *  Так называемая "БД"
+     */
     private List<CounterReading> counterReadings = new ArrayList<>();
 
+    /**
+     * приватный конструктор для синглтона
+     */
     private CounterReadingRepository() {
     }
+
+    /**
+     * Для синглтона
+     */
     public static CounterReadingRepository getInstance() {
         if (instance == null) {
             instance = new CounterReadingRepository();
         }
         return instance;
     }
+
+    /**
+     * Для тестирования (откатить "бд")
+     */
     public static void reset() {
         instance = null;
     }
+
+    /**
+     * Геттер листа
+     */
     public List<CounterReading> getCounterReadings() {
         return counterReadings;
     }
 
+    /**
+     *  поиск всех данных по id пользователя
+     */
     public List<CounterReading> findAllByUserId(int userId) {
         return counterReadings.stream()
                 .filter(counterReading -> counterReading.getUserId() == userId)
                 .toList();
     }
 
+    /**
+     *  Сохранение в лист показаний
+     */
     public void submit(CounterReading counterReading) {
         counterReadings.add(counterReading);
     }
@@ -62,6 +95,9 @@ public class CounterReadingRepository{
 
     }
 
+    /**
+     *  Поиск данных по месяцу и году
+     */
     public CounterReading findCounterReadingForMonth(int userId, int month, int year) {
         var list = findAllByUserId(userId);
         for (var counter : list) {

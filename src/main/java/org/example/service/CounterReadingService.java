@@ -13,6 +13,9 @@ import java.util.List;
  * Обработчик методов показателя счетчика, также аудит на каждом действии
  */
 public class CounterReadingService {
+    /**
+     * Поля инициализации
+     */
     private CounterReadingRepository counterReadingRepository;
     private AuditLog auditLog;
 
@@ -25,14 +28,16 @@ public class CounterReadingService {
         this.counterReadingRepository = CounterReadingRepository.getInstance();
 
     }
+
     /**
      * Валидация вводимых показаний. Ни одно показание за этот месяц не должно быть меньше показаний предыдущего
+     * @return CounterReading если ошибок валидации нет; null - если ошибка валидации
      */
     public CounterReading validationCounter(User currentUser, CounterReading counterReading) {
         int id = currentUser.getId();
         var latestCounter = counterReadingRepository.findLastCounterReading(id);
         if (latestCounter != null) {
-            if (!counterReading.compare(latestCounter)){
+            if (!counterReading.compare(latestCounter)) {
                 UserAction userAction = new UserAction(currentUser.getUsername(), "Error of validation", LocalDateTime.now());
                 auditLog.logAction(userAction);
                 return null;
@@ -46,6 +51,7 @@ public class CounterReadingService {
 
     /**
      * Обработчик внесения данных аутентифицированного пользователя
+     * @return CounterReading, если все нормально; null - если данные в этот месяц уже вносились
      */
     public CounterReading submitCounterReading(User currentUser, CounterReading counterReading) {
         int id = currentUser.getId();
@@ -66,6 +72,7 @@ public class CounterReadingService {
 
     /**
      * Обработчик получения последних внесенных данных аутентифицированного пользователя
+     * @return CounterReading если все нормально; null если данные не найдены
      */
     public CounterReading getLatestCounterReading(User currentUser) {
         int id = currentUser.getId();
@@ -83,6 +90,7 @@ public class CounterReadingService {
 
     /**
      * Обработчик получения данных за последний месяц аутентифицированного пользователя
+     * @return CounterReading если все нормально; null если данные не найдены
      */
     public CounterReading getCounterReadingForMonth(User currentUser, int month, int year) {
         int id = currentUser.getId();

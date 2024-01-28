@@ -6,37 +6,25 @@ import java.time.LocalDateTime;
  * Класс действий пользователя
  */
 public class UserAction {
+    /**
+     * Кто выполнил действия
+     */
     private String username;
+    /**
+     * Действие
+     */
     private String action;
+    /**
+     * Время действия
+     */
     private LocalDateTime timestamp;
 
+    /**
+     * Конструктор, геттеры и сеттеры не нужны
+     */
     public UserAction(String username, String action, LocalDateTime timestamp) {
         this.username = username;
         this.action = action;
-        this.timestamp = timestamp;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

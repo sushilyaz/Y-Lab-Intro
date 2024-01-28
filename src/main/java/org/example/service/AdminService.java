@@ -12,11 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Сервис администратора, админ в журналировании не участвует. Его действия не фиксируются
+ */
 public class AdminService {
+
+    /**
+     * Поля аудита, и двух репозиториев, так как админу нужен доступ ко всему
+     */
     private AuditLog auditLog;
     private UserRepository userRepository;
     private CounterReadingRepository counterReadingRepository;
 
+    /**
+     * Конструктор
+     */
     public AdminService() {
         this.userRepository = UserRepository.getInstance();
         this.counterReadingRepository = CounterReadingRepository.getInstance();
@@ -31,7 +41,9 @@ public class AdminService {
     }
 
     /**
-     * Обработчик получения последних внесенных показателей пользователя
+     * Обработчик получения последних внесенных показателей пользователя.
+     *
+     * @return CounterReading если все ок; null если ошибки при обработке
      */
     public CounterReading getLastUserInfo(String username) {
         var user = userRepository.findByUsername(username);
@@ -50,6 +62,8 @@ public class AdminService {
 
     /**
      * Обработчик получения показателей пользователя за конкретный месяц
+     *
+     * @return CounterReading если все ок; null если ошибки при обработке
      */
     public CounterReading getUserInfoForMonth(String username, int month, int year) {
         var user = userRepository.findByUsername(username);
@@ -66,9 +80,15 @@ public class AdminService {
         }
     }
 
+    /**
+     * Получение всех типов показаний (только ключей)
+     *
+     * @return Set<String>
+     */
     public Set<String> getAllKey() {
         return CounterReading.getCommonTypeOfCounter().keySet();
     }
+
     public boolean addNewKey(String newKey) {
         var map = CounterReading.getCommonTypeOfCounter();
         if (map.containsKey(newKey)) {
@@ -78,8 +98,10 @@ public class AdminService {
             return true;
         }
     }
+
     /**
-     * Обработчик получения всех показателей всех пользователей
+     * Обработчик получения всех показателей всех пользователей.
+     * Если информация найдена - возвращает заполненный лист. Если не найдена - пустой
      */
     public List<UserInfoDTO> getAllUserInfo() {
         var users = userRepository.getUsers();

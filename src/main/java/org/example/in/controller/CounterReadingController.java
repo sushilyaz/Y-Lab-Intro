@@ -47,13 +47,32 @@ public class CounterReadingController {
         System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter month: ");
-        int month = scanner.nextInt();
+        int month = 0;
+        try {
+            month = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid month. Try again");
+            putData(currentUser);
+        }
+
         System.out.print("Enter year: ");
-        int year = scanner.nextInt();
+        int year = 0;
+        try {
+            year = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid month. Try again");
+            putData(currentUser);
+        }
         var commonMap = counterReadingService.getTypeOfCounter();
         for (Map.Entry<String, Double> map : commonMap.entrySet()) {
             System.out.print("Enter readings for " + map.getKey() + ": ");
-            double buf = scanner.nextDouble();
+            double buf = 0;
+            try {
+                buf = scanner.nextDouble();
+            } catch (Exception e) {
+                System.out.println("Invalid value. Try again");
+                putData(currentUser);
+            }
             map.setValue(buf);
         }
         CounterReadingDTO counterReadingDTO = new CounterReadingDTO(currentUser.getId(), year, month, commonMap);
@@ -78,7 +97,13 @@ public class CounterReadingController {
         System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter month: ");
-        int month = scanner.nextInt();
+        int month = 0;
+        try {
+            month = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid month. Try again");
+            getDataForMonth(currentUser);
+        }
         if (month < 1 || month > 12) {
             System.out.println("\nInvalid month. Please provide a valid month (1-12).");
             getDataForMonth(currentUser);
@@ -97,9 +122,7 @@ public class CounterReadingController {
      * Контроллер получения внесенных за все время показателей аутентифицированного пользователя
      */
     public void getAllData(User currentUser) {
-        System.out.println();
         var list = counterReadingService.getCRByUser(currentUser);
-        System.out.println();
         if (list.isEmpty()) {
             System.out.println("\nUser has no data");
         } else {

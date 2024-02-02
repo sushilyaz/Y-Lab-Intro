@@ -54,9 +54,9 @@ public class UserController {
     public User autentification() {
         System.out.println();
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter username (min 4 symbol): ");
+        System.out.print("Enter username: ");
         String authUsername = scanner.nextLine();
-        System.out.print("Enter password (min 4 symbol): ");
+        System.out.print("Enter password: ");
         String authPassword = scanner.nextLine();
         User user = userService.authenticationUser(authUsername, authPassword);
         if (user != null && !user.getRoleAsString().equals("ADMIN")) {

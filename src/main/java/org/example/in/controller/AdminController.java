@@ -91,9 +91,21 @@ public class AdminController {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter month: ");
-        int monthCR = scanner.nextInt();
+        int monthCR = 0;
+        try {
+            monthCR = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("\nInvalid month. Try again");
+            getCRUserForMonth();
+        }
         System.out.print("Enter year: ");
-        int yearCR = scanner.nextInt();
+        int yearCR = 0;
+        try {
+            yearCR = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("\nInvalid year. Try again");
+            getCRUserForMonth();
+        }
 
         var counterReading = adminService.getUserInfoForMonth(new User(username), monthCR, yearCR);
         if (counterReading != null) {

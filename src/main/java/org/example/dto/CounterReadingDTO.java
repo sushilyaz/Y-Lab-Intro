@@ -27,11 +27,10 @@ public class CounterReadingDTO {
     @Override
     public String toString() {
         return "CounterReadingDTO{" +
-                "userId=" + userId +
                 ", year=" + year +
                 ", month=" + month +
                 ", typeOfCounter=" + typeOfCounter +
-                '}';
+                "}\n";
     }
 
     @Override

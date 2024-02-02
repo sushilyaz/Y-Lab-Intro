@@ -30,7 +30,13 @@ public class Engine {
         System.out.println("3 - Exit (enter \"3\")");
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter: ");
-        int choice = scanner.nextInt();
+        int choice = 0;
+        try {
+            choice = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid number");
+            start();
+        }
         switch (choice) {
             case 1:
                 userController.registration();
@@ -40,14 +46,13 @@ public class Engine {
                 var currentUser = userController.autentification();
                 menu(currentUser);
                 break;
-
             case 3:
                 System.out.println("Exit");
                 System.exit(0);
                 break;
             default:
-                start();
                 System.out.println("Invalid number");
+                start();
         }
     }
 
@@ -65,7 +70,13 @@ public class Engine {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("Enter: ");
-            int choice = scanner.nextInt();
+            int choice = 0;
+            try {
+                choice = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid number");
+                menu(currentUser);
+            }
             switch (choice) {
                 case 1:
                     controllerReadingController.getLatestData(currentUser);
@@ -111,7 +122,13 @@ public class Engine {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("Enter: ");
-            int choice = scanner.nextInt();
+            int choice = 0;
+            try {
+                choice = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid number");
+                menuAdmin();
+            }
             switch (choice) {
                 case 1:
                     adminController.getActualCRUser();

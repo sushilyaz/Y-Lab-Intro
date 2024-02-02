@@ -18,6 +18,11 @@ repositories {
 }
 
 dependencies {
+    implementation("org.liquibase:liquibase-core:4.25.1")
+
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation("org.postgresql:postgresql:42.6.0")
+
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.24.2")

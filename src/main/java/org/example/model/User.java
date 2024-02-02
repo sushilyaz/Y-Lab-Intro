@@ -26,16 +26,23 @@ public class User {
     /**
      * Проверка на админа. True - админ. False - пользователь
      */
-    private boolean isAdmin;
+    private Role role;
 
     /**
      * Конструктор
      */
-    public User(int id, String username, String password, boolean isAdmin) {
+    public User(int id, String username, String password, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.isAdmin = isAdmin;
+        this.role = role;
+    }
+    public String getRoleAsString() {
+        return role.name(); // Получаем строковое представление enum
+    }
+
+    public void setRoleFromString(String role) {
+        this.role = Role.valueOf(role); // Преобразуем строку в enum
     }
 
     /**
@@ -65,14 +72,6 @@ public class User {
         this.password = password;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
-
     /**
      * Для sout
      */
@@ -91,11 +90,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return isAdmin == user.isAdmin && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return role == user.role && Objects.equals(username, user.username) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, isAdmin);
+        return Objects.hash(username, password, role);
     }
 }

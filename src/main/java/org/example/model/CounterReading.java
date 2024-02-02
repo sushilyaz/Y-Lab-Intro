@@ -8,6 +8,7 @@ import java.util.Objects;
  * Модель показаний счетчика.
  */
 public class CounterReading {
+    private int id;
 
     /**
      * Поле зависимости от userId
@@ -26,39 +27,48 @@ public class CounterReading {
      * у обычного пользователя "обновился" список типов показаний.
      * Также это поле необходимо для инициализации начальных значений (применяется в CounterReadingController.putData)
      */
-    private static Map<String, Double> commonTypeOfCounter = new HashMap<>() {{
-        put("Cold water", null);
-        put("Hot water", null);
-        put("Heating", null);
-    }};
+    private String type;
+    private double value;
 
-    /**
-     * Поле показаний
-     */
-    private Map<String, Double> typeOfCounter;
 
     /**
      * Конструктор
      */
-    public CounterReading(int year, int month, Map<String, Double> typeOfCounter) {
+    public CounterReading(int id, int userId, int year, int month, String type, double value) {
+        this.id = id;
+        this.userId = userId;
         this.year = year;
         this.month = month;
-        this.typeOfCounter = new HashMap<>(typeOfCounter);
+        this.type = type;
+        this.value = value;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
      * геттер поля типов показаний
      */
-    public Map<String, Double> getTypeOfCounter() {
-        return typeOfCounter;
+
+    public String getType() {
+        return type;
     }
 
-    /**
-     * Сеттер
-     */
-    public void setTypeOfCounter(Map<String, Double> typeOfCounter) {
-        this.typeOfCounter = typeOfCounter;
-        commonTypeOfCounter.putAll(typeOfCounter);
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
     }
 
     /**
@@ -66,20 +76,6 @@ public class CounterReading {
      */
     public static void addNewKey(String key) {
         commonTypeOfCounter.put(key, null);
-    }
-
-    /**
-     * геттер показаний для "обновления"
-     */
-    public static Map<String, Double> getCommonTypeOfCounter() {
-        return commonTypeOfCounter;
-    }
-
-    /**
-     * Сеттер
-     */
-    public static void setCommonTypeOfCounter(Map<String, Double> commonTypeOfCounter) {
-        CounterReading.commonTypeOfCounter = commonTypeOfCounter;
     }
 
     /**
@@ -120,31 +116,31 @@ public class CounterReading {
         this.month = month;
     }
 
-    /**
-     * Для sout
-     */
     @Override
     public String toString() {
         return "CounterReading{" +
-                "year=" + year +
+                "userId=" + userId +
+                ", year=" + year +
                 ", month=" + month +
-                ", typeOfCounter=" + typeOfCounter +
-                "}\n";
+                ", type='" + type + '\'' +
+                ", value=" + value +
+                '}';
     }
 
     /**
-     * Для тестирования
+     * Для sout
      */
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CounterReading that = (CounterReading) o;
-        return year == that.year && month == that.month && Objects.equals(typeOfCounter, that.typeOfCounter);
+        return userId == that.userId && year == that.year && month == that.month && Double.compare(value, that.value) == 0 && Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(year, month, typeOfCounter);
+        return Objects.hash(userId, year, month, type, value);
     }
 }

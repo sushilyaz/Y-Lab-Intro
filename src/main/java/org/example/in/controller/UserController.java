@@ -55,11 +55,11 @@ public class UserController {
         System.out.print("Enter password: ");
         String authPassword = scanner.nextLine();
         User user = userService.authenticationUser(authUsername, authPassword);
-        if (user != null && !user.isAdmin()) {
+        if (user != null && !user.getRoleAsString().equals("ADMIN")) {
             currentUser = user;
             System.out.println("Authentification success!");
             return currentUser;
-        } else if (user != null && user.isAdmin()) {
+        } else if (user != null && user.getRoleAsString().equals("ADMIN")) {
             Engine.menuAdmin();
             System.out.println("Authentification by Admin success!");
         } else {

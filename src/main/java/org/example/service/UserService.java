@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.audit.AuditLog;
 import org.example.audit.UserAction;
+import org.example.model.Role;
 import org.example.model.User;
 import org.example.repository.UserRepository;
 
@@ -32,8 +33,8 @@ public class UserService {
         if (existUser.isPresent()) {
             return null;
         } else {
-            id = userRepository.findLastId() + 1;
-            User newUser = new User(id, username, password, false);
+            // поработать с dto (убрать id)
+            User newUser = new User(id, username, password, Role.SIMPLE_USER);
             userRepository.save(newUser);
             UserAction userAction = new UserAction(username, "registred", LocalDateTime.now());
             auditLog.logAction(userAction);
@@ -41,7 +42,7 @@ public class UserService {
         }
     }
     /**
-     * Обработчик аутентицикации пользователя. Возвращает "текущего пользователя"
+     * Обработчик аутентификации пользователя. Возвращает "текущего пользователя"
      */
     public User authenticationUser (String username, String password) {
         Optional<User> existUser = userRepository.findByUsername(username);

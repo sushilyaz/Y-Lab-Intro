@@ -5,8 +5,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
         <changeSet id="001-create-table" author="suhoi">
-            <createTable tableName="users" schemaName="mainSchema">
+            <createTable tableName="users" schemaName="mainschema">
                 <column name="id" type="SERIAL">
                     <constraints primaryKey="true" nullable="false"/>
                 </column>
@@ -17,7 +18,7 @@
         </changeSet>
 
     <changeSet id="create-table-counter_reading" author="suhoi">
-        <createTable tableName="counter_reading" schemaName="mainSchema">
+        <createTable tableName="counter_reading" schemaName="mainschema">
             <column name="id" type="SERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -31,5 +32,14 @@
         </createTable>
     </changeSet>
 
-
+    <changeSet id="create-table-user_action" author="suhoi">
+        <createTable tableName="user_action" schemaName="mainschema">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="action" type="VARCHAR(255)"/>
+            <column name="timestamp" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

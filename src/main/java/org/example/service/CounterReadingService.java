@@ -4,12 +4,11 @@ import org.example.audit.AuditLog;
 import org.example.audit.UserAction;
 import org.example.dto.CounterReadingDTO;
 import org.example.mapper.MapperCR;
-import org.example.model.CounterReading;
 import org.example.model.User;
 import org.example.repository.CounterReadingRepository;
+import org.example.util.Format;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,8 +41,8 @@ public class CounterReadingService {
     public CounterReadingDTO validationCounter(User currentUser, CounterReadingDTO counterReading) {
         int id = currentUser.getId();
         var latestCounter = counterReadingRepository.findLastCounterReading(id);
-        var latestCounterDTO = MapperCR.toDTO(latestCounter);
-        if (latestCounter != null) {
+        if (!latestCounter.isEmpty()) {
+            var latestCounterDTO = MapperCR.toDTO(latestCounter);
             if (!counterReading.compare(latestCounterDTO)) {
                 UserAction userAction = new UserAction(currentUser.getUsername(), "Error of validation", LocalDateTime.now());
                 auditLog.logAction(userAction);
@@ -59,10 +58,7 @@ public class CounterReadingService {
     public Map<String, Double> getTypeOfCounter() {
         List<String> data = counterReadingRepository.uniqueType(1);
         return data.stream()
-                .collect(Collectors.toMap(
-                        key -> key,
-                        value -> null
-                ));
+                .collect(Collectors.toMap(key -> key, value -> 0.0));
     }
 
     /**
@@ -133,23 +129,6 @@ public class CounterReadingService {
         var list = counterReadingRepository.findAllByUserId(id);
         UserAction userAction = new UserAction(currentUser.getUsername(), "Get All Counter Reading For Month", LocalDateTime.now());
         auditLog.logAction(userAction);
-        var result = new ArrayList<CounterReadingDTO>();
-        if (!list.isEmpty()) {
-            var etalonYear = list.get(0).getYear();
-            var etalonMonth = list.get(0).getMonth();
-            var buf = new ArrayList<CounterReading>();
-            for (var element : list) {
-                if (element.getYear() == etalonYear && element.getMonth() == etalonMonth) {
-                    buf.add(element);
-                } else {
-                    result.add(MapperCR.toDTO(buf));
-                    buf.clear();
-                    etalonYear = element.getYear();
-                    etalonMonth = element.getMonth();
-                    buf.add(element);
-                }
-            }
-        }
-        return result;
+        return Format.formatter(list);
     }
 }

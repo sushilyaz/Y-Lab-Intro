@@ -46,7 +46,7 @@ public class AdminController {
     }
 
     /**
-     *  Просмотр всех показаний
+     * Просмотр всех показаний
      */
     public void viewAllKey() {
         System.out.println(adminService.getAllKey());
@@ -101,6 +101,4 @@ public class AdminController {
             System.out.println("Database has not users");
         }
     }
-
-
 }

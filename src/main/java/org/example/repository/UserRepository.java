@@ -62,13 +62,13 @@ public class UserRepository extends BaseRepository{
      * Сохранение пользователя в бд (при регистрации)
      */
     public void save(User user) {
-        String sql = "INSERT INTO users (username, password, role) VALUES (?,?,?)";
+        String sql = "INSERT INTO mainschema.users (username, password, role) VALUES (?,?,?)";
         try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getRoleAsString());
             stmt.executeUpdate();
-
+            connection.commit();
             var generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
                 user.setId(generatedKeys.getInt(1));
@@ -85,7 +85,7 @@ public class UserRepository extends BaseRepository{
      * @return Optional<User>
      */
     public Optional<User> findByUsername(String username) {
-        var sql = "SELECT * FROM users WHERE name = ?";
+        var sql = "SELECT * FROM mainschema.users WHERE username = ?";
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, username);
             var resultSet = stmt.executeQuery();
@@ -95,7 +95,7 @@ public class UserRepository extends BaseRepository{
             } else {
                 return Optional.empty();
             }
-        } catch (SQLException e) {
+        } catch (SQLException  e) {
             System.out.println("Trouble with statement: " + e.getMessage());
             return Optional.empty();
         }
@@ -105,8 +105,9 @@ public class UserRepository extends BaseRepository{
         var id = resultSet.getInt("id");
         var username = resultSet.getString("username");
         var password = resultSet.getString("password");
-        var role = Role.valueOf(resultSet.getString("role"));
-        return new User(id, username, password, role);
+        var role = resultSet.getString("role");
+        var modRole = Role.valueOf(role);
+        return new User(id, username, password, modRole);
     }
 
 

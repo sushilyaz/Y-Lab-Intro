@@ -20,11 +20,6 @@ public class CounterReadingRepository extends BaseRepository {
     private static CounterReadingRepository instance;
 
     /**
-     * Так называемая "БД"
-     */
-    private List<CounterReading> counterReadings = new ArrayList<>();
-
-    /**
      * приватный конструктор для синглтона
      */
     private CounterReadingRepository() {
@@ -51,7 +46,7 @@ public class CounterReadingRepository extends BaseRepository {
      * Геттер листа
      */
     public List<CounterReading> getCounterReadings() {
-        String sql = "SELECT * FROM counter_reading ORDER BY id";
+        String sql = "SELECT * FROM mainschema.counter_reading ORDER BY id";
         try (var stmt = connection.prepareStatement(sql)) {
             var resultSet = stmt.executeQuery();
             var results = new ArrayList<CounterReading>();
@@ -70,7 +65,7 @@ public class CounterReadingRepository extends BaseRepository {
      * поиск всех данных по id пользователя
      */
     public List<CounterReading> findAllByUserId(int userId) {
-        String sql = "SELECT * FROM counter_reading WHERE user_id = ? ORDER BY year DESC, month DESC";
+        String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? ORDER BY year DESC, month DESC";
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             var resultSet = stmt.executeQuery();
@@ -90,16 +85,15 @@ public class CounterReadingRepository extends BaseRepository {
      * Сохранение в лист показаний
      */
     public void submit(List<CounterReading> counterReadings) {
-        String sql = "INSERT INTO counter_reading (user_id, year, month, type, value) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO mainschema.counter_reading (user_id, year, month, type, value) VALUES (?,?,?,?,?)";
         try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            for (var element : counterReadings){
+            for (var element : counterReadings) {
                 stmt.setInt(1, element.getUserId());
                 stmt.setInt(2, element.getYear());
                 stmt.setInt(3, element.getMonth());
                 stmt.setString(4, element.getType());
                 stmt.setDouble(5, element.getValue());
                 stmt.executeUpdate();
-
                 var generatedKeys = stmt.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     element.setId(generatedKeys.getInt(1));
@@ -107,14 +101,7 @@ public class CounterReadingRepository extends BaseRepository {
                     throw new SQLException("Trouble with generate id");
                 }
             }
-
-
-            var generatedKeys = stmt.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                counterReading.setId(generatedKeys.getInt(1));
-            } else {
-                throw new SQLException("Trouble with generate id");
-            }
+            connection.commit();
         } catch (SQLException e) {
             System.out.println("Trouble with statement: " + e.getMessage());
         }
@@ -127,7 +114,7 @@ public class CounterReadingRepository extends BaseRepository {
      * но я на всякий случай оставил закомментированное решение согласно ТЗ
      */
     public List<CounterReading> findLastCounterReading(int userId) {
-        String sql = "SELECT * FROM counter_reading WHERE user_id = ? ORDER BY year DESC, month DESC LIMIT ?";
+        String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? ORDER BY year DESC, month DESC LIMIT ?";
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             int limit = uniqueType(userId).size();
@@ -149,7 +136,7 @@ public class CounterReadingRepository extends BaseRepository {
      * Поиск данных по месяцу и году
      */
     public List<CounterReading> findCounterReadingForMonth(int userId, int month, int year) {
-        String sql = "SELECT * FROM counter_reading WHERE user_id = ? and year = ? and month = ?";
+        String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? and year = ? and month = ?";
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setInt(2, year);
@@ -168,18 +155,29 @@ public class CounterReadingRepository extends BaseRepository {
     }
 
     public List<String> uniqueType(int userId) {
-        String sql = "SELECT DISTINCT type FROM counter_reading WHERE user_id = ?";
+        String sql = "SELECT DISTINCT type FROM mainschema.counter_reading WHERE user_id = ?";
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             var resultSet = stmt.executeQuery();
             var results = new ArrayList<String>();
             while (resultSet.next()) {
-                results.add(String.valueOf(resultSet));
+                results.add(resultSet.getString("type"));
             }
             return results;
         } catch (SQLException e) {
             System.out.println("Trouble with statement: " + e.getMessage());
             return new ArrayList<>();
+        }
+    }
+
+    public void addNewType(String newKey) {
+        String sql = "INSERT INTO mainschema.counter_reading (user_id, year, month, type, value) VALUES (1,2000,1,?,1)";
+        try (var stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, newKey);
+            stmt.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println("Trouble with statement: " + e.getMessage());
         }
     }
 

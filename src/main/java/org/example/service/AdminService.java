@@ -2,15 +2,14 @@ package org.example.service;
 
 import org.example.audit.AuditLog;
 import org.example.audit.UserAction;
+import org.example.dto.CounterReadingDTO;
 import org.example.dto.UserInfoDTO;
-import org.example.model.CounterReading;
-import org.example.model.User;
+import org.example.mapper.MapperCR;
+import org.example.repository.AdminRepository;
 import org.example.repository.CounterReadingRepository;
 import org.example.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Сервис администратора, админ в журналировании не участвует. Его действия не фиксируются
@@ -23,6 +22,7 @@ public class AdminService {
     private AuditLog auditLog;
     private UserRepository userRepository;
     private CounterReadingRepository counterReadingRepository;
+    private AdminRepository adminRepository;
 
     /**
      * Конструктор
@@ -30,6 +30,7 @@ public class AdminService {
     public AdminService() {
         this.userRepository = UserRepository.getInstance();
         this.counterReadingRepository = CounterReadingRepository.getInstance();
+        this.adminRepository = AdminRepository.getInstance();
         this.auditLog = AuditLog.getInstance();
     }
 
@@ -45,16 +46,11 @@ public class AdminService {
      *
      * @return CounterReading если все ок; null если ошибки при обработке
      */
-    public CounterReading getLastUserInfo(String username) {
+    public CounterReadingDTO getLastUserInfo(String username) {
         var user = userRepository.findByUsername(username);
         if (user.isPresent()) {
-            int id = user.get().getId();
-            var lastCountingReading = counterReadingRepository.findLastCounterReading(id);
-            if (lastCountingReading != null) {
-                return lastCountingReading;
-            } else {
-                return null;
-            }
+            var result = counterReadingRepository.findLastCounterReading(user.get().getId());
+            return MapperCR.toDTO(result);
         } else {
             return null;
         }
@@ -65,13 +61,13 @@ public class AdminService {
      *
      * @return CounterReading если все ок; null если ошибки при обработке
      */
-    public CounterReading getUserInfoForMonth(String username, int month, int year) {
+    public CounterReadingDTO getUserInfoForMonth(String username, int month, int year) {
         var user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             int id = user.get().getId();
             var counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, month, year);
-            if (counterReadingForMonth != null) {
-                return counterReadingForMonth;
+            if (!counterReadingForMonth.isEmpty()) {
+                return MapperCR.toDTO(counterReadingForMonth);
             } else {
                 return null;
             }
@@ -85,16 +81,16 @@ public class AdminService {
      *
      * @return Set<String>
      */
-    public Set<String> getAllKey() {
-        return CounterReading.getCommonTypeOfCounter().keySet();
+    public List<String> getAllKey() {
+        return counterReadingRepository.uniqueType(1);
     }
 
     public boolean addNewKey(String newKey) {
-        var map = CounterReading.getCommonTypeOfCounter();
-        if (map.containsKey(newKey)) {
+        var list = counterReadingRepository.uniqueType(1);
+        if (list.contains(newKey)) {
             return false;
         } else {
-            CounterReading.addNewKey(newKey);
+            counterReadingRepository.addNewType(newKey);
             return true;
         }
     }
@@ -104,26 +100,6 @@ public class AdminService {
      * Если информация найдена - возвращает заполненный лист. Если не найдена - пустой
      */
     public List<UserInfoDTO> getAllUserInfo() {
-        var users = userRepository.getUsers();
-        var counters = counterReadingRepository.getCounterReadings();
-        List<UserInfoDTO> userInfos = new ArrayList<>();
-        if (!users.isEmpty() && !counters.isEmpty()) {
-            for (User user : users) {
-                for (CounterReading counterReading : counters) {
-                    if (user.getId() == counterReading.getUserId()) {
-                        UserInfoDTO userInfoDTO = new UserInfoDTO(
-                                user.getUsername(),
-                                counterReading.getYear(),
-                                counterReading.getMonth(),
-                                counterReading.getTypeOfCounter()
-                        );
-                        userInfos.add(userInfoDTO);
-                    }
-                }
-            }
-            return userInfos;
-        } else {
-            return userInfos;
-        }
+        return adminRepository.findUsersAndCR();
     }
 }

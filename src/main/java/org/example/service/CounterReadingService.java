@@ -1,7 +1,7 @@
 package org.example.service;
 
-import org.example.audit.AuditLog;
-import org.example.audit.UserAction;
+import org.example.repository.UserActionRepository;
+import org.example.model.UserAction;
 import org.example.dto.CounterReadingDTO;
 import org.example.mapper.MapperCR;
 import org.example.model.User;
@@ -16,19 +16,19 @@ import java.util.stream.Collectors;
 /**
  * Обработчик методов показателя счетчика, также аудит на каждом действии
  */
-public class CounterReadingService {
+public class CounterReadingService implements Service{
     /**
      * Поля инициализации
      */
     private CounterReadingRepository counterReadingRepository;
-    private AuditLog auditLog;
+    private UserActionRepository userActionRepository;
 
 
     /**
      * Во время инстанса класса также инициализируется аудит и репозиторий показателей счетчика
      */
     public CounterReadingService() {
-        this.auditLog = AuditLog.getInstance();
+        this.userActionRepository = UserActionRepository.getInstance();
         this.counterReadingRepository = CounterReadingRepository.getInstance();
 
     }
@@ -45,7 +45,7 @@ public class CounterReadingService {
             var latestCounterDTO = MapperCR.toDTO(latestCounter);
             if (!counterReading.compare(latestCounterDTO)) {
                 UserAction userAction = new UserAction(currentUser.getUsername(), "Error of validation", LocalDateTime.now());
-                auditLog.logAction(userAction);
+                userActionRepository.save(userAction);
                 return null;
             } else {
                 return counterReading;
@@ -72,14 +72,14 @@ public class CounterReadingService {
         for (var counter : counterList) {
             if (counter.getMonth() == counterReadingDTO.getMonth() && counter.getYear() == counterReadingDTO.getYear()) {
                 UserAction userAction = new UserAction(currentUser.getUsername(), "Submit Counter Reading failed. Data already exist.", LocalDateTime.now());
-                auditLog.logAction(userAction);
+                userActionRepository.save(userAction);
                 return null;
             }
         }
         var counterReading = MapperCR.toEntity(counterReadingDTO);
-        counterReadingRepository.submit(counterReading);
+        counterReadingRepository.save(counterReading);
         UserAction userAction = new UserAction(currentUser.getUsername(), "Submit Counter Reading success.", LocalDateTime.now());
-        auditLog.logAction(userAction);
+        userActionRepository.save(userAction);
         return counterReadingDTO;
     }
 
@@ -88,16 +88,16 @@ public class CounterReadingService {
      *
      * @return CounterReading если все нормально; null если данные не найдены
      */
-    public CounterReadingDTO getLatestCounterReading(User currentUser) {
+    public CounterReadingDTO getLastUserInfo(User currentUser) {
         int id = currentUser.getId();
         var lastCountingReading = counterReadingRepository.findLastCounterReading(id);
         if (!lastCountingReading.isEmpty()) {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Latest Counter Reading success", LocalDateTime.now());
-            auditLog.logAction(userAction);
+            userActionRepository.save(userAction);
             return MapperCR.toDTO(lastCountingReading);
         } else {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Latest Counter Reading failed. Data not found", LocalDateTime.now());
-            auditLog.logAction(userAction);
+            userActionRepository.save(userAction);
             return null;
         }
     }
@@ -107,16 +107,16 @@ public class CounterReadingService {
      *
      * @return CounterReading если все нормально; null если данные не найдены
      */
-    public CounterReadingDTO getCounterReadingForMonth(User currentUser, int month, int year) {
+    public CounterReadingDTO getUserInfoForMonth(User currentUser, int month, int year) {
         int id = currentUser.getId();
         var counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, month, year);
         if (!counterReadingForMonth.isEmpty()) {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Counter Reading For Month success", LocalDateTime.now());
-            auditLog.logAction(userAction);
+            userActionRepository.save(userAction);
             return MapperCR.toDTO(counterReadingForMonth);
         } else {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Counter Reading For Month failed. Data not found", LocalDateTime.now());
-            auditLog.logAction(userAction);
+            userActionRepository.save(userAction);
             return null;
         }
     }
@@ -124,11 +124,11 @@ public class CounterReadingService {
     /**
      * Обработчик получения истории вносимых данных аутентифицированного пользователя
      */
-    public List<CounterReadingDTO> getAllCounterReadingForUser(User currentUser) {
+    public List<CounterReadingDTO> getCRByUser(User currentUser) {
         int id = currentUser.getId();
         var list = counterReadingRepository.findAllByUserId(id);
         UserAction userAction = new UserAction(currentUser.getUsername(), "Get All Counter Reading For Month", LocalDateTime.now());
-        auditLog.logAction(userAction);
+        userActionRepository.save(userAction);
         return Format.formatter(list);
     }
 }

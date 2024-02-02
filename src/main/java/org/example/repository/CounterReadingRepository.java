@@ -12,7 +12,7 @@ import java.util.List;
  * Репозиторий показаний. Данные хранятся в листе. Реализован паттерн синглтон, вроде как множественного
  * * доступа к этому приложению не планируется, поэтому реализовал не потокобезопасный вариант
  */
-public class CounterReadingRepository extends BaseRepository {
+public class CounterReadingRepository extends BaseRepository implements ReadingRepository{
 
     /**
      * Для синглтона
@@ -34,33 +34,6 @@ public class CounterReadingRepository extends BaseRepository {
         }
         return instance;
     }
-
-    /**
-     * Для тестирования (откатить "бд")
-     */
-    public static void reset() {
-        instance = null;
-    }
-
-    /**
-     * Геттер листа
-     */
-    public List<CounterReading> getCounterReadings() {
-        String sql = "SELECT * FROM mainschema.counter_reading ORDER BY id";
-        try (var stmt = connection.prepareStatement(sql)) {
-            var resultSet = stmt.executeQuery();
-            var results = new ArrayList<CounterReading>();
-            while (resultSet.next()) {
-                var counterReading = getCR(resultSet);
-                results.add(counterReading);
-            }
-            return results;
-        } catch (SQLException e) {
-            System.out.println("Trouble with statement: " + e.getMessage());
-            return new ArrayList<>();
-        }
-    }
-
     /**
      * поиск всех данных по id пользователя
      */
@@ -84,7 +57,7 @@ public class CounterReadingRepository extends BaseRepository {
     /**
      * Сохранение в лист показаний
      */
-    public void submit(List<CounterReading> counterReadings) {
+    public void save(List<CounterReading> counterReadings) {
         String sql = "INSERT INTO mainschema.counter_reading (user_id, year, month, type, value) VALUES (?,?,?,?,?)";
         try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             for (var element : counterReadings) {
@@ -170,16 +143,7 @@ public class CounterReadingRepository extends BaseRepository {
         }
     }
 
-    public void addNewType(String newKey) {
-        String sql = "INSERT INTO mainschema.counter_reading (user_id, year, month, type, value) VALUES (1,2000,1,?,1)";
-        try (var stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, newKey);
-            stmt.executeUpdate();
-            connection.commit();
-        } catch (SQLException e) {
-            System.out.println("Trouble with statement: " + e.getMessage());
-        }
-    }
+
 
     private CounterReading getCR(ResultSet resultSet) throws SQLException {
         var id = resultSet.getInt("id");

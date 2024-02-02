@@ -102,13 +102,13 @@ public class CRServiceTest {
         data1.put("Heating", 200.0);
         CounterReadingDTO dto1 = new CounterReadingDTO(2, 2020, 5, data1);
         counterReadingService.submitCounterReading(currentUser, dto1);
-        var actual = counterReadingService.getLatestCounterReading(currentUser);
+        var actual = counterReadingService.getLastUserInfo(currentUser);
         assertThat(actual).isEqualTo(dto1);
     }
 
     @Test
     void forMonth() throws SQLException {
-        var dto = counterReadingService.getCounterReadingForMonth(currentUser, 4, 2020);
+        var dto = counterReadingService.getUserInfoForMonth(currentUser, 4, 2020);
         assertThat(dto.getMonth()).isEqualTo(4);
         assertThat(dto.getYear()).isEqualTo(2020);
     }

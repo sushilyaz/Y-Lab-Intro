@@ -28,11 +28,15 @@ public class AdminRepository extends BaseRepository{
         return instance;
     }
 
-    /**
-     * Для тестирования (откатить "бд")
-     */
-    public static void reset() {
-        instance = null;
+    public void addNewType(String newKey) {
+        String sql = "INSERT INTO mainschema.counter_reading (user_id, year, month, type, value) VALUES (1,2000,1,?,1)";
+        try (var stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, newKey);
+            stmt.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println("Trouble with statement: " + e.getMessage());
+        }
     }
 
     public List<UserInfoDTO> findUsersAndCR() {

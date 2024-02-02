@@ -1,6 +1,7 @@
 package org.example.in.controller;
 
 import org.example.dto.UserInfoDTO;
+import org.example.model.User;
 import org.example.service.AdminService;
 
 import java.util.List;
@@ -60,11 +61,24 @@ public class AdminController {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
-        var counterReading = adminService.getLastUserInfo(username);
+        var counterReading = adminService.getLastUserInfo(new User(username));
         if (counterReading != null) {
-            System.out.println("Counter reading of user '" + username + "' for last month: " + counterReading);
+            System.out.println("\nCounter reading of user '" + username + "' for last month: " + counterReading);
         } else {
-            System.out.println("User not found or user has no data");
+            System.out.println("\nUser not found or user has no data");
+        }
+    }
+
+    public void getCRByUser() {
+        System.out.println();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        var counterReading = adminService.getCRByUser(new User(username));
+        if (!counterReading.isEmpty()) {
+            System.out.println("\nCounter reading of user '" + username + "' for all time: " + counterReading);
+        } else {
+            System.out.println("\nUser not found or user has no data");
         }
     }
 
@@ -80,12 +94,13 @@ public class AdminController {
         int monthCR = scanner.nextInt();
         System.out.print("Enter year: ");
         int yearCR = scanner.nextInt();
-        var counterReading = adminService.getUserInfoForMonth(username, monthCR, yearCR);
+
+        var counterReading = adminService.getUserInfoForMonth(new User(username), monthCR, yearCR);
         if (counterReading != null) {
-            System.out.println("Counter reading of user '" + username + "' for '" + monthCR + "." + yearCR + "' : ");
+            System.out.println("\nCounter reading of user '" + username + "' for '" + monthCR + "." + yearCR + "' : ");
             System.out.println(counterReading);
         } else {
-            System.out.println("User not found or user has no data");
+            System.out.println("\nUser not found or user has no data");
         }
     }
 
@@ -98,7 +113,7 @@ public class AdminController {
         if (!users.isEmpty()) {
             System.out.println(users);
         } else {
-            System.out.println("Database has not users");
+            System.out.println("\nDatabase has not users");
         }
     }
 }

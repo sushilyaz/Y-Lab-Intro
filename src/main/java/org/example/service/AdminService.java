@@ -1,25 +1,28 @@
 package org.example.service;
 
-import org.example.audit.AuditLog;
-import org.example.audit.UserAction;
 import org.example.dto.CounterReadingDTO;
 import org.example.dto.UserInfoDTO;
 import org.example.mapper.MapperCR;
+import org.example.model.User;
+import org.example.model.UserAction;
 import org.example.repository.AdminRepository;
 import org.example.repository.CounterReadingRepository;
+import org.example.repository.UserActionRepository;
 import org.example.repository.UserRepository;
+import org.example.util.Format;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Сервис администратора, админ в журналировании не участвует. Его действия не фиксируются
  */
-public class AdminService {
+public class AdminService implements Service{
 
     /**
      * Поля аудита, и двух репозиториев, так как админу нужен доступ ко всему
      */
-    private AuditLog auditLog;
+    private UserActionRepository userActionRepository;
     private UserRepository userRepository;
     private CounterReadingRepository counterReadingRepository;
     private AdminRepository adminRepository;
@@ -31,14 +34,7 @@ public class AdminService {
         this.userRepository = UserRepository.getInstance();
         this.counterReadingRepository = CounterReadingRepository.getInstance();
         this.adminRepository = AdminRepository.getInstance();
-        this.auditLog = AuditLog.getInstance();
-    }
-
-    /**
-     * Обработчик получения логов
-     */
-    public List<UserAction> getLogs() {
-        return auditLog.getUserActions();
+        this.userActionRepository = UserActionRepository.getInstance();
     }
 
     /**
@@ -46,11 +42,30 @@ public class AdminService {
      *
      * @return CounterReading если все ок; null если ошибки при обработке
      */
-    public CounterReadingDTO getLastUserInfo(String username) {
-        var user = userRepository.findByUsername(username);
+
+    public List<CounterReadingDTO> getCRByUser(User currentUser) {
+        var user = userRepository.findByUsername(currentUser.getUsername());
+        if (user.isPresent()) {
+            var result = counterReadingRepository.findAllByUserId(user.get().getId());
+            if (!result.isEmpty()) {
+                return Format.formatter(result);
+            } else {
+                return new ArrayList<>();
+            }
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public CounterReadingDTO getLastUserInfo(User currentUser) {
+        var user = userRepository.findByUsername(currentUser.getUsername());
         if (user.isPresent()) {
             var result = counterReadingRepository.findLastCounterReading(user.get().getId());
-            return MapperCR.toDTO(result);
+            if (!result.isEmpty()) {
+                return MapperCR.toDTO(result);
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
@@ -61,8 +76,8 @@ public class AdminService {
      *
      * @return CounterReading если все ок; null если ошибки при обработке
      */
-    public CounterReadingDTO getUserInfoForMonth(String username, int month, int year) {
-        var user = userRepository.findByUsername(username);
+    public CounterReadingDTO getUserInfoForMonth(User currentUser, int month, int year) {
+        var user = userRepository.findByUsername(currentUser.getUsername());
         if (user.isPresent()) {
             int id = user.get().getId();
             var counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, month, year);
@@ -90,9 +105,16 @@ public class AdminService {
         if (list.contains(newKey)) {
             return false;
         } else {
-            counterReadingRepository.addNewType(newKey);
+            adminRepository.addNewType(newKey);
             return true;
         }
+    }
+
+    /**
+     * Обработчик получения логов
+     */
+    public List<UserAction> getLogs() {
+        return userActionRepository.getUserActions();
     }
 
     /**

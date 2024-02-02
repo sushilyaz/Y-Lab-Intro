@@ -1,11 +1,17 @@
-package org.example.audit;
+package org.example.model;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 /**
  * Класс действий пользователя
  */
+@Getter
+@Setter
 public class UserAction {
+    private int id;
     /**
      * Кто выполнил действия
      */

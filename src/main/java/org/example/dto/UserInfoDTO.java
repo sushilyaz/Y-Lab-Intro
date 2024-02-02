@@ -27,6 +27,6 @@ public class UserInfoDTO {
                 ", month=" + month +
                 ", type='" + type + '\'' +
                 ", value=" + value +
-                '}';
+                "}\n";
     }
 }

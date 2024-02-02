@@ -1,5 +1,8 @@
 package org.example.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Objects;
 
 /**
@@ -10,17 +13,26 @@ public class User {
 
     /**
      * id пользователя (необходимо для связки с показанием счетчиков
+     * -- GETTER --
+     *  Геттеры и сеттеры
+
      */
+    @Getter
+    @Setter
     private int id;
 
     /**
      * Имя пользователя
      */
+    @Getter
+    @Setter
     private String username;
 
     /**
      * пароль пользователя
      */
+    @Getter
+    @Setter
     private String password;
 
     /**
@@ -43,33 +55,6 @@ public class User {
 
     public void setRoleFromString(String role) {
         this.role = Role.valueOf(role); // Преобразуем строку в enum
-    }
-
-    /**
-     * Геттеры и сеттеры
-     */
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     /**

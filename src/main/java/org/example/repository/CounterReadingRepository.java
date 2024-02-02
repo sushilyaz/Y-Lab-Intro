@@ -10,9 +10,9 @@ import java.util.List;
 
 /**
  * Репозиторий показаний. Данные хранятся в листе. Реализован паттерн синглтон, вроде как множественного
- *  * доступа к этому приложению не планируется, поэтому реализовал не потокобезопасный вариант
+ * * доступа к этому приложению не планируется, поэтому реализовал не потокобезопасный вариант
  */
-public class CounterReadingRepository extends BaseRepository{
+public class CounterReadingRepository extends BaseRepository {
 
     /**
      * Для синглтона
@@ -20,7 +20,7 @@ public class CounterReadingRepository extends BaseRepository{
     private static CounterReadingRepository instance;
 
     /**
-     *  Так называемая "БД"
+     * Так называемая "БД"
      */
     private List<CounterReading> counterReadings = new ArrayList<>();
 
@@ -67,10 +67,10 @@ public class CounterReadingRepository extends BaseRepository{
     }
 
     /**
-     *  поиск всех данных по id пользователя
+     * поиск всех данных по id пользователя
      */
     public List<CounterReading> findAllByUserId(int userId) {
-        String sql = "SELECT * FROM counter_reading WHERE user_id = ?";
+        String sql = "SELECT * FROM counter_reading WHERE user_id = ? ORDER BY year DESC, month DESC";
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             var resultSet = stmt.executeQuery();
@@ -87,17 +87,27 @@ public class CounterReadingRepository extends BaseRepository{
     }
 
     /**
-     *  Сохранение в лист показаний
+     * Сохранение в лист показаний
      */
-    public void submit(CounterReading counterReading) {
+    public void submit(List<CounterReading> counterReadings) {
         String sql = "INSERT INTO counter_reading (user_id, year, month, type, value) VALUES (?,?,?,?,?)";
         try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, counterReading.getUserId());
-            stmt.setInt(2, counterReading.getYear());
-            stmt.setInt(3, counterReading.getMonth());
-            stmt.setString(4, counterReading.getType());
-            stmt.setDouble(5, counterReading.getValue());
-            stmt.executeUpdate();
+            for (var element : counterReadings){
+                stmt.setInt(1, element.getUserId());
+                stmt.setInt(2, element.getYear());
+                stmt.setInt(3, element.getMonth());
+                stmt.setString(4, element.getType());
+                stmt.setDouble(5, element.getValue());
+                stmt.executeUpdate();
+
+                var generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    element.setId(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Trouble with generate id");
+                }
+            }
+
 
             var generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -120,7 +130,7 @@ public class CounterReadingRepository extends BaseRepository{
         String sql = "SELECT * FROM counter_reading WHERE user_id = ? ORDER BY year DESC, month DESC LIMIT ?";
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, userId);
-            int limit = uniqueTypeCount().size();
+            int limit = uniqueType(userId).size();
             stmt.setInt(2, limit);
             var resultSet = stmt.executeQuery();
             var results = new ArrayList<CounterReading>();
@@ -136,7 +146,7 @@ public class CounterReadingRepository extends BaseRepository{
     }
 
     /**
-     *  Поиск данных по месяцу и году
+     * Поиск данных по месяцу и году
      */
     public List<CounterReading> findCounterReadingForMonth(int userId, int month, int year) {
         String sql = "SELECT * FROM counter_reading WHERE user_id = ? and year = ? and month = ?";
@@ -157,14 +167,14 @@ public class CounterReadingRepository extends BaseRepository{
         }
     }
 
-    public List<CounterReading> uniqueTypeCount() {
-        String sql = "SELECT DISTINCT type FROM counter_reading WHERE user_id = 1";
+    public List<String> uniqueType(int userId) {
+        String sql = "SELECT DISTINCT type FROM counter_reading WHERE user_id = ?";
         try (var stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
             var resultSet = stmt.executeQuery();
-            var results = new ArrayList<CounterReading>();
+            var results = new ArrayList<String>();
             while (resultSet.next()) {
-                var counterReading = getCR(resultSet);
-                results.add(counterReading);
+                results.add(String.valueOf(resultSet));
             }
             return results;
         } catch (SQLException e) {
@@ -172,6 +182,7 @@ public class CounterReadingRepository extends BaseRepository{
             return new ArrayList<>();
         }
     }
+
     private CounterReading getCR(ResultSet resultSet) throws SQLException {
         var id = resultSet.getInt("id");
         var userId = resultSet.getInt("user_id");

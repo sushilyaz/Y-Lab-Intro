@@ -1,7 +1,7 @@
 package org.example.in.controller;
 
 
-import org.example.model.CounterReading;
+import org.example.dto.CounterReadingDTO;
 import org.example.model.User;
 import org.example.service.CounterReadingService;
 
@@ -50,14 +50,14 @@ public class CounterReadingController {
         int month = scanner.nextInt();
         System.out.print("Enter year: ");
         int year = scanner.nextInt();
-        var commonMap = CounterReading.getCommonTypeOfCounter();
+        var commonMap = counterReadingService.getTypeOfCounter();
         for (Map.Entry<String, Double> map : commonMap.entrySet()) {
             System.out.print("Enter readings for " + map.getKey() + ": ");
             double buf = scanner.nextDouble();
             map.setValue(buf);
         }
-        CounterReading counterReading = new CounterReading(year, month, commonMap);
-        var validCounterReading = counterReadingService.validationCounter(currentUser, counterReading);
+        CounterReadingDTO counterReadingDTO = new CounterReadingDTO(currentUser.getId(), year, month, commonMap);
+        var validCounterReading = counterReadingService.validationCounter(currentUser, counterReadingDTO);
         if (validCounterReading != null) {
             var counter = counterReadingService.submitCounterReading(currentUser, validCounterReading);
             if (counter != null) {
@@ -98,13 +98,13 @@ public class CounterReadingController {
      */
     public void getAllData(User currentUser) {
         System.out.println();
-        var listOfCR = counterReadingService.getAllCounterReadingForUser(currentUser);
+        var list = counterReadingService.getAllCounterReadingForUser(currentUser);
         System.out.println();
-        if (listOfCR.isEmpty()) {
+        if (list.isEmpty()) {
             System.out.println("User has no data");
         } else {
             System.out.println("User with username '" + currentUser.getUsername() + "' has data: ");
-            for (var counter : listOfCR) {
+            for (var counter : list) {
                 System.out.println(counter);
             }
             System.out.println();

@@ -27,7 +27,13 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Тестирование сервиса администратора
+ */
 public class AdminServiceTest {
+    /**
+     * Создание тестового контейнера с подключением
+     */
     @Container
     private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
             .withDatabaseName("test_suhoi")
@@ -37,6 +43,9 @@ public class AdminServiceTest {
     private AdminService adminService = new AdminService();
     private UserRepository userRepository = UserRepository.getInstance();
 
+    /**
+     *  Установка соединение с контейнером, передача соединения BaseRepository и выполнение скриптов миграции
+     */
     @BeforeAll
     static void setUp() throws SQLException, LiquibaseException {
         postgresContainer.start();
@@ -53,13 +62,18 @@ public class AdminServiceTest {
         init();
     }
 
+    /**
+     *  Закрытие соединения
+     */
     @AfterAll
     static void tearDown() throws SQLException {
         connection.rollback();
         connection.close();
         postgresContainer.stop();
     }
-
+    /**
+     *  Инициализация БД
+     */
     static void init() {
         UserService userService = new UserService();
         var counterReadingService = new CounterReadingService();
@@ -84,6 +98,9 @@ public class AdminServiceTest {
         counterReadingService.submitCounterReading(user2, new CounterReadingDTO(3, 2022, 1, data3));
     }
 
+    /**
+     *  Тест на получение данных конкретного пользователя
+     */
     @Test
     void testGetCRByUser() {
         var user = userRepository.findByUsername("testUser1").get();
@@ -93,7 +110,9 @@ public class AdminServiceTest {
         assertThat(data.get(1).getTypeOfCounter().get("Cold Water")).isEqualTo(200.0);
         assertThat(data.get(1).getTypeOfCounter().get("Hot Water")).isEqualTo(200.0);
     }
-
+    /**
+     *  Тест на получение актуальных данных конкретного пользователя
+     */
     @Test
     void testLastUserInfo() {
         var user = userRepository.findByUsername("testUser1").get();
@@ -101,6 +120,9 @@ public class AdminServiceTest {
         assertThat(data.getTypeOfCounter().get("Heating")).isEqualTo(300.0);
     }
 
+    /**
+     *  Тест на получение данных конкретного пользователя за конкретный месяц
+     */
     @Test
     void testUserInfoForMonth() {
         var user = userRepository.findByUsername("testUser1").get();
@@ -110,6 +132,9 @@ public class AdminServiceTest {
         assertThat(data.getTypeOfCounter().get("Hot Water")).isEqualTo(200.0);
     }
 
+    /**
+     *  Тест на добавление новых типов показаний
+     */
     @Test
     void testKeyUpdate() {
         var startKeyData = adminService.getAllKey();

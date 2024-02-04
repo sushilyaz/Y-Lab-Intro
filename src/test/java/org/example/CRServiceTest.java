@@ -9,7 +9,6 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import org.example.dto.CounterReadingDTO;
 import org.example.model.User;
 import org.example.repository.BaseRepository;
-import org.example.repository.CounterReadingRepository;
 import org.example.service.CounterReadingService;
 import org.example.service.UserService;
 import org.junit.jupiter.api.AfterAll;
@@ -26,9 +25,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+/**
+ * Тестирование сервиса подачи показаний
+ */
 @Testcontainers
 public class CRServiceTest {
+    /**
+     * Создание тестового контейнера с подключением
+     */
     @Container
     private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
             .withDatabaseName("test_suhoi")
@@ -36,9 +40,11 @@ public class CRServiceTest {
             .withPassword("test_qwerty");
     private static Connection connection;
     CounterReadingService counterReadingService = new CounterReadingService();
-    CounterReadingRepository counterReadingRepository = CounterReadingRepository.getInstance();
 
     private static User currentUser;
+    /**
+     *  Установка соединение с контейнером, передача соединения BaseRepository и выполнение скриптов миграции
+     */
     @BeforeAll
     static void setUp() throws SQLException, LiquibaseException {
         postgresContainer.start();
@@ -55,13 +61,18 @@ public class CRServiceTest {
         initUser();
     }
 
+    /**
+     *  Закрытие соединения
+     */
     @AfterAll
     static void tearDown() throws SQLException {
         connection.rollback();
         connection.close();
         postgresContainer.stop();
     }
-
+    /**
+     *  Инициализация
+     */
     static void initUser() {
         UserService userService = new UserService();
         String username = "testUser";
@@ -70,9 +81,11 @@ public class CRServiceTest {
         user.setId(2);
         currentUser = user;
     }
-
+    /**
+     *  Тест на отправку данных и валидацию
+     */
     @Test
-    void validAndSubmit() throws SQLException {
+    void validAndSubmit() {
         Map<String, Double> data1 = new HashMap<>();
         data1.put("Cold Water", 100.0);
         data1.put("Hot Water", 100.0);
@@ -94,8 +107,11 @@ public class CRServiceTest {
         assertThat(actual3).isNull();
     }
 
+    /**
+     *  Тест на получение актуальных показаний пользователя
+     */
     @Test
-    void latestCR() throws SQLException {
+    void latestCR() {
         Map<String, Double> data1 = new HashMap<>();
         data1.put("Cold Water", 200.0);
         data1.put("Hot Water", 200.0);
@@ -105,9 +121,11 @@ public class CRServiceTest {
         var actual = counterReadingService.getLastUserInfo(currentUser);
         assertThat(actual).isEqualTo(dto1);
     }
-
+    /**
+     *  Тест на получение показаний пользователя за конкретный месяц
+     */
     @Test
-    void forMonth() throws SQLException {
+    void forMonth() {
         var dto = counterReadingService.getUserInfoForMonth(currentUser, 4, 2020);
         assertThat(dto.getMonth()).isEqualTo(4);
         assertThat(dto.getYear()).isEqualTo(2020);

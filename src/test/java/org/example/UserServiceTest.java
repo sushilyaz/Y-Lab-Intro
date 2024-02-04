@@ -29,7 +29,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @Testcontainers
 public class UserServiceTest {
-
+    /**
+     * Создание тестового контейнера с подключением
+     */
     @Container
     private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
             .withDatabaseName("test_suhoi")
@@ -38,7 +40,9 @@ public class UserServiceTest {
     private Connection connection;
     UserService userService = new UserService();
     UserRepository userRepository = UserRepository.getInstance();
-
+    /**
+     *  Установка соединение с контейнером, передача соединения BaseRepository и выполнение скриптов миграции
+     */
     @BeforeEach
     void setUp() throws SQLException, LiquibaseException {
         postgresContainer.start();
@@ -53,44 +57,58 @@ public class UserServiceTest {
         System.out.println("Migration is completed successfully");
         connection.setAutoCommit(false);
     }
+    /**
+     *  Инициализация
+     */
     User initUsers() {
         String username = "testUser";
         String password = "testUser";
         User user = userService.registerUser(username, password);
         return user;
     }
+    /**
+     *  Закрытие соединения
+     */
     @AfterEach
     void tearDown() throws SQLException {
         connection.rollback();
         connection.close();
         postgresContainer.stop();
     }
-
+    /**
+     *  Успешная регистрация
+     */
     @Test
-    void registerSuccess() throws SQLException {
+    void registerSuccess() {
         User user = initUsers();
         assertThat(user).isNotNull();
         var check = userRepository.findByUsername("testUser").get();
         assertThat(user).isEqualTo(check);
     }
-
+    /**
+     *  Неуспешная регистрация (дублирование)
+     */
     @Test
-    void registerFailed() throws SQLException {
+    void registerFailed() {
         User testUser = initUsers();
         User user = userService.registerUser("testUser", "testUser");
         assertThat(user).isNull();
     }
-
+    /**
+     *  Успешная авторизация
+     */
     @Test
-    void authSuccess() throws SQLException {
+    void authSuccess() {
         User user = initUsers();
         var check = userService.authenticationUser("testUser", "testUser");
         assertThat(check).isNotNull();
         assertThat(check).isEqualTo(user);
     }
-
+    /**
+     *  Неуспешная авторизация. Неправильный пароль
+     */
     @Test
-    void authFailed() throws SQLException {
+    void authFailed() {
         initUsers();
         var check = userService.authenticationUser("testUser", "failedPassword");
         assertThat(check).isNull();

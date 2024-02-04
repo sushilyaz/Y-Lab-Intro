@@ -68,7 +68,9 @@ public class AdminController {
             System.out.println("\nUser not found or user has no data");
         }
     }
-
+    /**
+     * Контроллер получения всех внесенных показаний счетчика определенного пользователя (по username)
+     */
     public void getCRByUser() {
         System.out.println();
         Scanner scanner = new Scanner(System.in);
@@ -84,6 +86,7 @@ public class AdminController {
 
     /**
      * Контроллер получения показаний счетчика за определенный месяц определенного пользователя (по username)
+     * Также валидация на ввод значений
      */
     public void getCRUserForMonth() {
         System.out.println();

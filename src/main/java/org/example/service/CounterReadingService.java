@@ -55,6 +55,14 @@ public class CounterReadingService implements Service{
         }
     }
 
+
+    /**
+     * Получение всех типов показаний (только ключей)
+     * Здесь идея в том, что новые показания добавляются к пользователю admin(администратор)
+     * Он грубо говоря является неким центром, я посчитал, что так будет очень удобно, поэтому в uniqueType
+     * передается параметр userId (1) - это администратор
+     * Также преобразование листа в мапу для контроллера
+     */
     public Map<String, Double> getTypeOfCounter() {
         List<String> data = counterReadingRepository.uniqueType(1);
         return data.stream()
@@ -64,7 +72,7 @@ public class CounterReadingService implements Service{
     /**
      * Обработчик внесения данных аутентифицированного пользователя
      *
-     * @return CounterReading, если все нормально; null - если данные в этот месяц уже вносились
+     * @return CounterReadingDTO, если все нормально; null - если данные в этот месяц уже вносились
      */
     public CounterReadingDTO submitCounterReading(User currentUser, CounterReadingDTO counterReadingDTO) {
         int id = currentUser.getId();
@@ -86,7 +94,7 @@ public class CounterReadingService implements Service{
     /**
      * Обработчик получения последних внесенных данных аутентифицированного пользователя
      *
-     * @return CounterReading если все нормально; null если данные не найдены
+     * @return CounterReadingDTO если все нормально; null если данные не найдены
      */
     public CounterReadingDTO getLastUserInfo(User currentUser) {
         int id = currentUser.getId();
@@ -105,7 +113,7 @@ public class CounterReadingService implements Service{
     /**
      * Обработчик получения данных за последний месяц аутентифицированного пользователя
      *
-     * @return CounterReading если все нормально; null если данные не найдены
+     * @return CounterReadingDTO если все нормально; null если данные не найдены
      */
     public CounterReadingDTO getUserInfoForMonth(User currentUser, int month, int year) {
         int id = currentUser.getId();
@@ -129,6 +137,7 @@ public class CounterReadingService implements Service{
         var list = counterReadingRepository.findAllByUserId(id);
         UserAction userAction = new UserAction(currentUser.getUsername(), "Get All Counter Reading For Month", LocalDateTime.now());
         userActionRepository.save(userAction);
+        // Преобразование данных в вид удобных для клиента
         return Format.formatter(list);
     }
 }

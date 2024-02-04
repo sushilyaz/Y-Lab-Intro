@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MapperCR {
+    /**
+     * Преобразование полученной выборки (select) в DTO
+     */
     public static CounterReadingDTO toDTO(List<CounterReading> counterReadings) {
 
         int userId = counterReadings.get(0).getUserId();
@@ -26,6 +29,9 @@ public class MapperCR {
         return counterReadingDTO;
     }
 
+    /**
+     * Из DTO обратно в сущность
+     */
     public static List<CounterReading> toEntity(CounterReadingDTO counterReadingDTO) {
         List<CounterReading> counterReadings = new ArrayList<>();
         for (Map.Entry<String, Double> map : counterReadingDTO.getTypeOfCounter().entrySet()) {

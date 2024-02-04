@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Format {
+    /**
+     * Преобразование в нормальный для восприятия вид
+     */
     public static List<CounterReadingDTO> formatter(List<CounterReading> list) {
         var result = new ArrayList<CounterReadingDTO>();
         if (!list.isEmpty()) {

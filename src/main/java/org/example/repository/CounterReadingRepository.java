@@ -12,7 +12,7 @@ import java.util.List;
  * Репозиторий показаний. Данные хранятся в листе. Реализован паттерн синглтон, вроде как множественного
  * * доступа к этому приложению не планируется, поэтому реализовал не потокобезопасный вариант
  */
-public class CounterReadingRepository extends BaseRepository implements ReadingRepository{
+public class CounterReadingRepository extends BaseRepository implements ReadingRepository {
 
     /**
      * Для синглтона
@@ -34,6 +34,7 @@ public class CounterReadingRepository extends BaseRepository implements ReadingR
         }
         return instance;
     }
+
     /**
      * поиск всех данных по id пользователя
      */
@@ -82,9 +83,7 @@ public class CounterReadingRepository extends BaseRepository implements ReadingR
 
 
     /**
-     * Одно из требований к Д\З: "Последние поданые показания считаются актуальными".
-     * Если проецировать на жизненную, ситуацию, то правильнее будет возвращать последнее по дате,
-     * но я на всякий случай оставил закомментированное решение согласно ТЗ
+     * Актуальные значения показаний счетчика пользователя
      */
     public List<CounterReading> findLastCounterReading(int userId) {
         String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? ORDER BY year DESC, month DESC LIMIT ?";
@@ -127,6 +126,9 @@ public class CounterReadingRepository extends BaseRepository implements ReadingR
         }
     }
 
+    /**
+     * Получение типов показаний счетчика
+     */
     public List<String> uniqueType(int userId) {
         String sql = "SELECT DISTINCT type FROM mainschema.counter_reading WHERE user_id = ?";
         try (var stmt = connection.prepareStatement(sql)) {
@@ -144,7 +146,9 @@ public class CounterReadingRepository extends BaseRepository implements ReadingR
     }
 
 
-
+    /**
+     * Преобрвазование в сущность
+     */
     private CounterReading getCR(ResultSet resultSet) throws SQLException {
         var id = resultSet.getInt("id");
         var userId = resultSet.getInt("user_id");

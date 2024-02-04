@@ -20,7 +20,9 @@ public class Engine {
     private static AdminController adminController = new AdminController();
 
     /**
-     * Главное меню. Из вариантов: Регистрация, аутентификация, выход из приложения
+     * Главное меню. Из вариантов: Регистрация, аутентификация, выход из приложения.
+     * На каждый scanner.nextInt() добавил обработку ошибки, если будет введено не число.
+     * Таким образом исправил ошибку с 1 д\з "Приложение легко положить"
      */
     public static void start() {
         System.out.println();

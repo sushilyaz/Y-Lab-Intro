@@ -6,8 +6,6 @@ import org.example.model.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,46 +14,14 @@ import java.util.Optional;
  */
 public class UserRepository extends BaseRepository{
     private static UserRepository instance;
-    private List<User> users = new ArrayList<>();
 
-    private UserRepository() {
-        initializeUsers();
-    }
-
-    /**
-     * При инициализации класса также добавляется "Администратор в бд"
-     */
-    private void initializeUsers() {}
+    private UserRepository() {}
 
     public static UserRepository getInstance() {
         if (instance == null) {
             instance = new UserRepository();
         }
         return instance;
-    }
-    /**
-     * Реализовал для отката репозитория (для тестирования)
-     */
-    public static void reset() {
-        instance = null;
-    }
-    /**
-     * Получение всех пользователей (Для админа и для теста)
-     */
-    public List<User> getUsers() {
-        String sql = "SELECT * FROM users ORDER BY id";
-        try (var stmt = connection.prepareStatement(sql)) {
-            var resultSet = stmt.executeQuery();
-            var results = new ArrayList<User>();
-            while (resultSet.next()) {
-                var user = getUser(resultSet);
-                results.add(user);
-            }
-            return results;
-        } catch (SQLException e) {
-            System.out.println("Trouble with statement: " + e.getMessage());
-            return new ArrayList<>();
-        }
     }
 
     /**

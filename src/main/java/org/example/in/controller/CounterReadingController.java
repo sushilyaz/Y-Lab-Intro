@@ -37,11 +37,7 @@ public class CounterReadingController {
 
     /**
      * Контроллер внесения показателей аутентифицированного пользователя
-     * Показания считываются со статического поля показаний в CounterReading (вдруг админ добавил новые ключи,
-     * когда уже юзеры вносили показания до этого изменения и надо будет вносить их еще раз уже после изменения)
-     * Далее в цикле считывание данных с консоли , потом валидация и отправка в сервис для обработки и занесения
-     * в так называемую БД (в лист в репозитории)
-     * Также обработка результата выполнения функции submitCounterReading.
+     * Также присутствует валидация на вводимые значения
      */
     public void putData(User currentUser) {
         System.out.println();
@@ -63,19 +59,24 @@ public class CounterReadingController {
             System.out.println("Invalid month. Try again");
             putData(currentUser);
         }
+        // Запрос на получение данных о существующих типах счетчиков и прогон по циклу
         var commonMap = counterReadingService.getTypeOfCounter();
         for (Map.Entry<String, Double> map : commonMap.entrySet()) {
             System.out.print("Enter readings for " + map.getKey() + ": ");
             double buf = 0;
+            // валидация вводимых значений. Нельзя ввести отрицательное число и строчный символ
             try {
                 buf = scanner.nextDouble();
+                if (buf < 0) throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid value. Try again");
                 putData(currentUser);
             }
             map.setValue(buf);
         }
+        // преобразование введенных данных в удобный для работы тип
         CounterReadingDTO counterReadingDTO = new CounterReadingDTO(currentUser.getId(), year, month, commonMap);
+        // Валидация. Вводимое число не должно быть меньше числа за предыдущий месяц
         var validCounterReading = counterReadingService.validationCounter(currentUser, counterReadingDTO);
         if (validCounterReading != null) {
             var counter = counterReadingService.submitCounterReading(currentUser, validCounterReading);

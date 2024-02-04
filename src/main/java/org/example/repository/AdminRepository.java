@@ -28,6 +28,9 @@ public class AdminRepository extends BaseRepository{
         return instance;
     }
 
+    /**
+     *  Добавление нового типа счетчика. Добавление осуществляется в пользователя админ. Он является неким "центром"
+     */
     public void addNewType(String newKey) {
         String sql = "INSERT INTO mainschema.counter_reading (user_id, year, month, type, value) VALUES (1,2000,1,?,1)";
         try (var stmt = connection.prepareStatement(sql)) {
@@ -38,7 +41,9 @@ public class AdminRepository extends BaseRepository{
             System.out.println("Trouble with statement: " + e.getMessage());
         }
     }
-
+    /**
+     *  Поиск всех данных всех пользователей
+     */
     public List<UserInfoDTO> findUsersAndCR() {
         String sql = "SELECT mainschema.users.username, mainschema.counter_reading.year, mainschema.counter_reading.month, mainschema.counter_reading.type, mainschema.counter_reading.value\n" +
                 "FROM mainschema.users\n" +

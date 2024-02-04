@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  test-postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: test_suhoi
+      POSTGRES_USER: test_suhoi
+      POSTGRES_PASSWORD: test_qwerty
+    ports:
+      - "5433:5432"

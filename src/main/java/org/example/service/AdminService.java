@@ -39,8 +39,6 @@ public class AdminService implements Service{
 
     /**
      * Обработчик получения последних внесенных показателей пользователя.
-     *
-     * @return CounterReading если все ок; null если ошибки при обработке
      */
 
     public List<CounterReadingDTO> getCRByUser(User currentUser) {
@@ -48,6 +46,7 @@ public class AdminService implements Service{
         if (user.isPresent()) {
             var result = counterReadingRepository.findAllByUserId(user.get().getId());
             if (!result.isEmpty()) {
+                // Преобразование полученных данных в удобный для клиента вид
                 return Format.formatter(result);
             } else {
                 return new ArrayList<>();
@@ -57,11 +56,15 @@ public class AdminService implements Service{
         }
     }
 
+    /**
+     * Получение последних данных пользователя
+     */
     public CounterReadingDTO getLastUserInfo(User currentUser) {
         var user = userRepository.findByUsername(currentUser.getUsername());
         if (user.isPresent()) {
             var result = counterReadingRepository.findLastCounterReading(user.get().getId());
             if (!result.isEmpty()) {
+                // Преобразование полученных данных в удобный для клиента вид
                 return MapperCR.toDTO(result);
             } else {
                 return null;
@@ -74,7 +77,7 @@ public class AdminService implements Service{
     /**
      * Обработчик получения показателей пользователя за конкретный месяц
      *
-     * @return CounterReading если все ок; null если ошибки при обработке
+     * @return CounterReadingDTO если все ок; null если ошибки при обработке
      */
     public CounterReadingDTO getUserInfoForMonth(User currentUser, int month, int year) {
         var user = userRepository.findByUsername(currentUser.getUsername());
@@ -82,6 +85,7 @@ public class AdminService implements Service{
             int id = user.get().getId();
             var counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, month, year);
             if (!counterReadingForMonth.isEmpty()) {
+                // Преобразование полученных данных в удобный для клиента вид
                 return MapperCR.toDTO(counterReadingForMonth);
             } else {
                 return null;
@@ -93,13 +97,18 @@ public class AdminService implements Service{
 
     /**
      * Получение всех типов показаний (только ключей)
-     *
-     * @return Set<String>
+     * Здесь идея в том, что новые показания добавляются к пользователю admin(администратор)
+     * Он грубо говоря является неким центром, я посчитал, что так будет очень удобно, поэтому в uniqueType
+     * передается параметр userId (1) - это администратор
+     * @return List<String>
      */
     public List<String> getAllKey() {
         return counterReadingRepository.uniqueType(1);
     }
 
+    /**
+     * Добавление новых типов показаний
+     */
     public boolean addNewKey(String newKey) {
         var list = counterReadingRepository.uniqueType(1);
         if (list.contains(newKey)) {

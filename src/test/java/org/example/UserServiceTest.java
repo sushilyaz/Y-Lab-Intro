@@ -32,9 +32,9 @@ public class UserServiceTest {
 
     @Container
     private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("suhoi")
-            .withUsername("suhoi")
-            .withPassword("qwerty");
+            .withDatabaseName("test_suhoi")
+            .withUsername("test_suhoi")
+            .withPassword("test_qwerty");
     private Connection connection;
     UserService userService = new UserService();
     UserRepository userRepository = UserRepository.getInstance();

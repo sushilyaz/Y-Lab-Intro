@@ -31,9 +31,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CRServiceTest {
     @Container
     private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("suhoi")
-            .withUsername("suhoi")
-            .withPassword("qwerty");
+            .withDatabaseName("test_suhoi")
+            .withUsername("test_suhoi")
+            .withPassword("test_qwerty");
     private static Connection connection;
     CounterReadingService counterReadingService = new CounterReadingService();
     CounterReadingRepository counterReadingRepository = CounterReadingRepository.getInstance();

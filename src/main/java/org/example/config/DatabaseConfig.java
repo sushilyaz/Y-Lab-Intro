@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseConfig {
+    /**
+     *  Установка соединения с БД
+     */
     public static Connection getConnection() throws IOException, SQLException {
         Properties properties = loadProperties();
         String jdbcUrl = properties.getProperty("jdbc.url");
@@ -24,6 +27,9 @@ public class DatabaseConfig {
         return DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
     }
 
+    /**
+     * Метод загрузки файла настрек БД
+     */
     private static Properties loadProperties() throws IOException {
         Properties properties = new Properties();
         try (InputStream input = DatabaseConfig.class.getClassLoader().getResourceAsStream("db.properties")) {
@@ -31,6 +37,11 @@ public class DatabaseConfig {
         }
         return properties;
     }
+    /**
+     * Метод, выполняющий скрипты миграции. Все сущности создаются в отдельной схеме - mainschema.
+     * Служебные таблицы создаются в отдельной от сущностей схеме - public. Все как по ТЗ
+     */
+
     public static void runLiquibaseMigrations(Connection connection) throws SQLException, LiquibaseException {
         Database database =
                 DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));

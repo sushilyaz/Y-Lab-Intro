@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet id="002-insert-data" author="suhoi">
+        <insert tableName="users" schemaName="mainschema">
+            <column name="username" value="admin"/>
+            <column name="password" value="admin"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+
+        <insert tableName="counter_reading" schemaName="mainschema">
+            <column name="user_id" value="1"/>
+            <column name="year" value="2000"/>
+            <column name="month" value="1"/>
+            <column name="type" value="Cold Water"/>
+            <column name="value" value="1"/>
+        </insert>
+
+        <insert tableName="counter_reading" schemaName="mainschema">
+            <column name="user_id" value="1"/>
+            <column name="year" value="2000"/>
+            <column name="month" value="1"/>
+            <column name="type" value="Hot Water"/>
+            <column name="value" value="1"/>
+        </insert>
+
+
+        <insert tableName="counter_reading" schemaName="mainschema">
+            <column name="user_id" value="1"/>
+            <column name="year" value="2000"/>
+            <column name="month" value="1"/>
+            <column name="type" value="Heating"/>
+            <column name="value" value="1"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

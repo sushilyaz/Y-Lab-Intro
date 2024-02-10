@@ -20,7 +20,9 @@ public class Engine {
     private static AdminController adminController = new AdminController();
 
     /**
-     * Главное меню. Из вариантов: Регистрация, аутентификация, выход из приложения
+     * Главное меню. Из вариантов: Регистрация, аутентификация, выход из приложения.
+     * На каждый scanner.nextInt() добавил обработку ошибки, если будет введено не число.
+     * Таким образом исправил ошибку с 1 д\з "Приложение легко положить"
      */
     public static void start() {
         System.out.println();
@@ -30,7 +32,13 @@ public class Engine {
         System.out.println("3 - Exit (enter \"3\")");
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter: ");
-        int choice = scanner.nextInt();
+        int choice = 0;
+        try {
+            choice = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid number");
+            start();
+        }
         switch (choice) {
             case 1:
                 userController.registration();
@@ -40,14 +48,13 @@ public class Engine {
                 var currentUser = userController.autentification();
                 menu(currentUser);
                 break;
-
             case 3:
                 System.out.println("Exit");
                 System.exit(0);
                 break;
             default:
-                start();
                 System.out.println("Invalid number");
+                start();
         }
     }
 
@@ -65,7 +72,13 @@ public class Engine {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("Enter: ");
-            int choice = scanner.nextInt();
+            int choice = 0;
+            try {
+                choice = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid number");
+                menu(currentUser);
+            }
             switch (choice) {
                 case 1:
                     controllerReadingController.getLatestData(currentUser);
@@ -102,15 +115,22 @@ public class Engine {
         System.out.println("Choose action");
         System.out.println("1 - Get actual user counter readings");
         System.out.println("2 - Get user counter readings for specific month");
-        System.out.println("3 - View all readings");
-        System.out.println("4 - Add new readings");
-        System.out.println("5 - Get all counter readings users");
-        System.out.println("6 - Get audit");
-        System.out.println("7 - Log out");
+        System.out.println("3 - Get all user counter readings by username");
+        System.out.println("4 - View all readings");
+        System.out.println("5 - Add new readings");
+        System.out.println("6 - Get all counter readings users");
+        System.out.println("7 - Get audit");
+        System.out.println("8 - Log out");
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("Enter: ");
-            int choice = scanner.nextInt();
+            int choice = 0;
+            try {
+                choice = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid number");
+                menuAdmin();
+            }
             switch (choice) {
                 case 1:
                     adminController.getActualCRUser();
@@ -121,22 +141,26 @@ public class Engine {
                     menuAdmin();
                     break;
                 case 3:
-                    adminController.viewAllKey();
+                    adminController.getCRByUser();
                     menuAdmin();
                     break;
                 case 4:
-                    adminController.addNewReading();
+                    adminController.viewAllKey();
                     menuAdmin();
                     break;
                 case 5:
-                    adminController.getAllInfo();
+                    adminController.addNewReading();
                     menuAdmin();
                     break;
                 case 6:
-                    adminController.getAudit();
+                    adminController.getAllInfo();
                     menuAdmin();
                     break;
                 case 7:
+                    adminController.getAudit();
+                    menuAdmin();
+                    break;
+                case 8:
                     start();
                     break;
                 default:

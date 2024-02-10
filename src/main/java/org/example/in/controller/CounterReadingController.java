@@ -1,7 +1,7 @@
 package org.example.in.controller;
 
 
-import org.example.model.CounterReading;
+import org.example.dto.CounterReadingDTO;
 import org.example.model.User;
 import org.example.service.CounterReadingService;
 
@@ -27,46 +27,66 @@ public class CounterReadingController {
      */
     public void getLatestData(User currentUser) {
         System.out.println();
-        var lastCountingReading = counterReadingService.getLatestCounterReading(currentUser);
+        var lastCountingReading = counterReadingService.getLastUserInfo(currentUser);
         if (lastCountingReading != null) {
-            System.out.println(lastCountingReading);
+            System.out.println("\n" + lastCountingReading);
         } else {
-            System.out.println("Error! User '" + currentUser.getUsername() + "' has not data");
+            System.out.println("\nError! User '" + currentUser.getUsername() + "' has not data");
         }
     }
 
     /**
      * Контроллер внесения показателей аутентифицированного пользователя
-     * Показания считываются со статического поля показаний в CounterReading (вдруг админ добавил новые ключи,
-     * когда уже юзеры вносили показания до этого изменения и надо будет вносить их еще раз уже после изменения)
-     * Далее в цикле считывание данных с консоли , потом валидация и отправка в сервис для обработки и занесения
-     * в так называемую БД (в лист в репозитории)
-     * Также обработка результата выполнения функции submitCounterReading.
+     * Также присутствует валидация на вводимые значения
      */
     public void putData(User currentUser) {
         System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter month: ");
-        int month = scanner.nextInt();
+        int month = 0;
+        try {
+            month = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid month. Try again");
+            putData(currentUser);
+        }
+
         System.out.print("Enter year: ");
-        int year = scanner.nextInt();
-        var commonMap = CounterReading.getCommonTypeOfCounter();
+        int year = 0;
+        try {
+            year = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid month. Try again");
+            putData(currentUser);
+        }
+        // Запрос на получение данных о существующих типах счетчиков и прогон по циклу
+        var commonMap = counterReadingService.getTypeOfCounter();
         for (Map.Entry<String, Double> map : commonMap.entrySet()) {
             System.out.print("Enter readings for " + map.getKey() + ": ");
-            double buf = scanner.nextDouble();
+            double buf = 0;
+            // валидация вводимых значений. Нельзя ввести отрицательное число и строчный символ
+            try {
+                buf = scanner.nextDouble();
+                if (buf < 0) throw new Exception();
+            } catch (Exception e) {
+                System.out.println("Invalid value. Try again");
+                putData(currentUser);
+            }
             map.setValue(buf);
         }
-        CounterReading counterReading = new CounterReading(year, month, commonMap);
-        var validCounterReading = counterReadingService.validationCounter(currentUser, counterReading);
+        // преобразование введенных данных в удобный для работы тип
+        CounterReadingDTO counterReadingDTO = new CounterReadingDTO(currentUser.getId(), year, month, commonMap);
+        // Валидация. Вводимое число не должно быть меньше числа за предыдущий месяц
+        var validCounterReading = counterReadingService.validationCounter(currentUser, counterReadingDTO);
         if (validCounterReading != null) {
             var counter = counterReadingService.submitCounterReading(currentUser, validCounterReading);
             if (counter != null) {
-                System.out.println("Data entered successfully!");
+                System.out.println("\nData entered successfully!");
             } else {
-                System.out.println("Error! Data for this month already exists.");
+                System.out.println("\nError! Data for this month already exists.");
             }
         } else {
-            System.out.println("Data no valid. Latest counter cant be less than current");
+            System.out.println("\nData no valid. Latest counter cant be less than current");
         }
     }
 
@@ -78,18 +98,24 @@ public class CounterReadingController {
         System.out.println();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter month: ");
-        int month = scanner.nextInt();
+        int month = 0;
+        try {
+            month = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid month. Try again");
+            getDataForMonth(currentUser);
+        }
         if (month < 1 || month > 12) {
-            System.out.println("Invalid month. Please provide a valid month (1-12).");
+            System.out.println("\nInvalid month. Please provide a valid month (1-12).");
             getDataForMonth(currentUser);
         }
         System.out.print("Enter year: ");
         int year = scanner.nextInt();
-        var counterReadingForMonth = counterReadingService.getCounterReadingForMonth(currentUser, month, year);
+        var counterReadingForMonth = counterReadingService.getUserInfoForMonth(currentUser, month, year);
         if (counterReadingForMonth != null) {
-            System.out.println(counterReadingForMonth);
+            System.out.println("\n" + counterReadingForMonth);
         } else {
-            System.out.println("Error! User has not data for " + month + "." + year);
+            System.out.println("\nError! User has not data for " + month + "." + year);
         }
     }
 
@@ -97,15 +123,13 @@ public class CounterReadingController {
      * Контроллер получения внесенных за все время показателей аутентифицированного пользователя
      */
     public void getAllData(User currentUser) {
-        System.out.println();
-        var listOfCR = counterReadingService.getAllCounterReadingForUser(currentUser);
-        System.out.println();
-        if (listOfCR.isEmpty()) {
-            System.out.println("User has no data");
+        var list = counterReadingService.getCRByUser(currentUser);
+        if (list.isEmpty()) {
+            System.out.println("\nUser has no data");
         } else {
-            System.out.println("User with username '" + currentUser.getUsername() + "' has data: ");
-            for (var counter : listOfCR) {
-                System.out.println(counter);
+            System.out.println("\nUser with username '" + currentUser.getUsername() + "' has data: ");
+            for (var counter : list) {
+                System.out.println("\n" + counter);
             }
             System.out.println();
         }

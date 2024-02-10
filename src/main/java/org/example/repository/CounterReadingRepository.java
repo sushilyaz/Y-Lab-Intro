@@ -2,25 +2,22 @@ package org.example.repository;
 
 import org.example.model.CounterReading;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
  * Репозиторий показаний. Данные хранятся в листе. Реализован паттерн синглтон, вроде как множественного
- *  * доступа к этому приложению не планируется, поэтому реализовал не потокобезопасный вариант
+ * * доступа к этому приложению не планируется, поэтому реализовал не потокобезопасный вариант
  */
-public class CounterReadingRepository{
+public class CounterReadingRepository extends BaseRepository implements ReadingRepository {
 
     /**
      * Для синглтона
      */
     private static CounterReadingRepository instance;
-
-    /**
-     *  Так называемая "БД"
-     */
-    private List<CounterReading> counterReadings = new ArrayList<>();
 
     /**
      * приватный конструктор для синглтона
@@ -39,72 +36,127 @@ public class CounterReadingRepository{
     }
 
     /**
-     * Для тестирования (откатить "бд")
-     */
-    public static void reset() {
-        instance = null;
-    }
-
-    /**
-     * Геттер листа
-     */
-    public List<CounterReading> getCounterReadings() {
-        return counterReadings;
-    }
-
-    /**
-     *  поиск всех данных по id пользователя
+     * поиск всех данных по id пользователя
      */
     public List<CounterReading> findAllByUserId(int userId) {
-        return counterReadings.stream()
-                .filter(counterReading -> counterReading.getUserId() == userId)
-                .toList();
-    }
-
-    /**
-     *  Сохранение в лист показаний
-     */
-    public void submit(CounterReading counterReading) {
-        counterReadings.add(counterReading);
-    }
-
-
-    /**
-     * Одно из требований к Д\З: "Последние поданые показания считаются актуальными".
-     * Если проецировать на жизненную, ситуацию, то правильнее будет возвращать последнее по дате,
-     * но я на всякий случай оставил закомментированное решение согласно ТЗ
-     */
-    public CounterReading findLastCounterReading(int userId) {
-        var list = findAllByUserId(userId);
-//        CounterReading lastElement;
-//        if (list.isEmpty()) {
-//            return null;
-//        } else {
-//            lastElement = list.get(list.size()-1);
-//            return lastElement;
-//        }
-        var sortedList = list.stream()
-                .sorted(Comparator.comparingInt(CounterReading::getYear)
-                        .thenComparingInt(CounterReading::getMonth))
-                .toList();
-
-        CounterReading lastElement = sortedList.stream()
-                .reduce((first, second) -> second)
-                .orElse(null);
-        return lastElement;
-
-    }
-
-    /**
-     *  Поиск данных по месяцу и году
-     */
-    public CounterReading findCounterReadingForMonth(int userId, int month, int year) {
-        var list = findAllByUserId(userId);
-        for (var counter : list) {
-            if (counter.getMonth() == month && counter.getYear() == year) {
-                return counter;
+        String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? ORDER BY year DESC, month DESC";
+        try (var stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            var resultSet = stmt.executeQuery();
+            var results = new ArrayList<CounterReading>();
+            while (resultSet.next()) {
+                var counterReading = getCR(resultSet);
+                results.add(counterReading);
             }
+            return results;
+        } catch (SQLException e) {
+            System.out.println("Trouble with statement: " + e.getMessage());
+            return new ArrayList<>();
         }
-        return null;
+    }
+
+    /**
+     * Сохранение в лист показаний
+     */
+    public void save(List<CounterReading> counterReadings) {
+        String sql = "INSERT INTO mainschema.counter_reading (user_id, year, month, type, value) VALUES (?,?,?,?,?)";
+        try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            for (var element : counterReadings) {
+                stmt.setInt(1, element.getUserId());
+                stmt.setInt(2, element.getYear());
+                stmt.setInt(3, element.getMonth());
+                stmt.setString(4, element.getType());
+                stmt.setDouble(5, element.getValue());
+                stmt.executeUpdate();
+                var generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    element.setId(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Trouble with generate id");
+                }
+            }
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println("Trouble with statement: " + e.getMessage());
+        }
+    }
+
+
+    /**
+     * Актуальные значения показаний счетчика пользователя
+     */
+    public List<CounterReading> findLastCounterReading(int userId) {
+        String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? ORDER BY year DESC, month DESC LIMIT ?";
+        try (var stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            int limit = uniqueType(userId).size();
+            stmt.setInt(2, limit);
+            var resultSet = stmt.executeQuery();
+            var results = new ArrayList<CounterReading>();
+            while (resultSet.next()) {
+                var counterReading = getCR(resultSet);
+                results.add(counterReading);
+            }
+            return results;
+        } catch (SQLException e) {
+            System.out.println("Trouble with statement: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Поиск данных по месяцу и году
+     */
+    public List<CounterReading> findCounterReadingForMonth(int userId, int month, int year) {
+        String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? and year = ? and month = ?";
+        try (var stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, year);
+            stmt.setInt(3, month);
+            var resultSet = stmt.executeQuery();
+            var results = new ArrayList<CounterReading>();
+            while (resultSet.next()) {
+                var counterReading = getCR(resultSet);
+                results.add(counterReading);
+            }
+            return results;
+        } catch (SQLException e) {
+            System.out.println("Trouble with statement: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Получение типов показаний счетчика
+     */
+    public List<String> uniqueType(int userId) {
+        String sql = "SELECT DISTINCT type FROM mainschema.counter_reading WHERE user_id = ?";
+        try (var stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            var resultSet = stmt.executeQuery();
+            var results = new ArrayList<String>();
+            while (resultSet.next()) {
+                results.add(resultSet.getString("type"));
+            }
+            return results;
+        } catch (SQLException e) {
+            System.out.println("Trouble with statement: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+
+    /**
+     * Преобрвазование в сущность
+     */
+    private CounterReading getCR(ResultSet resultSet) throws SQLException {
+        var id = resultSet.getInt("id");
+        var userId = resultSet.getInt("user_id");
+        var year = resultSet.getInt("year");
+        var month = resultSet.getInt("month");
+        var type = resultSet.getString("type");
+        var value = resultSet.getDouble("value");
+        CounterReading counterReading = new CounterReading(id, userId, year, month, type, value);
+        return counterReading;
     }
 }

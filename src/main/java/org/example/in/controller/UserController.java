@@ -26,20 +26,26 @@ public class UserController {
     }
 
     /**
-     * Контроллер регистрации пользователя и обработка результатов выполнения сервиса
+     * Контроллер регистрации пользователя и обработка результатов выполнения сервиса.
+     * Добавил валидацию на создание пользователя
+     * Таким образом исправил ошибку 1 д\з "Могу зарегистрировать пустого пользователя"
      */
     public void registration() {
         System.out.println();
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter username: ");
+        System.out.print("Enter username (min 4 symbol): ");
         String username = scanner.nextLine();
-        System.out.print("Enter password: ");
+        System.out.print("Enter password (min 4 symbol): ");
         String password = scanner.nextLine();
+        if (username.length() < 4 || password.length() < 4) {
+            System.out.println("\nValidation error");
+            registration();
+        }
         User user = userService.registerUser(username, password);
         if (user != null) {
-            System.out.println("User with username '" + username + "' registred successfully!");
+            System.out.println("\nUser with username '" + username + "' registred successfully!");
         } else {
-            System.out.println("User with username '" + username + "' already exist");
+            System.out.println("\nUser with username '" + username + "' already exist");
         }
         Engine.start();
     }
@@ -55,15 +61,15 @@ public class UserController {
         System.out.print("Enter password: ");
         String authPassword = scanner.nextLine();
         User user = userService.authenticationUser(authUsername, authPassword);
-        if (user != null && !user.isAdmin()) {
+        if (user != null && !user.getRoleAsString().equals("ADMIN")) {
             currentUser = user;
-            System.out.println("Authentification success!");
+            System.out.println("\nAuthentification success!");
             return currentUser;
-        } else if (user != null && user.isAdmin()) {
+        } else if (user != null && user.getRoleAsString().equals("ADMIN")) {
             Engine.menuAdmin();
-            System.out.println("Authentification by Admin success!");
+            System.out.println("\nAuthentification by Admin success!");
         } else {
-            System.out.println("Authentification is failed. Incorrect password or username. Try again");
+            System.out.println("\nAuthentification is failed. Incorrect password or username. Try again");
             Engine.start();
         }
         return null;

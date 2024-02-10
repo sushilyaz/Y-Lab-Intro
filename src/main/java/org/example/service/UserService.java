@@ -1,7 +1,8 @@
 package org.example.service;
 
-import org.example.audit.AuditLog;
-import org.example.audit.UserAction;
+import org.example.repository.UserActionRepository;
+import org.example.model.UserAction;
+import org.example.model.Role;
 import org.example.model.User;
 import org.example.repository.UserRepository;
 
@@ -13,14 +14,14 @@ import java.util.Optional;
  */
 public class UserService {
     private UserRepository userRepository;
-    private AuditLog auditLog;
+    private UserActionRepository userActionRepository;
     private static int id = 1;
 
     /**
      * Во время инстанса класса также инициализируется аудит и репозиторий пользователя
      */
     public UserService() {
-        this.auditLog = AuditLog.getInstance();
+        this.userActionRepository = UserActionRepository.getInstance();
         this.userRepository = UserRepository.getInstance();
     }
 
@@ -32,16 +33,16 @@ public class UserService {
         if (existUser.isPresent()) {
             return null;
         } else {
-            id = userRepository.findLastId() + 1;
-            User newUser = new User(id, username, password, false);
+            // поработать с dto (убрать id)
+            User newUser = new User(id, username, password, Role.SIMPLE_USER);
             userRepository.save(newUser);
             UserAction userAction = new UserAction(username, "registred", LocalDateTime.now());
-            auditLog.logAction(userAction);
+            userActionRepository.save(userAction);
             return newUser;
         }
     }
     /**
-     * Обработчик аутентицикации пользователя. Возвращает "текущего пользователя"
+     * Обработчик аутентификации пользователя. Возвращает "текущего пользователя"
      */
     public User authenticationUser (String username, String password) {
         Optional<User> existUser = userRepository.findByUsername(username);
@@ -49,16 +50,16 @@ public class UserService {
             User user = existUser.get();
             if (user.getPassword().equals(password)) {
                 UserAction userAction = new UserAction(username, "Authentificate success", LocalDateTime.now());
-                auditLog.logAction(userAction);
+                userActionRepository.save(userAction);
                 return user;
             } else {
                 UserAction userAction = new UserAction(username, "Authentificate failed. Incorrect password", LocalDateTime.now());
-                auditLog.logAction(userAction);
+                userActionRepository.save(userAction);
                 return null;
             }
         } else {
             UserAction userAction = new UserAction(username, "Authentificate failed. Username not found", LocalDateTime.now());
-            auditLog.logAction(userAction);
+            userActionRepository.save(userAction);
             return null;
         }
     }
@@ -67,7 +68,7 @@ public class UserService {
      */
     public User logoutUser(User user) {
         UserAction userAction = new UserAction(user.getUsername(), "Log out user", LocalDateTime.now());
-        auditLog.logAction(userAction);
+        userActionRepository.save(userAction);
         return null;
     }
 }

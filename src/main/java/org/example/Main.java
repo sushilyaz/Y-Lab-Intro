@@ -1,6 +1,5 @@
 package org.example;
 
-import org.example.in.Engine;
 import org.example.repository.BaseRepository;
 
 public class Main {
@@ -15,6 +14,5 @@ public class Main {
             e.printStackTrace();
         }
         // Вызов главного меню приложения
-        Engine.start();
     }
 }

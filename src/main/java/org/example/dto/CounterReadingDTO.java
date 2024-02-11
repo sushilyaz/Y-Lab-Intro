@@ -39,11 +39,11 @@ public class CounterReadingDTO {
      */
     @Override
     public String toString() {
-        return "CounterReadingDTO{" +
-                ", year=" + year +
-                ", month=" + month +
-                ", typeOfCounter=" + typeOfCounter +
-                "}\n";
+        return "Counter Reading for " +
+                " year = " + year +
+                " month = " + month +
+                "have types and value of Counter: " + typeOfCounter +
+                "\n";
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.example.config;
 
+import jakarta.servlet.ServletContextListener;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
@@ -14,17 +15,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DatabaseConfig {
+public class DatabaseConfig implements ServletContextListener {
+
     /**
      *  Установка соединения с БД
      */
-    public static Connection getConnection() throws IOException, SQLException {
+    public static Connection getConnection() throws IOException, SQLException, ClassNotFoundException {
         Properties properties = loadProperties();
+        Class.forName("org.postgresql.Driver");
         String jdbcUrl = properties.getProperty("jdbc.url");
         String jdbcUsername = properties.getProperty("jdbc.username");
         String jdbcPassword = properties.getProperty("jdbc.password");
-
-        return DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
+        Connection con = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
+        return con;
     }
 
     /**

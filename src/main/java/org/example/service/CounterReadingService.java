@@ -1,12 +1,11 @@
 package org.example.service;
 
-import org.example.repository.UserActionRepository;
-import org.example.model.UserAction;
 import org.example.dto.CounterReadingDTO;
 import org.example.mapper.MapperCR;
 import org.example.model.User;
+import org.example.model.UserAction;
 import org.example.repository.CounterReadingRepository;
-import org.example.util.Format;
+import org.example.repository.UserActionRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -102,7 +101,9 @@ public class CounterReadingService implements Service{
         if (!lastCountingReading.isEmpty()) {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Latest Counter Reading success", LocalDateTime.now());
             userActionRepository.save(userAction);
-            return MapperCR.toDTO(lastCountingReading);
+            int month = lastCountingReading.get(0).getMonth();
+            int year = lastCountingReading.get(0).getYear();
+            return null; //CounterReadingMapper.INSTANCE.toCounterReadingDTO(lastCountingReading, id, month, year); //MapperCR.toDTO(lastCountingReading);
         } else {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Latest Counter Reading failed. Data not found", LocalDateTime.now());
             userActionRepository.save(userAction);
@@ -121,7 +122,7 @@ public class CounterReadingService implements Service{
         if (!counterReadingForMonth.isEmpty()) {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Counter Reading For Month success", LocalDateTime.now());
             userActionRepository.save(userAction);
-            return MapperCR.toDTO(counterReadingForMonth);
+            return null;// CounterReadingMapper.INSTANCE.toCounterReadingDTO(counterReadingForMonth, id, month, year); // MapperCR.toDTO(counterReadingForMonth);
         } else {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Counter Reading For Month failed. Data not found", LocalDateTime.now());
             userActionRepository.save(userAction);
@@ -138,6 +139,8 @@ public class CounterReadingService implements Service{
         UserAction userAction = new UserAction(currentUser.getUsername(), "Get All Counter Reading For Month", LocalDateTime.now());
         userActionRepository.save(userAction);
         // Преобразование данных в вид удобных для клиента
-        return Format.formatter(list);
+        int month = list.get(0).getMonth();
+        int year = list.get(0).getYear();
+        return null;//CounterReadingMapper.INSTANCE.toCounterReadingDTOList(list, id, month, year);  // Format.formatter(list);
     }
 }

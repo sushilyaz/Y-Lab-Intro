@@ -1,9 +1,11 @@
 package org.example.service;
 
-import org.example.repository.UserActionRepository;
-import org.example.model.UserAction;
-import org.example.model.Role;
+import org.example.dto.UserCreateDTO;
+import org.example.dto.UserDTO;
+import org.example.mapper.UserMapper;
 import org.example.model.User;
+import org.example.model.UserAction;
+import org.example.repository.UserActionRepository;
 import org.example.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -15,7 +17,7 @@ import java.util.Optional;
 public class UserService {
     private UserRepository userRepository;
     private UserActionRepository userActionRepository;
-    private static int id = 1;
+    private UserMapper userMapper = UserMapper.INSTANCE;
 
     /**
      * Во время инстанса класса также инициализируется аудит и репозиторий пользователя
@@ -28,23 +30,25 @@ public class UserService {
     /**
      * Обработчик регистрации пользователя
      */
-    public User registerUser(String username, String password) {
+    public UserDTO registerUser(UserCreateDTO userCreateDTO) {// Надо сделать в параметры UserCreateDTO
+        String username = userCreateDTO.getUsername();
         Optional<User> existUser = userRepository.findByUsername(username);
         if (existUser.isPresent()) {
             return null;
         } else {
-            // поработать с dto (убрать id)
-            User newUser = new User(id, username, password, Role.SIMPLE_USER);
+            User newUser = userMapper.map(userCreateDTO);
+            newUser.setRoleFromString("SIMPLE_USER");
             userRepository.save(newUser);
+
             UserAction userAction = new UserAction(username, "registred", LocalDateTime.now());
             userActionRepository.save(userAction);
-            return newUser;
+            return userMapper.map(newUser);
         }
     }
     /**
      * Обработчик аутентификации пользователя. Возвращает "текущего пользователя"
      */
-    public User authenticationUser (String username, String password) {
+    public User authenticationUser (String username, String password) { // Надо сделать в параметры AuthDTO
         Optional<User> existUser = userRepository.findByUsername(username);
         if (existUser.isPresent()) {
             User user = existUser.get();

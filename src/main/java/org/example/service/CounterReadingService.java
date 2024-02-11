@@ -1,7 +1,9 @@
 package org.example.service;
 
 import org.example.dto.CounterReadingDTO;
+import org.example.mapper.CounterReadingMapper;
 import org.example.mapper.MapperCR;
+import org.example.model.CounterReading;
 import org.example.model.User;
 import org.example.model.UserAction;
 import org.example.repository.CounterReadingRepository;
@@ -97,13 +99,11 @@ public class CounterReadingService implements Service{
      */
     public CounterReadingDTO getLastUserInfo(User currentUser) {
         int id = currentUser.getId();
-        var lastCountingReading = counterReadingRepository.findLastCounterReading(id);
+        List<CounterReading> lastCountingReading = counterReadingRepository.findLastCounterReading(id);
         if (!lastCountingReading.isEmpty()) {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Latest Counter Reading success", LocalDateTime.now());
             userActionRepository.save(userAction);
-            int month = lastCountingReading.get(0).getMonth();
-            int year = lastCountingReading.get(0).getYear();
-            return null; //CounterReadingMapper.INSTANCE.toCounterReadingDTO(lastCountingReading, id, month, year); //MapperCR.toDTO(lastCountingReading);
+            return CounterReadingMapper.INSTANCE.map(lastCountingReading);
         } else {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Latest Counter Reading failed. Data not found", LocalDateTime.now());
             userActionRepository.save(userAction);

@@ -23,9 +23,41 @@ public class CounterReadingDTO {
     // мапа тип показания - значение
     private Map<String, Double> typeOfCounter;
 
-    /**
-     * Сравнение с значениями показаний за последний месяц
-     */
+    public CounterReadingDTO() {
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public Map<String, Double> getTypeOfCounter() {
+        return typeOfCounter;
+    }
+
+    public void setTypeOfCounter(Map<String, Double> typeOfCounter) {
+        this.typeOfCounter = typeOfCounter;
+    }
+
     public boolean compare (CounterReadingDTO latest) {
         for (Map.Entry<String, Double> entry : latest.typeOfCounter.entrySet()) {
             if (entry.getValue() > this.typeOfCounter.get(entry.getKey()))
@@ -34,9 +66,6 @@ public class CounterReadingDTO {
         return true;
     }
 
-    /**
-     * Для sout
-     */
     @Override
     public String toString() {
         return "Counter Reading for " +
@@ -46,9 +75,6 @@ public class CounterReadingDTO {
                 "\n";
     }
 
-    /**
-     * Для сравнения
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,9 +82,7 @@ public class CounterReadingDTO {
         CounterReadingDTO that = (CounterReadingDTO) o;
         return userId == that.userId && year == that.year && month == that.month && Objects.equals(typeOfCounter, that.typeOfCounter);
     }
-    /**
-     * По контракту если переопределяется equals, то и переопределяется hashCode
-     */
+
     @Override
     public int hashCode() {
         return Objects.hash(userId, year, month, typeOfCounter);

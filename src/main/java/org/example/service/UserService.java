@@ -30,7 +30,7 @@ public class UserService {
     /**
      * Обработчик регистрации пользователя
      */
-    public UserDTO registerUser(UserCreateDTO userCreateDTO) {// Надо сделать в параметры UserCreateDTO
+    public UserDTO registerUser(UserCreateDTO userCreateDTO) {
         String username = userCreateDTO.getUsername();
         Optional<User> existUser = userRepository.findByUsername(username);
         if (existUser.isPresent()) {

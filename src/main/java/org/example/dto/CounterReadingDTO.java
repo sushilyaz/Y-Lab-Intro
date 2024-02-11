@@ -14,8 +14,6 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 public class CounterReadingDTO {
-    // закрепление за пользователем
-    private int userId;
     // год
     private int year;
     // месяц
@@ -24,14 +22,6 @@ public class CounterReadingDTO {
     private Map<String, Double> typeOfCounter;
 
     public CounterReadingDTO() {
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public int getYear() {
@@ -80,11 +70,11 @@ public class CounterReadingDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CounterReadingDTO that = (CounterReadingDTO) o;
-        return userId == that.userId && year == that.year && month == that.month && Objects.equals(typeOfCounter, that.typeOfCounter);
+        return year == that.year && month == that.month && Objects.equals(typeOfCounter, that.typeOfCounter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, year, month, typeOfCounter);
+        return Objects.hash(year, month, typeOfCounter);
     }
 }

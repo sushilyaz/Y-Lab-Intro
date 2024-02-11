@@ -2,7 +2,9 @@ package org.example.service;
 
 import org.example.dto.CounterReadingDTO;
 import org.example.dto.UserInfoDTO;
+import org.example.mapper.CounterReadingMapper;
 import org.example.mapper.MapperCR;
+import org.example.model.CounterReading;
 import org.example.model.User;
 import org.example.model.UserAction;
 import org.example.repository.AdminRepository;
@@ -83,10 +85,9 @@ public class AdminService implements Service{
         var user = userRepository.findByUsername(currentUser.getUsername());
         if (user.isPresent()) {
             int id = user.get().getId();
-            var counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, month, year);
+            List<CounterReading> counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, month, year);
             if (!counterReadingForMonth.isEmpty()) {
-                // Преобразование полученных данных в удобный для клиента вид
-                return MapperCR.toDTO(counterReadingForMonth);
+                return CounterReadingMapper.INSTANCE.map(counterReadingForMonth);
             } else {
                 return null;
             }

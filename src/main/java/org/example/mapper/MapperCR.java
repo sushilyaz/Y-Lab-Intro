@@ -3,7 +3,6 @@ package org.example.mapper;
 import org.example.dto.CounterReadingDTO;
 import org.example.model.CounterReading;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,20 +23,8 @@ public class MapperCR {
                         CounterReading::getValue
                 ));
 
-        CounterReadingDTO counterReadingDTO = new CounterReadingDTO(userId, year, month, typeOfCounter);
+        CounterReadingDTO counterReadingDTO = new CounterReadingDTO(year, month, typeOfCounter);
 
         return counterReadingDTO;
-    }
-
-    /**
-     * Из DTO обратно в сущность
-     */
-    public static List<CounterReading> toEntity(CounterReadingDTO counterReadingDTO) {
-        List<CounterReading> counterReadings = new ArrayList<>();
-        for (Map.Entry<String, Double> map : counterReadingDTO.getTypeOfCounter().entrySet()) {
-            var counterReading = new CounterReading(1, counterReadingDTO.getUserId(), counterReadingDTO.getYear(), counterReadingDTO.getMonth(), map.getKey(), map.getValue());
-            counterReadings.add(counterReading);
-        }
-        return counterReadings;
     }
 }

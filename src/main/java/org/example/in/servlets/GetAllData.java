@@ -12,9 +12,10 @@ import org.example.model.User;
 import org.example.service.CounterReadingService;
 
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet(name = "LatestData", value = "/latest-data-for-current-user")
-public class GetLatestData extends HttpServlet {
+@WebServlet(name = "getAllData", value = "/get-all-data")
+public class GetAllData extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
@@ -22,19 +23,17 @@ public class GetLatestData extends HttpServlet {
         if (session != null) {
             User currentUser = (User) session.getAttribute("user");
             ObjectMapper objectMapper = new ObjectMapper();
-            //BaseRepository.initializeConnection();
             if (currentUser != null) {
                 CounterReadingService counterReadingService = new CounterReadingService();
-                CounterReadingDTO counterReadingDTO = counterReadingService.getLastUserInfo(currentUser);
-                if (counterReadingDTO != null) {
+                List<CounterReadingDTO> res = counterReadingService.getCRByUser(currentUser);
+                if (!res.isEmpty()) {
                     resp.setStatus(HttpServletResponse.SC_OK);
                     resp.setContentType("application/json");
-                    resp.getWriter().write(objectMapper.writeValueAsString(counterReadingDTO));
+                    resp.getWriter().write(objectMapper.writeValueAsString(res));
                 } else {
                     resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                     resp.getWriter().write("Data not found");
                 }
-
             } else {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resp.getWriter().write("User not authenticated");
@@ -43,6 +42,5 @@ public class GetLatestData extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             resp.getWriter().write("User not authenticated");
         }
-
     }
 }

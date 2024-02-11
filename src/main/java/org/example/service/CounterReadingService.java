@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.dto.CounterReadingCreateDTO;
 import org.example.dto.CounterReadingDTO;
 import org.example.mapper.CounterReadingMapper;
 import org.example.mapper.MapperCR;
@@ -75,21 +76,21 @@ public class CounterReadingService implements Service{
      *
      * @return CounterReadingDTO, если все нормально; null - если данные в этот месяц уже вносились
      */
-    public CounterReadingDTO submitCounterReading(User currentUser, CounterReadingDTO counterReadingDTO) {
+    public CounterReadingDTO submitCounterReading(User currentUser, CounterReadingCreateDTO dtoCreate) {
         int id = currentUser.getId();
         var counterList = counterReadingRepository.findAllByUserId(id);
         for (var counter : counterList) {
-            if (counter.getMonth() == counterReadingDTO.getMonth() && counter.getYear() == counterReadingDTO.getYear()) {
+            if (counter.getMonth() == dtoCreate.getMonth() && counter.getYear() == dtoCreate.getYear()) {
                 UserAction userAction = new UserAction(currentUser.getUsername(), "Submit Counter Reading failed. Data already exist.", LocalDateTime.now());
                 userActionRepository.save(userAction);
                 return null;
             }
         }
-        var counterReading = MapperCR.toEntity(counterReadingDTO);
+        List<CounterReading> counterReading = CounterReadingMapper.INSTANCE.map(dtoCreate, id);
         counterReadingRepository.save(counterReading);
         UserAction userAction = new UserAction(currentUser.getUsername(), "Submit Counter Reading success.", LocalDateTime.now());
         userActionRepository.save(userAction);
-        return counterReadingDTO;
+        return CounterReadingMapper.INSTANCE.map(counterReading);
     }
 
     /**
@@ -122,7 +123,7 @@ public class CounterReadingService implements Service{
         if (!counterReadingForMonth.isEmpty()) {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Counter Reading For Month success", LocalDateTime.now());
             userActionRepository.save(userAction);
-            return null;// CounterReadingMapper.INSTANCE.toCounterReadingDTO(counterReadingForMonth, id, month, year); // MapperCR.toDTO(counterReadingForMonth);
+            return CounterReadingMapper.INSTANCE.map(counterReadingForMonth);
         } else {
             UserAction userAction = new UserAction(currentUser.getUsername(), "Get Counter Reading For Month failed. Data not found", LocalDateTime.now());
             userActionRepository.save(userAction);
@@ -135,12 +136,9 @@ public class CounterReadingService implements Service{
      */
     public List<CounterReadingDTO> getCRByUser(User currentUser) {
         int id = currentUser.getId();
-        var list = counterReadingRepository.findAllByUserId(id);
+        List<CounterReading> entities = counterReadingRepository.findAllByUserId(id);
         UserAction userAction = new UserAction(currentUser.getUsername(), "Get All Counter Reading For Month", LocalDateTime.now());
         userActionRepository.save(userAction);
-        // Преобразование данных в вид удобных для клиента
-        int month = list.get(0).getMonth();
-        int year = list.get(0).getYear();
-        return null;//CounterReadingMapper.INSTANCE.toCounterReadingDTOList(list, id, month, year);  // Format.formatter(list);
+        return CounterReadingMapper.INSTANCE.toListDTO(entities);
     }
 }

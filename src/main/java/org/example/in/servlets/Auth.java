@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.dto.AuthDTO;
 import org.example.model.User;
-import org.example.repository.BaseRepository;
 import org.example.service.UserService;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class Auth extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
         ObjectMapper objectMapper = new ObjectMapper();
-        BaseRepository.initializeConnection();
+        //BaseRepository.initializeConnection();
         AuthDTO dto = objectMapper.readValue(req.getReader(), AuthDTO.class);
         User user = userService.authenticationUser(dto.getUsername(), dto.getPassword());
         if (user == null) {

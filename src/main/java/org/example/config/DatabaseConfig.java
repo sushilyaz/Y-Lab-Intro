@@ -1,12 +1,15 @@
 package org.example.config;
 
+import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import org.example.repository.BaseRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +18,22 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+@WebListener
 public class DatabaseConfig implements ServletContextListener {
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+            try {
+                Connection connection = DatabaseConfig.getConnection();
+                runLiquibaseMigrations(connection);
+                BaseRepository.setConnection(connection);
+            } catch (SQLException | LiquibaseException | IOException e) {
+                System.out.println("Failed migration or connection with: " + e.getMessage());
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
+    }
 
     /**
      *  Установка соединения с БД

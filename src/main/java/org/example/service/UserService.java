@@ -48,7 +48,7 @@ public class UserService {
     /**
      * Обработчик аутентификации пользователя. Возвращает "текущего пользователя"
      */
-    public User authenticationUser (String username, String password) { // Надо сделать в параметры AuthDTO
+    public User authenticationUser (String username, String password) {
         Optional<User> existUser = userRepository.findByUsername(username);
         if (existUser.isPresent()) {
             User user = existUser.get();

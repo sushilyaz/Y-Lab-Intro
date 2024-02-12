@@ -3,7 +3,6 @@ package org.example.service;
 import org.example.dto.CounterReadingDTO;
 import org.example.dto.UserInfoDTO;
 import org.example.mapper.CounterReadingMapper;
-import org.example.mapper.MapperCR;
 import org.example.model.CounterReading;
 import org.example.model.User;
 import org.example.model.UserAction;
@@ -11,10 +10,10 @@ import org.example.repository.AdminRepository;
 import org.example.repository.CounterReadingRepository;
 import org.example.repository.UserActionRepository;
 import org.example.repository.UserRepository;
-import org.example.util.Format;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Сервис администратора, админ в журналировании не участвует. Его действия не фиксируются
@@ -46,10 +45,10 @@ public class AdminService implements Service{
     public List<CounterReadingDTO> getCRByUser(User currentUser) {
         var user = userRepository.findByUsername(currentUser.getUsername());
         if (user.isPresent()) {
-            var result = counterReadingRepository.findAllByUserId(user.get().getId());
+            List<CounterReading> result = counterReadingRepository.findAllByUserId(user.get().getId());
             if (!result.isEmpty()) {
                 // Преобразование полученных данных в удобный для клиента вид
-                return Format.formatter(result);
+                return CounterReadingMapper.INSTANCE.toListDTO(result);
             } else {
                 return new ArrayList<>();
             }
@@ -62,12 +61,12 @@ public class AdminService implements Service{
      * Получение последних данных пользователя
      */
     public CounterReadingDTO getLastUserInfo(User currentUser) {
-        var user = userRepository.findByUsername(currentUser.getUsername());
+        Optional<User> user = userRepository.findByUsername(currentUser.getUsername());
         if (user.isPresent()) {
-            var result = counterReadingRepository.findLastCounterReading(user.get().getId());
+            List<CounterReading> result = counterReadingRepository.findLastCounterReading(user.get().getId());
             if (!result.isEmpty()) {
                 // Преобразование полученных данных в удобный для клиента вид
-                return MapperCR.toDTO(result);
+                return CounterReadingMapper.INSTANCE.map(result);
             } else {
                 return null;
             }
@@ -111,7 +110,7 @@ public class AdminService implements Service{
      * Добавление новых типов показаний
      */
     public boolean addNewKey(String newKey) {
-        var list = counterReadingRepository.uniqueType(1);
+        List<String> list = counterReadingRepository.uniqueType(1);
         if (list.contains(newKey)) {
             return false;
         } else {

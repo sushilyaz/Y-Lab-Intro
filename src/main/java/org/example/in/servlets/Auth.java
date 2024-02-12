@@ -19,7 +19,6 @@ public class Auth extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
         ObjectMapper objectMapper = new ObjectMapper();
-        //BaseRepository.initializeConnection();
         AuthDTO dto = objectMapper.readValue(req.getReader(), AuthDTO.class);
         User user = userService.authenticationUser(dto.getUsername(), dto.getPassword());
         if (user == null) {

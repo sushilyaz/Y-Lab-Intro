@@ -53,6 +53,9 @@ public class CounterReadingDTO {
             if (entry.getValue() > this.typeOfCounter.get(entry.getKey()))
                 return false;
         }
+        if (this.month <= latest.getMonth() && this.year <= latest.getYear()) {
+            return false;
+        }
         return true;
     }
 

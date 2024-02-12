@@ -1,28 +1,6 @@
 //
 //package org.example;
 //
-//import liquibase.Liquibase;
-//import liquibase.database.Database;
-//import liquibase.database.DatabaseFactory;
-//import liquibase.database.jvm.JdbcConnection;
-//import liquibase.exception.LiquibaseException;
-//import liquibase.resource.ClassLoaderResourceAccessor;
-//import org.example.model.User;
-//import org.example.repository.BaseRepository;
-//import org.example.repository.UserRepository;
-//import org.example.service.UserService;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.testcontainers.containers.PostgreSQLContainer;
-//import org.testcontainers.junit.jupiter.Container;
-//import org.testcontainers.junit.jupiter.Testcontainers;
-//
-//import java.sql.Connection;
-//import java.sql.DriverManager;
-//import java.sql.SQLException;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
 //
 ///**
 // * Тестировал только пограничные значения

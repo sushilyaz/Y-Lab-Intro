@@ -37,7 +37,7 @@ public class UserActionRepository extends BaseRepository {
      * Добавление в журнал
      */
     public void save(UserAction userAction) {
-        String sql = "INSERT INTO mainschema.user_action (username, action, timestamp) VALUES (?,?,?)";
+        String sql = "INSERT INTO mainschema.user_action (id, username, action, timestamp) VALUES (nextval('mainschema.seq_ua'),?,?,?)";
         try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, userAction.getUsername());
             stmt.setString(2, userAction.getAction());

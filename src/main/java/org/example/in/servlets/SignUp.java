@@ -18,22 +18,20 @@ public class SignUp extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserService userService = new UserService();
         ObjectMapper objectMapper = new ObjectMapper();
-        UserCreateDTO userCreateDTO = objectMapper.readValue(req.getReader(), UserCreateDTO.class);
-        if (userCreateDTO.getUsername() == null || userCreateDTO.getPassword() == null ||
-                userCreateDTO.getUsername().length() < 4 || userCreateDTO.getPassword().length() < 4) {
+        objectMapper.findAndRegisterModules();
+        try {
+            UserCreateDTO userCreateDTO = objectMapper.readValue(req.getReader(), UserCreateDTO.class);
+            UserDTO dto = userService.registerUser(userCreateDTO);
+            if (dto == null) {
+                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.getWriter().write("Username already exists");
+            } else {
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                resp.getWriter().write("User register success! ");
+            }
+        } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("Data not valid");
-            return;
-        }
-
-        UserDTO dto = userService.registerUser(userCreateDTO);
-        if (dto == null) {
-            resp.setStatus(HttpServletResponse.SC_CONFLICT);
-            resp.getWriter().write("Username already exists");
-        } else {
-            resp.setStatus(HttpServletResponse.SC_CREATED);
-            resp.getWriter().write("User register success! ");
-
+            resp.getWriter().write("Data no valid");
         }
     }
 }

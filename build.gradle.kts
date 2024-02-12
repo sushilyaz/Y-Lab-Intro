@@ -43,9 +43,11 @@ dependencies {
     val testcontainersVersion = "1.19.3"
     val junitVersion = "5.9.1"
     val assertjVersion = "3.24.2"
+    val jakartaValidation = "3.0.2"
 
     runtimeOnly("org.aspectj:aspectjweaver:$aspectjVersion")
     implementation("org.aspectj:aspectjweaver:$aspectjVersion")
+    implementation("jakarta.validation:jakarta.validation-api:$jakartaValidation")
     runtimeOnly("org.aspectj:aspectjrt:$aspectjVersion")
     implementation("org.aspectj:aspectjrt:$aspectjVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")

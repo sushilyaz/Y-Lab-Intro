@@ -37,7 +37,15 @@ public class GetUserDataForMonth extends HttpServlet {
         if (currentUser.getRoleAsString().equals("ADMIN")) {
             AdminService adminService = new AdminService();
             ObjectMapper objectMapper = new ObjectMapper();
-            ForMonthDTO userData = objectMapper.readValue(req.getReader(), ForMonthDTO.class);
+            ForMonthDTO userData;
+            try {
+                userData = objectMapper.readValue(req.getReader(), ForMonthDTO.class);
+            } catch (Exception e) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("Data no valid!");
+                return;
+            }
+
             CounterReadingDTO data = adminService.getUserInfoForMonth(new User(userData.getUsername()), userData.getMonth(), userData.getYear());
 
             if (data != null) {

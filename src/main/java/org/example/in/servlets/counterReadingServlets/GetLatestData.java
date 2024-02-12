@@ -1,4 +1,4 @@
-package org.example.in.servlets;
+package org.example.in.servlets.counterReadingServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -12,10 +12,9 @@ import org.example.model.User;
 import org.example.service.CounterReadingService;
 
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(name = "getAllData", value = "/get-all-data")
-public class GetAllData extends HttpServlet {
+@WebServlet(name = "LatestData", value = "/latest-data-for-current-user")
+public class GetLatestData extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
@@ -23,17 +22,19 @@ public class GetAllData extends HttpServlet {
         if (session != null) {
             User currentUser = (User) session.getAttribute("user");
             ObjectMapper objectMapper = new ObjectMapper();
+            //BaseRepository.initializeConnection();
             if (currentUser != null) {
                 CounterReadingService counterReadingService = new CounterReadingService();
-                List<CounterReadingDTO> res = counterReadingService.getCRByUser(currentUser);
-                if (!res.isEmpty()) {
+                CounterReadingDTO counterReadingDTO = counterReadingService.getLastUserInfo(currentUser);
+                if (counterReadingDTO != null) {
                     resp.setStatus(HttpServletResponse.SC_OK);
                     resp.setContentType("application/json");
-                    resp.getWriter().write(objectMapper.writeValueAsString(res));
+                    resp.getWriter().write(objectMapper.writeValueAsString(counterReadingDTO));
                 } else {
                     resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                     resp.getWriter().write("Data not found");
                 }
+
             } else {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resp.getWriter().write("User not authenticated");
@@ -42,5 +43,6 @@ public class GetAllData extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             resp.getWriter().write("User not authenticated");
         }
+
     }
 }

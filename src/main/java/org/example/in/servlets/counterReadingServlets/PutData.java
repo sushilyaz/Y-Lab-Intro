@@ -1,4 +1,4 @@
-package org.example.in.servlets;
+package org.example.in.servlets.counterReadingServlets;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,23 +27,27 @@ public class PutData extends HttpServlet {
             if (currentUser != null) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 CounterReadingService counterReadingService = new CounterReadingService();
-                CounterReadingCreateDTO dtoCreate = objectMapper.readValue(req.getReader(), CounterReadingCreateDTO.class);
-                CounterReadingDTO validDto = CounterReadingMapper.INSTANCE.mapCreateToDto(dtoCreate);
-                CounterReadingDTO res = counterReadingService.validationCounter(currentUser, validDto);
-                if (res != null) {
-                    CounterReadingDTO dto = counterReadingService.submitCounterReading(currentUser, dtoCreate);
-                    if (dto != null) {
-                        resp.setStatus(HttpServletResponse.SC_CREATED);
-                        resp.getWriter().write("Data submit success!");
+                try {
+                    CounterReadingCreateDTO dtoCreate = objectMapper.readValue(req.getReader(), CounterReadingCreateDTO.class);
+                    CounterReadingDTO validDto = CounterReadingMapper.INSTANCE.mapCreateToDto(dtoCreate);
+                    CounterReadingDTO res = counterReadingService.validationCounter(currentUser, validDto);
+                    if (res != null) {
+                        CounterReadingDTO dto = counterReadingService.submitCounterReading(currentUser, dtoCreate);
+                        if (dto != null) {
+                            resp.setStatus(HttpServletResponse.SC_CREATED);
+                            resp.getWriter().write("Data submit success!");
+                        } else {
+                            resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                            resp.getWriter().write("Data already exist!");
+                        }
                     } else {
-                        resp.setStatus(HttpServletResponse.SC_CONFLICT);
-                        resp.getWriter().write("Data already exist!");
+                        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        resp.getWriter().write("Data no valid!");
                     }
-                } else {
+                } catch (Exception e) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resp.getWriter().write("Data no valid!");
                 }
-
             } else {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resp.getWriter().write("User not authenticated");

@@ -1,4 +1,4 @@
-package org.example.in.servlets;
+package org.example.in.servlets.counterReadingServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -8,14 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.dto.CounterReadingDTO;
-import org.example.dto.DateDTO;
 import org.example.model.User;
 import org.example.service.CounterReadingService;
 
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet(name = "getDataForMonth", value = "/get-data-for-month")
-public class GetDataForMonth extends HttpServlet {
+@WebServlet(name = "getAllData", value = "/get-all-data")
+public class GetAllData extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
@@ -25,9 +25,8 @@ public class GetDataForMonth extends HttpServlet {
             ObjectMapper objectMapper = new ObjectMapper();
             if (currentUser != null) {
                 CounterReadingService counterReadingService = new CounterReadingService();
-                DateDTO dateDTO = objectMapper.readValue(req.getReader(), DateDTO.class);
-                CounterReadingDTO res = counterReadingService.getUserInfoForMonth(currentUser, dateDTO.getMonth(), dateDTO.getYear());
-                if (res != null) {
+                List<CounterReadingDTO> res = counterReadingService.getCRByUser(currentUser);
+                if (!res.isEmpty()) {
                     resp.setStatus(HttpServletResponse.SC_OK);
                     resp.setContentType("application/json");
                     resp.getWriter().write(objectMapper.writeValueAsString(res));

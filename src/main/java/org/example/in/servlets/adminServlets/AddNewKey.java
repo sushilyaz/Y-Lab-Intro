@@ -35,7 +35,15 @@ public class AddNewKey extends HttpServlet {
         if (currentUser.getRoleAsString().equals("ADMIN")) {
             AdminService adminService = new AdminService();
             ObjectMapper objectMapper = new ObjectMapper();
-            NewKeyDTO data = objectMapper.readValue(req.getReader(), NewKeyDTO.class);
+            NewKeyDTO data;
+            try {
+                data = objectMapper.readValue(req.getReader(), NewKeyDTO.class);
+            } catch (Exception e) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("Data no valid!");
+                return;
+            }
+
 
             if (adminService.addNewKey(data.getNewKey())) {
                 resp.setStatus(HttpServletResponse.SC_OK);

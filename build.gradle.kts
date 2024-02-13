@@ -43,14 +43,15 @@ dependencies {
     val testcontainersVersion = "1.19.3"
     val junitVersion = "5.9.1"
     val assertjVersion = "3.24.2"
-    val jakartaValidation = "3.0.2"
-    val hibernateValidator = "8.0.1.Final"
+    val jakartaValidationVersion = "3.0.2"
+    val hibernateValidatorVersion = "8.0.1.Final"
+    val mockitoVersion = "5.10.0"
 
     // hibernate validator добавил для валидации dto (провайдер)
-    implementation("org.hibernate.validator:hibernate-validator:$hibernateValidator")
+    implementation("org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion")
     runtimeOnly("org.aspectj:aspectjweaver:$aspectjVersion")
     implementation("org.aspectj:aspectjweaver:$aspectjVersion")
-    implementation("jakarta.validation:jakarta.validation-api:$jakartaValidation")
+    implementation("jakarta.validation:jakarta.validation-api:$jakartaValidationVersion")
     runtimeOnly("org.aspectj:aspectjrt:$aspectjVersion")
     implementation("org.aspectj:aspectjrt:$aspectjVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
@@ -61,6 +62,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
     compileOnly("jakarta.servlet:jakarta.servlet-api:$servletApiVersion")
+    implementation("jakarta.servlet:jakarta.servlet-api:$servletApiVersion")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
     compileOnly("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
@@ -70,6 +72,10 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:$assertjVersion")
+    testImplementation("org.mockito:mockito-core:$mockitoVersion")
+    // https://mvnrepository.com/artifact/org.glassfish.expressly/expressly
+    implementation("org.glassfish.expressly:expressly:5.0.0")
+
 }
 
 tasks.test {

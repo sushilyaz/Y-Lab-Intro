@@ -1,65 +1,8 @@
 //package org.example;
 //
-//import liquibase.Liquibase;
-//import liquibase.database.Database;
-//import liquibase.database.DatabaseFactory;
-//import liquibase.database.jvm.JdbcConnection;
-//import liquibase.exception.LiquibaseException;
-//import liquibase.resource.ClassLoaderResourceAccessor;
-//import org.example.dto.CounterReadingDTO;
-//import org.example.model.User;
-//import org.example.repository.BaseRepository;
-//import org.example.service.CounterReadingService;
-//import org.example.service.UserService;
-//import org.junit.jupiter.api.AfterAll;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.testcontainers.containers.PostgreSQLContainer;
-//import org.testcontainers.junit.jupiter.Container;
-//import org.testcontainers.junit.jupiter.Testcontainers;
-//
-//import java.sql.Connection;
-//import java.sql.DriverManager;
-//import java.sql.SQLException;
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
 ///**
 // * Тестирование сервиса подачи показаний
 // */
-//@Testcontainers
-//public class CRServiceTest {
-//    /**
-//     * Создание тестового контейнера с подключением
-//     */
-//    @Container
-//    private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
-//            .withDatabaseName("test_suhoi")
-//            .withUsername("test_suhoi")
-//            .withPassword("test_qwerty");
-//    private static Connection connection;
-//    CounterReadingService counterReadingService = new CounterReadingService();
-//
-//    private static User currentUser;
-//    /**
-//     *  Установка соединение с контейнером, передача соединения BaseRepository и выполнение скриптов миграции
-//     */
-//    @BeforeAll
-//    static void setUp() throws SQLException, LiquibaseException {
-//        postgresContainer.start();
-//        connection = DriverManager.getConnection(postgresContainer.getJdbcUrl(),
-//                postgresContainer.getUsername(), postgresContainer.getPassword());
-//        Database database =
-//                DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-//        Liquibase liquibase =
-//                new Liquibase("db/changelog/changelog.xml", new ClassLoaderResourceAccessor(), database);
-//        liquibase.update();
-//        BaseRepository.connection = connection;
-//        System.out.println("Migration is completed successfully");
-//        connection.setAutoCommit(false);
-//        initUser();
-//    }
 //
 //    /**
 //     *  Закрытие соединения

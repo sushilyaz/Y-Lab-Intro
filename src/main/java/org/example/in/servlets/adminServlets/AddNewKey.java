@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -22,15 +21,15 @@ import java.util.Set;
 public class AddNewKey extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
 
-        if (session == null) {
+        User currentUser;
+        try {
+            currentUser = (User) req.getSession(true).getAttribute("user");
+        } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            resp.getWriter().write("Admin not authenticated");
+            resp.getWriter().write("User not authenticated");
             return;
         }
-
-        User currentUser = (User) session.getAttribute("user");
 
         if (currentUser == null) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

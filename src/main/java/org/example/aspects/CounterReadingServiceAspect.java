@@ -11,8 +11,12 @@ import org.example.model.UserAction;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Аспекты по аудиту сервисов.
+ */
 @Aspect
 public class CounterReadingServiceAspect extends BaseAspect{
+    // срезы
     @Pointcut("execution(* org.example.service.CounterReadingService.getLastUserInfo(..))")
     public void getLastUserInfo() {
     }
@@ -27,6 +31,11 @@ public class CounterReadingServiceAspect extends BaseAspect{
     public void submitCounterReading() {
     }
 
+    /**
+     * Ниже аудит каждого сервиса Counter Reading
+     * @param joinPoint
+     * @param result
+     */
     @AfterReturning(pointcut = "getLastUserInfo()", returning = "result")
     public void lastInfoUserAction(JoinPoint joinPoint, Object result) {
         String username = getUsernameArgument(joinPoint);
@@ -82,6 +91,12 @@ public class CounterReadingServiceAspect extends BaseAspect{
             System.out.println(userAction);
         }
     }
+
+    /**
+     * Метод для получения username для записи в БД
+     * @param joinPoint
+     * @return
+     */
     private String getUsernameArgument(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {

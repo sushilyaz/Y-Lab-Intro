@@ -10,7 +10,7 @@ import org.example.repository.UserRepository;
 
 import java.util.Optional;
 
-public class UserService {
+public class UserService implements UserServiceContract{
     private UserRepository userRepository;
     private UserActionRepository userActionRepository;
     private UserMapper userMapper = UserMapper.INSTANCE;

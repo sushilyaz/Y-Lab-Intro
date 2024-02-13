@@ -32,7 +32,7 @@ public class AdminRepository extends BaseRepository{
      *  Добавление нового типа счетчика. Добавление осуществляется в пользователя админ. Он является неким "центром"
      */
     public void addNewType(String newKey) {
-        String sql = "INSERT INTO mainschema.counter_reading (user_id, year, month, type, value) VALUES (1,2000,1,?,1)";
+        String sql = "INSERT INTO mainschema.counter_reading (id, user_id, year, month, type, value) VALUES (nextval('mainschema.seq_cr'),1,2000,1,?,1)";
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, newKey);
             stmt.executeUpdate();

@@ -11,6 +11,12 @@ import org.slf4j.LoggerFactory;
 public class LoggingAndTimingAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAndTimingAspect.class);
 
+    /**
+     * замеряю время выполнения всех сервисов
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
     @Around("execution(* *(..)) && within(org.example.service..*)")
     public Object logAndTimeMethodExecution(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();

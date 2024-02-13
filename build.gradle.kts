@@ -46,6 +46,7 @@ dependencies {
     val jakartaValidationVersion = "3.0.2"
     val hibernateValidatorVersion = "8.0.1.Final"
     val mockitoVersion = "5.10.0"
+    val glassfishVersion ="5.0.0"
 
     // hibernate validator добавил для валидации dto (провайдер)
     implementation("org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion")
@@ -57,6 +58,9 @@ dependencies {
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("org.liquibase:liquibase-core:$liquibaseVersion")
+    testImplementation("org.mockito:mockito-core:$mockitoVersion")
+    // для работы провайдера
+    implementation("org.glassfish.expressly:expressly:$glassfishVersion")
     implementation("org.mapstruct:mapstruct:$mapstructVersion")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.4.2.Final")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
@@ -72,9 +76,6 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:$assertjVersion")
-    testImplementation("org.mockito:mockito-core:$mockitoVersion")
-    // https://mvnrepository.com/artifact/org.glassfish.expressly/expressly
-    implementation("org.glassfish.expressly:expressly:5.0.0")
 
 }
 

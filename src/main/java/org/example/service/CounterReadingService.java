@@ -10,6 +10,7 @@ import org.example.repository.CounterReadingRepository;
 import org.example.repository.UserActionRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -149,6 +150,10 @@ public class CounterReadingService implements Service{
         List<CounterReading> entities = counterReadingRepository.findAllByUserId(id);
         UserAction userAction = new UserAction(currentUser.getUsername(), "Get All Counter Reading For Month", LocalDateTime.now());
         userActionRepository.save(userAction);
-        return CounterReadingMapper.INSTANCE.toListDTO(entities);
+        if (entities.isEmpty()) {
+            return new ArrayList<CounterReadingDTO>();
+        } else {
+            return CounterReadingMapper.INSTANCE.toListDTO(entities);
+        }
     }
 }

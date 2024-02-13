@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet id="002-insert-data" author="suhoi">
+<!--user1 init-->
+        <insert tableName="users" schemaName="mainschema">
+            <column name="id" valueComputed="nextval('mainschema.seq_user')"/>
+            <column name="username" value="user1"/>
+            <column name="password" value="user1"/>
+            <column name="role" value="SIMPLE_USER"/>
+        </insert>
+
+        <insert tableName="counter_reading" schemaName="mainschema">
+            <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
+            <column name="user_id" value="2"/>
+            <column name="year" value="2023"/>
+            <column name="month" value="1"/>
+            <column name="type" value="Cold Water"/>
+            <column name="value" value="100"/>
+        </insert>
+
+        <insert tableName="counter_reading" schemaName="mainschema">
+            <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
+            <column name="user_id" value="2"/>
+            <column name="year" value="2023"/>
+            <column name="month" value="1"/>
+            <column name="type" value="Hot Water"/>
+            <column name="value" value="100"/>
+        </insert>
+
+        <insert tableName="counter_reading" schemaName="mainschema">
+            <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
+            <column name="user_id" value="2"/>
+            <column name="year" value="2023"/>
+            <column name="month" value="1"/>
+            <column name="type" value="Heating"/>
+            <column name="value" value="100"/>
+        </insert>
+
+        <insert tableName="counter_reading" schemaName="mainschema">
+            <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
+            <column name="user_id" value="2"/>
+            <column name="year" value="2023"/>
+            <column name="month" value="2"/>
+            <column name="type" value="Cold Water"/>
+            <column name="value" value="200"/>
+        </insert>
+
+        <insert tableName="counter_reading" schemaName="mainschema">
+            <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
+            <column name="user_id" value="2"/>
+            <column name="year" value="2023"/>
+            <column name="month" value="2"/>
+            <column name="type" value="Hot Water"/>
+            <column name="value" value="200"/>
+        </insert>
+
+        <insert tableName="counter_reading" schemaName="mainschema">
+            <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
+            <column name="user_id" value="2"/>
+            <column name="year" value="2023"/>
+            <column name="month" value="2"/>
+            <column name="type" value="Heating"/>
+            <column name="value" value="200"/>
+        </insert>
+<!--user2 init-->
+        <insert tableName="users" schemaName="mainschema">
+            <column name="id" valueComputed="nextval('mainschema.seq_user')"/>
+            <column name="username" value="user2"/>
+            <column name="password" value="user2"/>
+            <column name="role" value="SIMPLE_USER"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

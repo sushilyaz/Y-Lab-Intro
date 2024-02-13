@@ -7,12 +7,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.example.dto.CounterReadingDTO;
 import org.example.dto.adminDTO.ForMonthDTO;
 import org.example.model.User;
 import org.example.service.AdminService;
 
 import java.io.IOException;
+import java.util.Set;
 
 @WebServlet(name = "adminGetUserDataForMonth", value = "/admin/get-user-data-for-month")
 public class GetUserDataForMonth extends HttpServlet {
@@ -37,6 +42,8 @@ public class GetUserDataForMonth extends HttpServlet {
         if (currentUser.getRoleAsString().equals("ADMIN")) {
             AdminService adminService = new AdminService();
             ObjectMapper objectMapper = new ObjectMapper();
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            Validator validator = factory.getValidator();
             ForMonthDTO userData;
             try {
                 userData = objectMapper.readValue(req.getReader(), ForMonthDTO.class);
@@ -45,7 +52,12 @@ public class GetUserDataForMonth extends HttpServlet {
                 resp.getWriter().write("Data no valid!");
                 return;
             }
-
+            Set<ConstraintViolation<ForMonthDTO>> violations = validator.validate(userData);
+            if (!violations.isEmpty()) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("Invalid data");
+                return;
+            }
             CounterReadingDTO data = adminService.getUserInfoForMonth(new User(userData.getUsername()), userData.getMonth(), userData.getYear());
 
             if (data != null) {

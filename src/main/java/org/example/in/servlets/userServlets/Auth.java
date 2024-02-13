@@ -20,7 +20,7 @@ public class Auth extends HttpServlet {
         UserService userService = new UserService();
         ObjectMapper objectMapper = new ObjectMapper();
         AuthDTO dto = objectMapper.readValue(req.getReader(), AuthDTO.class);
-        User user = userService.authenticationUser(dto.getUsername(), dto.getPassword());
+        User user = userService.authenticationUser(dto);
         if (user == null) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             resp.getWriter().write("Incorrect login or password");

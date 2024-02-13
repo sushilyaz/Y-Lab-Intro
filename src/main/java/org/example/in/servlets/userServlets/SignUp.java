@@ -5,11 +5,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.example.dto.UserCreateDTO;
 import org.example.dto.UserDTO;
 import org.example.service.UserService;
 
 import java.io.IOException;
+import java.util.Set;
 
 @WebServlet(name = "signup", value = "/signup")
 public class SignUp extends HttpServlet {
@@ -19,8 +24,18 @@ public class SignUp extends HttpServlet {
         UserService userService = new UserService();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
         try {
             UserCreateDTO userCreateDTO = objectMapper.readValue(req.getReader(), UserCreateDTO.class);
+            Set<ConstraintViolation<UserCreateDTO>> violations = validator.validate(userCreateDTO);
+
+            if (!violations.isEmpty()) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("Invalid data");
+                return;
+            }
+
             UserDTO dto = userService.registerUser(userCreateDTO);
             if (dto == null) {
                 resp.setStatus(HttpServletResponse.SC_CONFLICT);

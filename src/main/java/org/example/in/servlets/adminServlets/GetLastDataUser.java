@@ -36,7 +36,15 @@ public class GetLastDataUser extends HttpServlet {
         if (currentUser.getRoleAsString().equals("ADMIN")) {
             AdminService adminService = new AdminService();
             ObjectMapper objectMapper = new ObjectMapper();
-            UserNameDTO userData = objectMapper.readValue(req.getReader(), UserNameDTO.class);
+            UserNameDTO userData;
+            try {
+                userData = objectMapper.readValue(req.getReader(), UserNameDTO.class);
+            } catch (Exception e) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("Invalid data");
+                return;
+            }
+
             CounterReadingDTO data = adminService.getLastUserInfo(new User(userData.getUsername()));
 
             if (data != null) {

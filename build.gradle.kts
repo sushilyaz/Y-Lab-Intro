@@ -44,7 +44,10 @@ dependencies {
     val junitVersion = "5.9.1"
     val assertjVersion = "3.24.2"
     val jakartaValidation = "3.0.2"
+    val hibernateValidator = "8.0.1.Final"
 
+    // hibernate validator добавил для валидации dto (провайдер)
+    implementation("org.hibernate.validator:hibernate-validator:$hibernateValidator")
     runtimeOnly("org.aspectj:aspectjweaver:$aspectjVersion")
     implementation("org.aspectj:aspectjweaver:$aspectjVersion")
     implementation("jakarta.validation:jakarta.validation-api:$jakartaValidation")

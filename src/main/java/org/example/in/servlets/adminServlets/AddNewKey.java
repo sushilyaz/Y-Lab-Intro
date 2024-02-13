@@ -7,11 +7,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.example.dto.adminDTO.NewKeyDTO;
 import org.example.model.User;
 import org.example.service.AdminService;
 
 import java.io.IOException;
+import java.util.Set;
 
 @WebServlet(name = "AddNewKey", value = "/admin/add-new-key")
 public class AddNewKey extends HttpServlet {
@@ -35,6 +40,8 @@ public class AddNewKey extends HttpServlet {
         if (currentUser.getRoleAsString().equals("ADMIN")) {
             AdminService adminService = new AdminService();
             ObjectMapper objectMapper = new ObjectMapper();
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            Validator validator = factory.getValidator();
             NewKeyDTO data;
             try {
                 data = objectMapper.readValue(req.getReader(), NewKeyDTO.class);
@@ -43,7 +50,12 @@ public class AddNewKey extends HttpServlet {
                 resp.getWriter().write("Data no valid!");
                 return;
             }
-
+            Set<ConstraintViolation<NewKeyDTO>> violations = validator.validate(data);
+            if (!violations.isEmpty()) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("Invalid data");
+                return;
+            }
 
             if (adminService.addNewKey(data.getNewKey())) {
                 resp.setStatus(HttpServletResponse.SC_OK);

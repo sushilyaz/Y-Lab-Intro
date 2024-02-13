@@ -12,6 +12,9 @@ import org.example.service.AdminService;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Сервлет просмотра всех типов показателей
+ */
 @WebServlet(name = "GetAllKeys", value = "/admin/get-all-keys")
 public class GetAllKeys extends HttpServlet {
     @Override

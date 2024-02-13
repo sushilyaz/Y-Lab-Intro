@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Аспекты по аудиту сервисов.
+ * Аспекты по аудиту сервисов Counter Reading.
  */
 @Aspect
 public class CounterReadingServiceAspect extends BaseAspect{

@@ -13,6 +13,9 @@ import org.example.service.AdminService;
 
 import java.io.IOException;
 
+/**
+ * Сервлет просмотр последних внесенных данных пользователем
+ */
 @WebServlet(name = "LastDataUser", value = "/admin/get-last-data-user")
 public class GetLastDataUser extends HttpServlet {
     @Override

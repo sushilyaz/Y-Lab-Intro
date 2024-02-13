@@ -20,6 +20,10 @@ import java.util.Properties;
 
 @WebListener
 public class DatabaseConfig implements ServletContextListener {
+    /**
+     * При запуске сервера данный класс прослушивается и инициализируется контекст
+     * @param sce
+     */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
             try {

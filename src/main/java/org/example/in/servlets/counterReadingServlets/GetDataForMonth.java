@@ -18,6 +18,9 @@ import org.example.service.CounterReadingService;
 import java.io.IOException;
 import java.util.Set;
 
+/**
+ * Сервлет просмотра данных за конкретный месяц аутентифицированного пользователя
+ */
 @WebServlet(name = "getDataForMonth", value = "/get-data-for-month")
 public class GetDataForMonth extends HttpServlet {
     @Override

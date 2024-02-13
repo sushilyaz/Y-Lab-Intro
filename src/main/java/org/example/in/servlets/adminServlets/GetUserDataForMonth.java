@@ -18,6 +18,9 @@ import org.example.service.AdminService;
 import java.io.IOException;
 import java.util.Set;
 
+/**
+ * Сервлет просмтра последних внесенных данных пользователем
+ */
 @WebServlet(name = "adminGetUserDataForMonth", value = "/admin/get-user-data-for-month")
 public class GetUserDataForMonth extends HttpServlet {
     @Override

@@ -12,6 +12,9 @@ import org.example.service.UserService;
 
 import java.io.IOException;
 
+/**
+ * Сервлет аутентификации пользователя
+ */
 @WebServlet(name = "Login", value = "/login")
 public class Auth extends HttpServlet {
     @Override

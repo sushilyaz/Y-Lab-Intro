@@ -12,6 +12,10 @@ import org.example.service.CounterReadingService;
 
 import java.io.IOException;
 
+
+/**
+ * Сервлет просмотра последних внесенных данных аутентифицированного пользователя
+ */
 @WebServlet(name = "LatestData", value = "/latest-data-for-current-user")
 public class GetLatestData extends HttpServlet {
     @Override

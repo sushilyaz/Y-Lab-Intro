@@ -8,9 +8,9 @@ import java.util.List;
 
 public class AdminRepository extends BaseRepository{
     /**
-     * Для синглтона
+     * Для синглтона (добавил многопоточный вариант, как сказал ментор)
      */
-    private static AdminRepository instance;
+    private static volatile AdminRepository instance;
 
     /**
      * приватный конструктор для синглтона
@@ -23,7 +23,11 @@ public class AdminRepository extends BaseRepository{
      */
     public static AdminRepository getInstance() {
         if (instance == null) {
-            instance = new AdminRepository();
+            synchronized (AdminRepository.class) {
+                if (instance == null) {
+                    instance = new AdminRepository();
+                }
+            }
         }
         return instance;
     }
@@ -48,7 +52,7 @@ public class AdminRepository extends BaseRepository{
         String sql = "SELECT mainschema.users.username, mainschema.counter_reading.year, mainschema.counter_reading.month, mainschema.counter_reading.type, mainschema.counter_reading.value\n" +
                 "FROM mainschema.users\n" +
                 "JOIN mainschema.counter_reading ON mainschema.users.id = mainschema.counter_reading.user_id\n" +
-                "ORDER BY mainschema.users.username";
+                "ORDER BY mainschema.users.username, mainschema.counter_reading.year, mainschema.counter_reading.month";
 
         try (var stmt = connection.prepareStatement(sql)) {
             var resultSet = stmt.executeQuery();

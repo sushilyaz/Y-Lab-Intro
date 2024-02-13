@@ -14,21 +14,21 @@ import java.util.List;
  */
 public class UserActionRepository extends BaseRepository {
     /**
-     * для синглтона
+     * для синглтона (добавил многопоточный вариант, как сказал ментор)
      */
-    private static UserActionRepository instance;
+    private static volatile UserActionRepository instance;
 
-    /**
-     * приватный конструктор для синглтона
-     */
-    private UserActionRepository() {}
+    private UserActionRepository() {
 
-    /**
-     * Для синглтона
-     */
+    }
+
     public static UserActionRepository getInstance() {
         if (instance == null) {
-            instance = new UserActionRepository();
+            synchronized (UserActionRepository.class) {
+                if (instance == null) {
+                    instance = new UserActionRepository();
+                }
+            }
         }
         return instance;
     }

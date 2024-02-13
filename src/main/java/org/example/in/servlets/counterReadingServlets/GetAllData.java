@@ -13,6 +13,9 @@ import org.example.service.CounterReadingService;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Сервлет просмотра всех данных аутентифицированного пользователя
+ */
 @WebServlet(name = "getAllData", value = "/get-all-data")
 public class GetAllData extends HttpServlet {
     @Override

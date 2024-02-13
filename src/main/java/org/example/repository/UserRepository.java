@@ -10,23 +10,27 @@ import java.sql.Statement;
 import java.util.Optional;
 
 /**
- * Класс репозитория пользователя. Данные хранятся в листе. Реализован паттерн синглтон, вроде как множественного
- * доступа к этому приложению не планируется, поэтому реализовал не потокобезопасный вариант
+ * Добавил многопоточный вариант
  */
 public class UserRepository extends BaseRepository{
-    private static UserRepository instance;
+    private static volatile UserRepository instance;
 
-    private UserRepository() {}
+    private UserRepository() {
+    }
 
     public static UserRepository getInstance() {
         if (instance == null) {
-            instance = new UserRepository();
+            synchronized (UserRepository.class) {
+                if (instance == null) {
+                    instance = new UserRepository();
+                }
+            }
         }
         return instance;
     }
 
     /**
-     * Сохранение пользователя в бд (при регистрации)
+     * Сохранение пользователя в бд (при регистрации). Также добавил сиквенс
      */
     public void save(User user) {
         String sql = "INSERT INTO mainschema.users (id, username, password, role) VALUES (nextval('mainschema.seq_user'),?,?,?)";

@@ -16,22 +16,21 @@ import java.util.List;
 public class CounterReadingRepository extends BaseRepository implements ReadingRepository {
 
     /**
-     * Для синглтона
+     * Для синглтона (добавил многопоточный вариант, как сказал ментор)
      */
-    private static CounterReadingRepository instance;
+    private static volatile CounterReadingRepository instance;
 
-    /**
-     * приватный конструктор для синглтона
-     */
     private CounterReadingRepository() {
+
     }
 
-    /**
-     * Для синглтона
-     */
     public static CounterReadingRepository getInstance() {
         if (instance == null) {
-            instance = new CounterReadingRepository();
+            synchronized (CounterReadingRepository.class) {
+                if (instance == null) {
+                    instance = new CounterReadingRepository();
+                }
+            }
         }
         return instance;
     }

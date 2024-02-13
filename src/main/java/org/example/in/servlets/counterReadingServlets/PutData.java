@@ -20,6 +20,9 @@ import org.example.service.CounterReadingService;
 import java.io.IOException;
 import java.util.Set;
 
+/**
+ * Сервлет отправки показателей счетчика аутентифицированного пользователя
+ */
 @WebServlet(name = "putdata", value = "/put-counter-reading")
 public class PutData extends HttpServlet {
     @Override

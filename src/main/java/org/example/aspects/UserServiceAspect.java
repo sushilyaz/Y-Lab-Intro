@@ -9,16 +9,23 @@ import org.example.dto.UserDTO;
 import org.example.model.UserAction;
 
 import java.time.LocalDateTime;
-
+/**
+ * Аспекты по аудиту сервисов User.
+ */
 @Aspect
 public class UserServiceAspect extends BaseAspect {
+    // срезы
     @Pointcut("execution(* org.example.service.UserService.registerUser(..))")
     public void userServiceRegistration() {
     }
     @Pointcut("execution(* org.example.service.UserService.authenticationUser(..))")
     public void userServiceAuthentification() {
     }
-
+    /**
+     * Ниже аудит каждого сервиса User
+     * @param joinPoint
+     * @param result
+     */
     @AfterReturning(pointcut = "userServiceRegistration()", returning = "result")
     public void registrationUserAction(JoinPoint joinPoint, Object result) {
         String username = getUsernameArgument(joinPoint);
@@ -46,7 +53,11 @@ public class UserServiceAspect extends BaseAspect {
             System.out.println(userAction);
         }
     }
-
+    /**
+     * Метод для получения username для записи в БД
+     * @param joinPoint
+     * @return
+     */
     private String getUsernameArgument(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {

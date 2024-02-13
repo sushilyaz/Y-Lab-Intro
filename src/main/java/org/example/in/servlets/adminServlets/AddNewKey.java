@@ -1,7 +1,6 @@
 package org.example.in.servlets.adminServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +16,13 @@ import org.example.service.AdminService;
 import java.io.IOException;
 import java.util.Set;
 
+/**
+ * Сервлет добавления нового типа счетчика
+ */
 @WebServlet(name = "AddNewKey", value = "/admin/add-new-key")
 public class AddNewKey extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         User currentUser;
         try {

@@ -15,7 +15,9 @@ import org.example.service.UserService;
 
 import java.io.IOException;
 import java.util.Set;
-
+/**
+ * Сервлет регистрации пользователя
+ */
 @WebServlet(name = "signup", value = "/signup")
 public class SignUp extends HttpServlet {
 

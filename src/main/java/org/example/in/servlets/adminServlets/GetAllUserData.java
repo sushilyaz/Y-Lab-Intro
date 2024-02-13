@@ -14,6 +14,9 @@ import org.example.service.AdminService;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Сервлет просмотр всех поданных показателей пользователя
+ */
 @WebServlet(name = "getAllUserData", value = "/admin/get-user-data")
 public class GetAllUserData extends HttpServlet {
     @Override

@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * маппер для CounterReading
+ */
 @Mapper(componentModel = "default")
 public interface CounterReadingMapper {
     CounterReadingMapper INSTANCE = Mappers.getMapper(CounterReadingMapper.class);

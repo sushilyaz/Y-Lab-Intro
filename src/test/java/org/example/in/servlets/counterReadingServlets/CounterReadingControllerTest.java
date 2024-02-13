@@ -83,6 +83,13 @@ public class CounterReadingControllerTest {
         System.out.println("Migration is completed successfully");
         connection.setAutoCommit(false);
     }
+    static void deleteDataFromCR() throws LiquibaseException {
+        Database database =
+                DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+        Liquibase liquibase =
+                new Liquibase("db/changelog/004-delete-data-after-test.xml", new ClassLoaderResourceAccessor(), database);
+        liquibase.update();
+    }
 
     @AfterAll
     static void tearDown() throws SQLException {
@@ -256,7 +263,7 @@ public class CounterReadingControllerTest {
      * @throws ServletException
      */
     @Test
-    public void testPutDataSuccess() throws IOException, ServletException {
+    public void testPutDataSuccess() throws IOException, ServletException, SQLException, LiquibaseException {
         HttpSession sessionMock = mock(HttpSession.class);
         when(request.getSession(true)).thenReturn(sessionMock);
 
@@ -280,6 +287,8 @@ public class CounterReadingControllerTest {
         CounterReadingDTO dto = service.getLastUserInfo(user1);
 
         assertThat(dto).isNotNull();
+        // ниже так сказать откат БД (реализовал через ликибаз удаление внесенных данных, это единственное, до чего я додумался, как откатить БД)
+        deleteDataFromCR();
     }
     /**
      * Не получилось положить данные в БД, так как данные не валидны (см. поле "month")

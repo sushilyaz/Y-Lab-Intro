@@ -80,6 +80,10 @@ public class UserControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Успешная регистрация пользователя
+     * @throws IOException
+     */
     @Test
     public void testValidRegistration() throws IOException {
 
@@ -91,6 +95,11 @@ public class UserControllerTest {
         signUpServlet.doPost(request, response);
         verify(response).setStatus(HttpServletResponse.SC_CREATED);
     }
+
+    /**
+     * Пользователь не зарегистрирован (Миним. длина юзернейма = 4)
+     * @throws IOException
+     */
     @Test
     public void testNoValidRegistration() throws IOException {
 
@@ -104,6 +113,10 @@ public class UserControllerTest {
         verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
+    /**
+     * Успешная аутентификация (см. changelogTest.xml)
+     * @throws IOException
+     */
     @Test
     public void testAuthSuccess() throws IOException {
 
@@ -117,6 +130,10 @@ public class UserControllerTest {
         authServlet.doPost(request, response);
         verify(response).setStatus(HttpServletResponse.SC_OK);
     }
+    /**
+     * Фейловая аутентификация. Неправильный пароль (см. changelogTest.xml)
+     * @throws IOException
+     */
     @Test
     public void testAuthFailed() throws IOException {
 

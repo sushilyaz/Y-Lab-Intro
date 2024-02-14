@@ -14,8 +14,6 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 public class CounterReadingDTO {
-    // закрепление за пользователем
-    private int userId;
     // год
     private int year;
     // месяц
@@ -23,44 +21,63 @@ public class CounterReadingDTO {
     // мапа тип показания - значение
     private Map<String, Double> typeOfCounter;
 
-    /**
-     * Сравнение с значениями показаний за последний месяц
-     */
+    public CounterReadingDTO() {
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public Map<String, Double> getTypeOfCounter() {
+        return typeOfCounter;
+    }
+
+    public void setTypeOfCounter(Map<String, Double> typeOfCounter) {
+        this.typeOfCounter = typeOfCounter;
+    }
+
     public boolean compare (CounterReadingDTO latest) {
         for (Map.Entry<String, Double> entry : latest.typeOfCounter.entrySet()) {
             if (entry.getValue() > this.typeOfCounter.get(entry.getKey()))
                 return false;
         }
+        if (this.month <= latest.getMonth() && this.year <= latest.getYear()) {
+            return false;
+        }
         return true;
     }
 
-    /**
-     * Для sout
-     */
     @Override
     public String toString() {
-        return "CounterReadingDTO{" +
-                ", year=" + year +
-                ", month=" + month +
-                ", typeOfCounter=" + typeOfCounter +
-                "}\n";
+        return "Counter Reading for " +
+                " year = " + year +
+                " month = " + month +
+                "have types and value of Counter: " + typeOfCounter +
+                "\n";
     }
 
-    /**
-     * Для сравнения
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CounterReadingDTO that = (CounterReadingDTO) o;
-        return userId == that.userId && year == that.year && month == that.month && Objects.equals(typeOfCounter, that.typeOfCounter);
+        return year == that.year && month == that.month && Objects.equals(typeOfCounter, that.typeOfCounter);
     }
-    /**
-     * По контракту если переопределяется equals, то и переопределяется hashCode
-     */
+
     @Override
     public int hashCode() {
-        return Objects.hash(userId, year, month, typeOfCounter);
+        return Objects.hash(year, month, typeOfCounter);
     }
 }

@@ -1,0 +1,140 @@
+13-Feb-2024 22:22:55.160 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.1.18
+13-Feb-2024 22:22:55.165 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jan 5 2024 14:39:40 UTC
+13-Feb-2024 22:22:55.166 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.1.18.0
+13-Feb-2024 22:22:55.166 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+13-Feb-2024 22:22:55.166 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            6.5.0-15-generic
+13-Feb-2024 22:22:55.166 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+13-Feb-2024 22:22:55.166 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/lib/jvm/jdk-20.0.2+9
+13-Feb-2024 22:22:55.166 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           20.0.2+9
+13-Feb-2024 22:22:55.167 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Eclipse Adoptium
+13-Feb-2024 22:22:55.167 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18
+13-Feb-2024 22:22:55.167 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18
+13-Feb-2024 22:22:55.187 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/conf/logging.properties
+13-Feb-2024 22:22:55.187 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+13-Feb-2024 22:22:55.187 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+13-Feb-2024 22:22:55.187 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+13-Feb-2024 22:22:55.188 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+13-Feb-2024 22:22:55.188 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+13-Feb-2024 22:22:55.188 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.io=ALL-UNNAMED
+13-Feb-2024 22:22:55.188 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util=ALL-UNNAMED
+13-Feb-2024 22:22:55.188 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+13-Feb-2024 22:22:55.188 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+13-Feb-2024 22:22:55.188 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18
+13-Feb-2024 22:22:55.188 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18
+13-Feb-2024 22:22:55.188 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/temp
+13-Feb-2024 22:22:55.191 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The Apache Tomcat Native library which allows using OpenSSL was not found on the java.library.path: [/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib]
+13-Feb-2024 22:22:55.530 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+13-Feb-2024 22:22:55.555 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [611] milliseconds
+13-Feb-2024 22:22:55.605 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+13-Feb-2024 22:22:55.605 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.1.18]
+13-Feb-2024 22:22:55.617 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/ROOT]
+13-Feb-2024 22:22:56.395 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+13-Feb-2024 22:22:56.455 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/ROOT] has finished in [837] ms
+13-Feb-2024 22:22:56.455 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/examples]
+13-Feb-2024 22:22:56.923 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+13-Feb-2024 22:22:56.961 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/examples] has finished in [505] ms
+13-Feb-2024 22:22:56.961 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/manager]
+13-Feb-2024 22:22:57.283 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+13-Feb-2024 22:22:57.287 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/manager] has finished in [326] ms
+13-Feb-2024 22:22:57.288 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/Gradle___org_example___demo_1_0_SNAPSHOT_war]
+13-Feb-2024 22:22:57.591 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+13-Feb-2024 22:22:57.597 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/Gradle___org_example___demo_1_0_SNAPSHOT_war] has finished in [308] ms
+13-Feb-2024 22:22:57.597 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/docs]
+13-Feb-2024 22:22:57.886 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+13-Feb-2024 22:22:57.888 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/docs] has finished in [290] ms
+13-Feb-2024 22:22:57.888 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/host-manager]
+13-Feb-2024 22:22:58.188 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+13-Feb-2024 22:22:58.190 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/home/suhoi/IdeaProjects/Y-Lab-Intro/apache-tomcat-10.1.18/webapps/host-manager] has finished in [302] ms
+13-Feb-2024 22:22:58.194 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+13-Feb-2024 22:22:58.206 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [2649] milliseconds
+13-Feb-2024 22:24:05.993 INFO [Thread-1] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8080"]
+13-Feb-2024 22:24:06.006 INFO [Thread-1] org.apache.catalina.core.StandardService.stopInternal Stopping service [Catalina]
+13-Feb-2024 22:24:06.057 INFO [Thread-1] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+13-Feb-2024 22:24:06.070 INFO [Thread-1] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
+13-Feb-2024 22:31:21.982 WARNING [main] org.apache.catalina.startup.Catalina.parseServerXml Unable to load server configuration from [/home/suhoi/IdeaProjects/Y-Lab-Intro/.run/Tomcat]
+	java.io.FileNotFoundException: /home/suhoi/IdeaProjects/Y-Lab-Intro/.run/Tomcat (No such file or directory)
+		at java.base/java.io.FileInputStream.open0(Native Method)
+		at java.base/java.io.FileInputStream.open(FileInputStream.java:219)
+		at java.base/java.io.FileInputStream.<init>(FileInputStream.java:158)
+		at java.base/java.io.FileInputStream.<init>(FileInputStream.java:112)
+		at java.base/sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:84)
+		at java.base/sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:180)
+		at org.apache.catalina.startup.CatalinaBaseConfigurationSource.getResource(CatalinaBaseConfigurationSource.java:118)
+		at org.apache.catalina.startup.CatalinaBaseConfigurationSource.getServerXml(CatalinaBaseConfigurationSource.java:54)
+		at org.apache.catalina.startup.Catalina.parseServerXml(Catalina.java:631)
+		at org.apache.catalina.startup.Catalina.load(Catalina.java:732)
+		at org.apache.catalina.startup.Catalina.start(Catalina.java:783)
+		at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+		at java.base/java.lang.reflect.Method.invoke(Method.java:578)
+		at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:347)
+		at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:478)
+13-Feb-2024 22:31:21.991 SEVERE [main] org.apache.catalina.startup.Catalina.start Cannot start server, server instance is not configured
+13-Feb-2024 22:32:43.569 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/option]
+13-Feb-2024 22:32:43.574 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/deployment/artifact/settings/option]
+13-Feb-2024 22:32:43.575 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/deployment/artifact/settings]
+13-Feb-2024 22:32:43.575 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/deployment/artifact]
+13-Feb-2024 22:32:43.575 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/deployment]
+13-Feb-2024 22:32:43.575 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/server-settings/option]
+13-Feb-2024 22:32:43.576 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/server-settings]
+13-Feb-2024 22:32:43.576 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/predefined_log_file]
+13-Feb-2024 22:32:43.576 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/predefined_log_file]
+13-Feb-2024 22:32:43.576 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/predefined_log_file]
+13-Feb-2024 22:32:43.577 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/predefined_log_file]
+13-Feb-2024 22:32:43.577 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/predefined_log_file]
+13-Feb-2024 22:32:43.577 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/RunnerSettings/option]
+13-Feb-2024 22:32:43.577 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/RunnerSettings]
+13-Feb-2024 22:32:43.578 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/option]
+13-Feb-2024 22:32:43.578 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.578 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.578 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.579 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.579 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP]
+13-Feb-2024 22:32:43.579 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.579 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.580 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.580 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.580 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN]
+13-Feb-2024 22:32:43.580 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper]
+13-Feb-2024 22:32:43.580 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/option]
+13-Feb-2024 22:32:43.581 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.581 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.581 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.581 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.581 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP]
+13-Feb-2024 22:32:43.582 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.582 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.582 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.582 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.582 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN]
+13-Feb-2024 22:32:43.583 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper]
+13-Feb-2024 22:32:43.583 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/option]
+13-Feb-2024 22:32:43.583 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.583 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.584 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.584 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.584 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP]
+13-Feb-2024 22:32:43.584 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.584 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.585 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.585 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.585 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN]
+13-Feb-2024 22:32:43.585 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper]
+13-Feb-2024 22:32:43.585 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/option]
+13-Feb-2024 22:32:43.585 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.586 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.586 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.586 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP/option]
+13-Feb-2024 22:32:43.586 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/STARTUP]
+13-Feb-2024 22:32:43.586 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.587 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.587 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.587 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN/option]
+13-Feb-2024 22:32:43.587 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper/SHUTDOWN]
+13-Feb-2024 22:32:43.587 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/ConfigurationWrapper]
+13-Feb-2024 22:32:43.587 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/method/option]
+13-Feb-2024 22:32:43.588 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/method/option/artifact]
+13-Feb-2024 22:32:43.588 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/method/option]
+13-Feb-2024 22:32:43.588 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration/method]
+13-Feb-2024 22:32:43.588 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component/configuration]
+13-Feb-2024 22:32:43.588 WARNING [main] org.apache.tomcat.util.digester.Digester.endElement No rules found matching [component]
+13-Feb-2024 22:32:43.591 SEVERE [main] org.apache.catalina.startup.Catalina.start Cannot start server, server instance is not configured

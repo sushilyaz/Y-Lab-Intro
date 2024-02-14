@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "2f962495-a79c-4768-a559-bb7928154c81",
+		"name": "Y-lab",
+		"description": "Порядок работы:  \n1) Освободить порт 5432 на компьютере\n\n2) Запустить docker-compose в проекте.\n\n3) Запустить сервак (tomcat)\n\n4) Использовать приведенные запросы",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32422517"
+	},
+	"item": [
+		{
+			"name": "sign up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"suhoi\",\n    \"password\":\"suhoi\"\n}"
+				},
+				"url": "http://localhost:8080/signup"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"suhoi\",\n    \"password\":\"suhoi\"\n}"
+				},
+				"url": "http://localhost:8080/login"
+			},
+			"response": []
+		},
+		{
+			"name": "put CR",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"year\": 2023,\n  \"month\": 1,\n  \"typeOfCounter\": {\n    \"Cold Water\": 100,\n    \"Hot Water\": 100,\n    \"Heating\": 100\n  }\n}"
+				},
+				"url": "http://localhost:8080/put-counter-reading"
+			},
+			"response": []
+		},
+		{
+			"name": "latest Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/latest-data-for-current-user"
+			},
+			"response": []
+		},
+		{
+			"name": "Data for month",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"month\":\"1\",\n    \"year\":2023\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/get-data-for-month"
+			},
+			"response": []
+		},
+		{
+			"name": "All data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/get-all-data"
+			},
+			"response": []
+		},
+		{
+			"name": "AdminGetUserDataForMonth",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"suhoi\",\n    \"month\": 1,\n    \"year\": 2023\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/admin/get-user-data-for-month"
+			},
+			"response": []
+		},
+		{
+			"name": "AdminGetAllUserData",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"suhoi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/admin/get-user-data"
+			},
+			"response": []
+		},
+		{
+			"name": "AdminAddNewKey",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"newKey\": \"Gaz\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/admin/add-new-key"
+			},
+			"response": []
+		},
+		{
+			"name": "AdminGetAllKeys",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080//admin/get-all-keys"
+			},
+			"response": []
+		},
+		{
+			"name": "AdminGetLastDataUser",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"suhoi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/admin/get-last-data-user"
+			},
+			"response": []
+		},
+		{
+			"name": "AdminGetAllUsersDataRead",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/admin/get-all-users-data-readings"
+			},
+			"response": []
+		}
+	]
+}

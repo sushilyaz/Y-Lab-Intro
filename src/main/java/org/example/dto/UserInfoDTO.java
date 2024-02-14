@@ -18,15 +18,4 @@ public class UserInfoDTO {
     private int month;
     private String type;
     private double value;
-
-    @Override
-    public String toString() {
-        return "UserInfoDTO{" +
-                "username='" + username + '\'' +
-                ", year=" + year +
-                ", month=" + month +
-                ", type='" + type + '\'' +
-                ", value=" + value +
-                "}\n";
-    }
 }

@@ -1,45 +1,24 @@
 package org.example.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Objects;
 
 /**
  * Класс User.
  */
+
 public class User {
 
-    /**
-     * id пользователя (необходимо для связки с показанием счетчиков)
-     */
-    @Getter
-    @Setter
     private int id;
 
-    /**
-     * Имя пользователя
-     */
-    @Getter
-    @Setter
     private String username;
 
-    /**
-     * пароль пользователя
-     */
-    @Getter
-    @Setter
     private String password;
 
-    /**
-     * Исправил ошибку с hw1, как сказал преподаватель
-     * Заменил булево поле isAdmin на enum ROLE
-     */
     private Role role;
 
-    /**
-     * Конструктор
-     */
+    public User() {
+    }
+
     public User(int id, String username, String password, Role role) {
         this.id = id;
         this.username = username;
@@ -47,21 +26,57 @@ public class User {
         this.role = role;
     }
 
-    public User(String username) {
+    public User(String username, String password) {
+        this.id = 1;
+        this.username = username;
+        this.password = password;
+        this.role = Role.SIMPLE_USER;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getRoleAsString() {
-        return role.name(); // Получаем строковое представление enum
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setRoleFromString(String role) {
         this.role = Role.valueOf(role); // Преобразуем строку в enum
     }
 
-    /**
-     * Для sout
-     */
+    public String getRoleAsString() {
+        return role.name(); // Получаем строковое представление enum
+    }
+
+    public User(String username) {
+        this.username = username;
+    }
+
     @Override
     public String toString() {
         return "User with " +
@@ -69,9 +84,6 @@ public class User {
                 " has: ";
     }
 
-    /**
-     * Для тестирования
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

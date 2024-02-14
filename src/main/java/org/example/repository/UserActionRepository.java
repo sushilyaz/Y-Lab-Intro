@@ -14,21 +14,21 @@ import java.util.List;
  */
 public class UserActionRepository extends BaseRepository {
     /**
-     * для синглтона
+     * для синглтона (добавил многопоточный вариант, как сказал ментор)
      */
-    private static UserActionRepository instance;
+    private static volatile UserActionRepository instance;
 
-    /**
-     * приватный конструктор для синглтона
-     */
-    private UserActionRepository() {}
+    private UserActionRepository() {
 
-    /**
-     * Для синглтона
-     */
+    }
+
     public static UserActionRepository getInstance() {
         if (instance == null) {
-            instance = new UserActionRepository();
+            synchronized (UserActionRepository.class) {
+                if (instance == null) {
+                    instance = new UserActionRepository();
+                }
+            }
         }
         return instance;
     }
@@ -37,7 +37,7 @@ public class UserActionRepository extends BaseRepository {
      * Добавление в журнал
      */
     public void save(UserAction userAction) {
-        String sql = "INSERT INTO mainschema.user_action (username, action, timestamp) VALUES (?,?,?)";
+        String sql = "INSERT INTO mainschema.user_action (id, username, action, timestamp) VALUES (nextval('mainschema.seq_ua'),?,?,?)";
         try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, userAction.getUsername());
             stmt.setString(2, userAction.getAction());

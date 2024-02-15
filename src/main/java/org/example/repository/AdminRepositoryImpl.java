@@ -2,6 +2,7 @@ package org.example.repository;
 
 import org.example.config.MyConnectionPool;
 import org.example.dto.UserInfoDTO;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class AdminRepositoryImpl implements AdminRepository {
 
 

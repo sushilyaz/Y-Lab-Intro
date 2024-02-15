@@ -3,6 +3,7 @@ package org.example.repository;
 import org.example.config.MyConnectionPool;
 import org.example.model.Role;
 import org.example.model.User;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
+@Component
 public class UserRepositoryImpl implements UserRepository {
 
     public void save(User user) {

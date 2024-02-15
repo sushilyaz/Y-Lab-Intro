@@ -37,7 +37,7 @@ dependencies {
     val liquibaseVersion = "4.25.1"
     val mapstructVersion = "1.5.5.Final"
     val jacksonVersion = "2.16.1"
-    val servletApiVersion = "5.0.0"
+    val servletApiVersion = "6.0.0"
     val postgresqlVersion = "42.6.0"
     val lombokVersion = "1.18.30"
     val testcontainersVersion = "1.19.3"
@@ -46,7 +46,8 @@ dependencies {
     val jakartaValidationVersion = "3.0.2"
     val hibernateValidatorVersion = "8.0.1.Final"
     val mockitoVersion = "5.10.0"
-    val glassfishVersion ="5.0.0"
+    val glassfishVersion = "5.0.0"
+    val springVersion = "6.1.3"
 
     // hibernate validator добавил для валидации dto (провайдер)
     implementation("org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion")
@@ -68,9 +69,12 @@ dependencies {
     compileOnly("jakarta.servlet:jakarta.servlet-api:$servletApiVersion")
     implementation("jakarta.servlet:jakarta.servlet-api:$servletApiVersion")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
-
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("org.springframework:spring-core:$springVersion")
+    implementation("org.springframework:spring-context:$springVersion")
+    implementation("org.springframework:spring-web:$springVersion")
+    implementation("org.springframework:spring-webmvc:$springVersion")
+    implementation("org.springframework:spring-beans:$springVersion")
     compileOnly("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")

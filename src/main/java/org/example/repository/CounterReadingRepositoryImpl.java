@@ -2,6 +2,7 @@ package org.example.repository;
 
 import org.example.config.MyConnectionPool;
 import org.example.model.CounterReading;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CounterReadingRepositoryImpl implements CounterReadingRepository {
 
     public List<CounterReading> findAllByUserId(Long userId) {

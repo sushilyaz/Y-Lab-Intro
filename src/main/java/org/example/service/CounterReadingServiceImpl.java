@@ -7,6 +7,8 @@ import org.example.model.CounterReading;
 import org.example.model.User;
 import org.example.repository.CounterReadingRepository;
 import org.example.repository.CounterReadingRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,11 +17,13 @@ import java.util.List;
 /**
  * Обработчик методов показателя счетчика, также аудит на каждом действии
  */
+@Component
 public class CounterReadingServiceImpl implements CounterReadingService {
     private final CounterReadingRepository counterReadingRepository;
 
-    public CounterReadingServiceImpl() {
-        this.counterReadingRepository = new CounterReadingRepositoryImpl();
+    @Autowired
+    public CounterReadingServiceImpl(CounterReadingRepositoryImpl counterReadingRepository) {
+        this.counterReadingRepository = counterReadingRepository;
     }
 
     /**

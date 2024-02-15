@@ -13,6 +13,8 @@ import org.example.repository.CounterReadingRepositoryImpl;
 import org.example.repository.UserActionRepository;
 import org.example.repository.UserRepository;
 import org.example.repository.UserRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.Optional;
 /**
  * Сервис администратора, админ в журналировании не участвует. Его действия не фиксируются
  */
+@Component
 public class AdminServiceImpl implements AdminService{
 
     /**
@@ -35,11 +38,12 @@ public class AdminServiceImpl implements AdminService{
     /**
      * Конструктор
      */
-    public AdminServiceImpl() {
-        this.userRepository = new UserRepositoryImpl();
-        this.counterReadingRepository = new CounterReadingRepositoryImpl();
-        this.adminRepository = new AdminRepositoryImpl();
-        this.userActionRepository = UserActionRepository.getInstance();
+    @Autowired
+    public AdminServiceImpl(UserActionRepository userActionRepository, UserRepositoryImpl userRepository, CounterReadingRepositoryImpl counterReadingRepository, AdminRepositoryImpl adminRepository) {
+        this.userActionRepository = userActionRepository;
+        this.userRepository = userRepository;
+        this.counterReadingRepository = counterReadingRepository;
+        this.adminRepository = adminRepository;
     }
 
     /**

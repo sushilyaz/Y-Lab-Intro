@@ -2,6 +2,7 @@ package org.example.repository;
 
 import org.example.config.MyConnectionPool;
 import org.example.model.UserAction;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,26 +18,8 @@ import java.util.List;
  * Действия фиксируются только пользователя, посчитал, что администратор не должен здесь светится
  * Также реализовал паттерн Синглтон, потому что используется в разных сервисах
  */
+@Component
 public class UserActionRepository {
-    /**
-     * для синглтона (добавил многопоточный вариант, как сказал ментор)
-     */
-    private static volatile UserActionRepository instance;
-
-    private UserActionRepository() {
-
-    }
-
-    public static UserActionRepository getInstance() {
-        if (instance == null) {
-            synchronized (UserActionRepository.class) {
-                if (instance == null) {
-                    instance = new UserActionRepository();
-                }
-            }
-        }
-        return instance;
-    }
 
     /**
      * Добавление в журнал

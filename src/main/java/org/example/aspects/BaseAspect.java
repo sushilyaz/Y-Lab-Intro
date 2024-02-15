@@ -8,5 +8,5 @@ public class BaseAspect {
      * что у геттеров и сеттеров время замерять нет необходимости.
      * Аудит у админа не реализовывал, так как изначально в логике такого не было.
      */
-    protected UserActionRepository userActionRepository = UserActionRepository.getInstance();
+    protected UserActionRepository userActionRepository = new UserActionRepository();
 }

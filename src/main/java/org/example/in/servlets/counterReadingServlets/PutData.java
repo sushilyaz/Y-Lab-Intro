@@ -1,24 +1,22 @@
 package org.example.in.servlets.counterReadingServlets;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import org.example.dto.CounterReadingCreateDTO;
 import org.example.dto.CounterReadingDTO;
-import org.example.mapper.CounterReadingMapper;
 import org.example.model.User;
 import org.example.service.CounterReadingService;
+import org.example.service.CounterReadingServiceImpl;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Сервлет отправки показателей счетчика аутентифицированного пользователя
@@ -38,28 +36,24 @@ public class PutData extends HttpServlet {
         }
         if (currentUser != null) {
             ObjectMapper objectMapper = new ObjectMapper();
-            CounterReadingService counterReadingService = new CounterReadingService();
-            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-            Validator validator = factory.getValidator();
-            CounterReadingCreateDTO dtoCreate;
+            CounterReadingService counterReadingService = new CounterReadingServiceImpl();
+            List<CounterReadingCreateDTO> dtoCreate;
+            objectMapper.registerModule(new JavaTimeModule());
             try {
-                dtoCreate = objectMapper.readValue(req.getReader(), CounterReadingCreateDTO.class);
+                dtoCreate = objectMapper.readValue(req.getReader(), new TypeReference<List<CounterReadingCreateDTO>>() {});
             } catch (Exception e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.getWriter().write("Data no valid!");
                 return;
             }
-            Set<ConstraintViolation<CounterReadingCreateDTO>> violations = validator.validate(dtoCreate);
-            if (!violations.isEmpty()) {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().write("Invalid data");
-                return;
-            }
-            CounterReadingDTO validDto = CounterReadingMapper.INSTANCE.mapCreateToDto(dtoCreate);
-            CounterReadingDTO res = counterReadingService.validationCounter(currentUser, validDto);
-            if (res != null) {
-                CounterReadingDTO dto = counterReadingService.submitCounterReading(currentUser, dtoCreate);
-                if (dto != null) {
+
+//            List<CounterReadingDTO> validDto = CounterReadingMapper.INSTANCE.mapCreateToDTO(dtoCreate);
+
+            List<CounterReadingCreateDTO> res = counterReadingService.validationCounter(currentUser, dtoCreate);
+
+            if (!res.isEmpty()) {
+                List<CounterReadingDTO> dto = counterReadingService.submitCounterReading(currentUser, dtoCreate);
+                if (!dto.isEmpty()) {
                     resp.setStatus(HttpServletResponse.SC_CREATED);
                     resp.getWriter().write("Data submit success!");
                 } else {

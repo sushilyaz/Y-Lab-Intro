@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class UserAction {
-    private int id;
+    private Long id;
     private String username;
     private String action;
     private LocalDateTime timestamp;

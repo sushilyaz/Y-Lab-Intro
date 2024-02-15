@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.dto.AuthDTO;
 import org.example.model.User;
 import org.example.service.UserService;
+import org.example.service.UserServiceImpl;
 
 import java.io.IOException;
 
@@ -19,7 +20,7 @@ import java.io.IOException;
 public class Auth extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        UserService userService = new UserService();
+        UserService userService = new UserServiceImpl();
         ObjectMapper objectMapper = new ObjectMapper();
         AuthDTO dto = objectMapper.readValue(req.getReader(), AuthDTO.class);
         User user = userService.authenticationUser(dto);

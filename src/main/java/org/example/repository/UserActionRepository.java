@@ -1,18 +1,23 @@
 package org.example.repository;
 
+import org.example.config.MyConnectionPool;
 import org.example.model.UserAction;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Журнал для хранения всех действий
  * Действия фиксируются только пользователя, посчитал, что администратор не должен здесь светится
  * Также реализовал паттерн Синглтон, потому что используется в разных сервисах
  */
-public class UserActionRepository extends BaseRepository {
+public class UserActionRepository {
     /**
      * для синглтона (добавил многопоточный вариант, как сказал ментор)
      */
@@ -38,15 +43,16 @@ public class UserActionRepository extends BaseRepository {
      */
     public void save(UserAction userAction) {
         String sql = "INSERT INTO mainschema.user_action (id, username, action, timestamp) VALUES (nextval('mainschema.seq_ua'),?,?,?)";
-        try (var stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = MyConnectionPool.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, userAction.getUsername());
             stmt.setString(2, userAction.getAction());
             stmt.setTimestamp(3, Timestamp.valueOf(userAction.getTimestamp()));
             stmt.executeUpdate();
-            connection.commit();
-            var generatedKeys = stmt.getGeneratedKeys();
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            MyConnectionPool.releaseConnection(connection);
             if (generatedKeys.next()) {
-                userAction.setId(generatedKeys.getInt(1));
+                userAction.setId(generatedKeys.getLong(1));
             } else {
                 throw new SQLException("Trouble with generate id");
             }
@@ -60,16 +66,18 @@ public class UserActionRepository extends BaseRepository {
      */
     public List<UserAction> getUserActions() {
         String sql = "SELECT * FROM mainschema.user_action ORDER BY id";
-        try (var stmt = connection.prepareStatement(sql)) {
-            var resultSet = stmt.executeQuery();
-            var results = new ArrayList<UserAction>();
+        try (Connection connection = MyConnectionPool.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet resultSet = stmt.executeQuery();
+            List<UserAction> results = new ArrayList<>();
             while (resultSet.next()) {
-                var username = resultSet.getString("username");
-                var action = resultSet.getString("action");
-                var timestamp = resultSet.getTimestamp("timestamp");
-                var userAction = new UserAction(username, action, timestamp.toLocalDateTime());
+                String username = resultSet.getString("username");
+                String action = resultSet.getString("action");
+                Timestamp timestamp = resultSet.getTimestamp("timestamp");
+                UserAction userAction = new UserAction(username, action, timestamp.toLocalDateTime());
                 results.add(userAction);
             }
+            MyConnectionPool.releaseConnection(connection);
             return results;
         } catch (SQLException e) {
             System.out.println("Trouble with statement: " + e.getMessage());

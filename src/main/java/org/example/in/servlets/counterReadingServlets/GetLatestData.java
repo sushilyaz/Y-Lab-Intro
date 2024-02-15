@@ -1,6 +1,7 @@
 package org.example.in.servlets.counterReadingServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,8 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.CounterReadingDTO;
 import org.example.model.User;
 import org.example.service.CounterReadingService;
+import org.example.service.CounterReadingServiceImpl;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -31,12 +34,13 @@ public class GetLatestData extends HttpServlet {
         }
 
         if (currentUser != null) {
-            CounterReadingService counterReadingService = new CounterReadingService();
-            CounterReadingDTO counterReadingDTO = counterReadingService.getLastUserInfo(currentUser);
-            if (counterReadingDTO != null) {
+            CounterReadingService counterReadingService = new CounterReadingServiceImpl();
+            List<CounterReadingDTO> counterReadingDTO = counterReadingService.getLastUserInfo(currentUser);
+            if (!counterReadingDTO.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType("application/json");
                 ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
                 resp.getWriter().write(objectMapper.writeValueAsString(counterReadingDTO));
             } else {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);

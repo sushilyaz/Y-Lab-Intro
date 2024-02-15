@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 @Aspect
 public class UserServiceAspect extends BaseAspect {
     // срезы
-    @Pointcut("execution(* org.example.service.UserService.registerUser(..))")
+    @Pointcut("execution(* org.example.service.UserServiceImpl.registerUser(..))")
     public void userServiceRegistration() {
     }
-    @Pointcut("execution(* org.example.service.UserService.authenticationUser(..))")
+    @Pointcut("execution(* org.example.service.UserServiceImpl.authenticationUser(..))")
     public void userServiceAuthentification() {
     }
     /**

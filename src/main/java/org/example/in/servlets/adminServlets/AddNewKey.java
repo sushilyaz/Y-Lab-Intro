@@ -12,6 +12,7 @@ import jakarta.validation.ValidatorFactory;
 import org.example.dto.adminDTO.NewKeyDTO;
 import org.example.model.User;
 import org.example.service.AdminService;
+import org.example.service.AdminServiceImpl;
 
 import java.io.IOException;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class AddNewKey extends HttpServlet {
             return;
         }
         if (currentUser.getRoleAsString().equals("ADMIN")) {
-            AdminService adminService = new AdminService();
+            AdminService adminService = new AdminServiceImpl();
             ObjectMapper objectMapper = new ObjectMapper();
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();

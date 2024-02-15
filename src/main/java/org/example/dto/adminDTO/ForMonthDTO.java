@@ -1,14 +1,11 @@
 package org.example.dto.adminDTO;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class ForMonthDTO {
     private String username;
-    @Min(value = 1)
-    @Max(value = 12)
-    private int month;
-    private int year;
+    private LocalDate date;
 }

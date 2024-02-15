@@ -3,70 +3,39 @@ package org.example.mapper;
 import org.example.dto.CounterReadingCreateDTO;
 import org.example.dto.CounterReadingDTO;
 import org.example.model.CounterReading;
+import org.mapstruct.BeforeMapping;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
- * маппер для CounterReading
+ * маппер для CounterReading. Изначально я написал default методы, чтобы перевести из итерируемой структуры данных
+ * в неитерированную (а мапстракт не может так). Я просто хотел, чтобы вывод был красивый. Ошибку понял, исправил
  */
-@Mapper(componentModel = "default")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CounterReadingMapper {
     CounterReadingMapper INSTANCE = Mappers.getMapper(CounterReadingMapper.class);
 
-    default CounterReadingDTO map(List<CounterReading> counterReadings) {
-        CounterReadingDTO dto = new CounterReadingDTO();
-        dto.setMonth(counterReadings.get(0).getMonth());
-        dto.setYear(counterReadings.get(0).getYear());
-        Map<String, Double> map = counterReadings.stream()
-                .collect(Collectors.toMap(CounterReading::getType, CounterReading::getValue));
-        dto.setTypeOfCounter(map);
-        return dto;
+    @Mapping(source = "date", target = "date")
+    @Mapping(source = "type", target = "type")
+    @Mapping(source = "value", target = "value")
+    CounterReadingDTO entityToDTO(CounterReading model);
+    List<CounterReadingDTO> entitiesToDTOs(List<CounterReading> models);
+    @BeforeMapping
+    default void beforeMapping(@MappingTarget CounterReading target, @Context Long userId) {
+        target.setUserId(userId);
     }
 
-    default List<CounterReading> map(CounterReadingCreateDTO dto, int id) {
-        List<CounterReading> entities = new ArrayList<>();
-        entities.addAll(dto.getTypeOfCounter().entrySet().stream()
-                .map(entry -> {
-                    CounterReading counterReading = new CounterReading();
-                    counterReading.setUserId(id);
-                    counterReading.setYear(dto.getYear());
-                    counterReading.setMonth(dto.getMonth());
-                    counterReading.setType(entry.getKey());
-                    counterReading.setValue(entry.getValue());
-                    return counterReading;
-                })
-                .toList());
-        return entities;
-    }
-    default CounterReadingDTO mapCreateToDto (CounterReadingCreateDTO createDTO) {
-        return new CounterReadingDTO(createDTO.getYear(), createDTO.getMonth(), createDTO.getTypeOfCounter());
-    }
-    default List<CounterReadingDTO> toListDTO (List<CounterReading> counterReadings) {
-        int startMonth = counterReadings.get(0).getMonth();
-        int startYear = counterReadings.get(0).getYear();
-        List<CounterReading> buf = new ArrayList<>();
-        List<CounterReadingDTO> result = new ArrayList<>();
-        int count = 0;
-        for (var reading : counterReadings) {
-            count++;
-            if (reading.getMonth() == startMonth && reading.getYear() == startYear) {
-                buf.add(reading);
-            } else {
-                result.add(map(buf));
-                buf.clear();
-                startMonth = reading.getMonth();
-                startYear = reading.getYear();
-                buf.add(reading);
-            }
-        }
-        if (count == counterReadings.size()) {
-            result.add(map(buf));
-        }
-        return result;
-    }
+    @Mapping(source = "date", target = "date")
+    @Mapping(source = "type", target = "type")
+    @Mapping(source = "value", target = "value")
+    CounterReading map(CounterReadingCreateDTO dto, @Context Long userId);
+
+    @Mapping(target = "userId", source = "userId") // specify the mapping for userId
+    List<CounterReading> map(List<CounterReadingCreateDTO> dtos, @Context Long userId);
 }

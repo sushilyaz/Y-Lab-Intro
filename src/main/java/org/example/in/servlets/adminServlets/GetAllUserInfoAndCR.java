@@ -1,6 +1,7 @@
 package org.example.in.servlets.adminServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.UserInfoDTO;
 import org.example.model.User;
 import org.example.service.AdminService;
+import org.example.service.AdminServiceImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,12 +37,13 @@ public class GetAllUserInfoAndCR extends HttpServlet {
             return;
         }
         if (currentUser.getRoleAsString().equals("ADMIN")) {
-            AdminService adminService = new AdminService();
+            AdminService adminService = new AdminServiceImpl();
             ObjectMapper objectMapper = new ObjectMapper();
             List<UserInfoDTO> data = adminService.getAllUserInfo();
             if (!data.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType("application/json");
+                objectMapper.registerModule(new JavaTimeModule());
                 resp.getWriter().write(objectMapper.writeValueAsString(data));
             } else {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);

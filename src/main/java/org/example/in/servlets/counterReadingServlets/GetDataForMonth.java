@@ -1,6 +1,7 @@
 package org.example.in.servlets.counterReadingServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,8 +15,10 @@ import org.example.dto.CounterReadingDTO;
 import org.example.dto.DateDTO;
 import org.example.model.User;
 import org.example.service.CounterReadingService;
+import org.example.service.CounterReadingServiceImpl;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,11 +40,12 @@ public class GetDataForMonth extends HttpServlet {
 
         if (currentUser != null) {
             ObjectMapper objectMapper = new ObjectMapper();
-            CounterReadingService counterReadingService = new CounterReadingService();
+            CounterReadingService counterReadingService = new CounterReadingServiceImpl();
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
             DateDTO dateDTO;
             try {
+                objectMapper.registerModule(new JavaTimeModule());
                 dateDTO = objectMapper.readValue(req.getReader(), DateDTO.class);
             } catch (Exception e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -55,8 +59,8 @@ public class GetDataForMonth extends HttpServlet {
                 resp.getWriter().write("Invalid data");
                 return;
             }
-            CounterReadingDTO res = counterReadingService.getUserInfoForMonth(currentUser, dateDTO.getMonth(), dateDTO.getYear());
-            if (res != null) {
+            List<CounterReadingDTO> res = counterReadingService.getUserInfoForMonth(currentUser, dateDTO.getDate());
+            if (!res.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType("application/json");
                 resp.getWriter().write(objectMapper.writeValueAsString(res));

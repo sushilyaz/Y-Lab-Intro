@@ -1,74 +1,30 @@
 package org.example.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * Модель показаний счетчика.
- * Долго думал, как лучше сделать. Создать еще одну таблицу с полями type и value. Или оставить все в одной таблице
- * Решил сделать все в одной таблице. Как бы вы сделали?
- */
-@AllArgsConstructor
+import java.time.LocalDate;
+import java.util.Objects;
+
 @Getter
 @Setter
 public class CounterReading {
-
-    private int id;
-    private int userId;
-    private int year;
-    private int month;
+    private Long id;
+    private Long userId;
+    private LocalDate date;
     private String type;
-    private double value;
+    private Double value;
 
-    public CounterReading() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CounterReading that = (CounterReading) o;
+        return Objects.equals(id, that.id) && Objects.equals(userId, that.userId) && Objects.equals(date, that.date) && Objects.equals(type, that.type) && Objects.equals(value, that.value);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, date, type, value);
     }
 }

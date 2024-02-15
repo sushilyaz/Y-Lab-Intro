@@ -1,6 +1,7 @@
 package org.example.in.servlets.adminServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,9 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.CounterReadingDTO;
 import org.example.dto.adminDTO.UserNameDTO;
 import org.example.model.User;
-import org.example.service.AdminService;
+import org.example.service.AdminServiceImpl;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Сервлет просмотр последних внесенных данных пользователем
@@ -35,8 +37,9 @@ public class GetLastDataUser extends HttpServlet {
             return;
         }
         if (currentUser.getRoleAsString().equals("ADMIN")) {
-            AdminService adminService = new AdminService();
+            AdminServiceImpl adminService = new AdminServiceImpl();
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             UserNameDTO userData;
             try {
                 userData = objectMapper.readValue(req.getReader(), UserNameDTO.class);
@@ -45,10 +48,11 @@ public class GetLastDataUser extends HttpServlet {
                 resp.getWriter().write("Invalid data");
                 return;
             }
+            User user = new User();
+            user.setUsername(userData.getUsername());
+            List<CounterReadingDTO> data = adminService.getLastUserInfo(user);
 
-            CounterReadingDTO data = adminService.getLastUserInfo(new User(userData.getUsername()));
-
-            if (data != null) {
+            if (!data.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType("application/json");
                 resp.getWriter().write(objectMapper.writeValueAsString(data));

@@ -68,6 +68,9 @@ dependencies {
     compileOnly("jakarta.servlet:jakarta.servlet-api:$servletApiVersion")
     implementation("jakarta.servlet:jakarta.servlet-api:$servletApiVersion")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
+
     compileOnly("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")

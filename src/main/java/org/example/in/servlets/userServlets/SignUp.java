@@ -12,6 +12,7 @@ import jakarta.validation.ValidatorFactory;
 import org.example.dto.UserCreateDTO;
 import org.example.dto.UserDTO;
 import org.example.service.UserService;
+import org.example.service.UserServiceImpl;
 
 import java.io.IOException;
 import java.util.Set;
@@ -23,7 +24,7 @@ public class SignUp extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        UserService userService = new UserService();
+        UserService userService = new UserServiceImpl();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

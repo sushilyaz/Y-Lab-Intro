@@ -29,8 +29,7 @@
             <column name="user_id" type="BIGINT">
                 <constraints foreignKeyName="fk_userId" references="mainschema.users(id)" nullable="false"/>
             </column>
-            <column name="year" type="INT"/>
-            <column name="month" type="INT"/>
+            <column name="date" type="DATE"/>
             <column name="type" type="VARCHAR(255)"/>
             <column name="value" type="DOUBLE PRECISION"/>
         </createTable>

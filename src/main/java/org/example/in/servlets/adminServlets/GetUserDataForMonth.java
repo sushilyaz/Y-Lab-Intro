@@ -1,6 +1,7 @@
 package org.example.in.servlets.adminServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,9 +14,10 @@ import jakarta.validation.ValidatorFactory;
 import org.example.dto.CounterReadingDTO;
 import org.example.dto.adminDTO.ForMonthDTO;
 import org.example.model.User;
-import org.example.service.AdminService;
+import org.example.service.AdminServiceImpl;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,12 +43,13 @@ public class GetUserDataForMonth extends HttpServlet {
             return;
         }
         if (currentUser.getRoleAsString().equals("ADMIN")) {
-            AdminService adminService = new AdminService();
+            AdminServiceImpl adminService = new AdminServiceImpl();
             ObjectMapper objectMapper = new ObjectMapper();
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
             ForMonthDTO userData;
             try {
+                objectMapper.registerModule(new JavaTimeModule());
                 userData = objectMapper.readValue(req.getReader(), ForMonthDTO.class);
             } catch (Exception e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -59,7 +62,9 @@ public class GetUserDataForMonth extends HttpServlet {
                 resp.getWriter().write("Invalid data");
                 return;
             }
-            CounterReadingDTO data = adminService.getUserInfoForMonth(new User(userData.getUsername()), userData.getMonth(), userData.getYear());
+            User user = new User();
+            user.setUsername(userData.getUsername());
+            List<CounterReadingDTO> data = adminService.getUserInfoForMonth(user, userData.getDate());
 
             if (data != null) {
                 resp.setStatus(HttpServletResponse.SC_OK);

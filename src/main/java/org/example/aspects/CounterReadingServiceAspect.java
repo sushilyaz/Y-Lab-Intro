@@ -17,17 +17,17 @@ import java.util.List;
 @Aspect
 public class CounterReadingServiceAspect extends BaseAspect{
     // срезы
-    @Pointcut("execution(* org.example.service.CounterReadingService.getLastUserInfo(..))")
+    @Pointcut("execution(* org.example.service.CounterReadingServiceImpl.getLastUserInfo(..))")
     public void getLastUserInfo() {
     }
-    @Pointcut("execution(* org.example.service.CounterReadingService.getUserInfoForMonth(..))")
+    @Pointcut("execution(* org.example.service.CounterReadingServiceImpl.getUserInfoForMonth(..))")
     public void getUserInfoForMonth() {
     }
-    @Pointcut("execution(* org.example.service.CounterReadingService.getCRByUser(..))")
+    @Pointcut("execution(* org.example.service.CounterReadingServiceImpl.getCRByUser(..))")
     public void getCRByUser() {
     }
 
-    @Pointcut("execution(* org.example.service.CounterReadingService.submitCounterReading(..))")
+    @Pointcut("execution(* org.example.service.CounterReadingServiceImpl.submitCounterReading(..))")
     public void submitCounterReading() {
     }
 

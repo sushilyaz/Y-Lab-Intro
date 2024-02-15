@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.model.User;
 import org.example.service.AdminService;
+import org.example.service.AdminServiceImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +34,7 @@ public class GetAllKeys extends HttpServlet {
             return;
         }
         if (currentUser.getRoleAsString().equals("ADMIN")) {
-            AdminService adminService = new AdminService();
+            AdminService adminService = new AdminServiceImpl();
             ObjectMapper objectMapper = new ObjectMapper();
             List<String> keys = adminService.getAllKey();
 

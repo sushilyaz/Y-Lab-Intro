@@ -27,7 +27,7 @@ public class MyConnectionPool {
 
     private static Properties loadProperties() throws IOException {
         Properties properties = new Properties();
-        try (InputStream input = MyConnectionPool.class.getClassLoader().getResourceAsStream("db.properties")) {
+        try (InputStream input = Listener.class.getClassLoader().getResourceAsStream("db.properties")) {
             properties.load(input);
         }
         return properties;

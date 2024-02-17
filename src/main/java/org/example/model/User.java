@@ -1,5 +1,6 @@
 package org.example.model;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ public class User {
     private String password;
 
     private Role role;
+
 
 
     public void setRoleFromString(String role) {

@@ -20,10 +20,12 @@ import java.util.List;
 @Component
 public class CounterReadingServiceImpl implements CounterReadingService {
     private final CounterReadingRepository counterReadingRepository;
+    private final CounterReadingMapper counterReadingMapper;
 
     @Autowired
-    public CounterReadingServiceImpl(CounterReadingRepositoryImpl counterReadingRepository) {
+    public CounterReadingServiceImpl(CounterReadingRepositoryImpl counterReadingRepository, CounterReadingMapper counterReadingMapper) {
         this.counterReadingRepository = counterReadingRepository;
+        this.counterReadingMapper = counterReadingMapper;
     }
 
     /**
@@ -47,7 +49,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
         }
         List<CounterReading> latestCounter = counterReadingRepository.findLastCounterReading(id);
         if (!latestCounter.isEmpty()) {
-            List<CounterReadingDTO> latestCounterDTO = CounterReadingMapper.INSTANCE.entitiesToDTOs(latestCounter);
+            List<CounterReadingDTO> latestCounterDTO = counterReadingMapper.entitiesToDTOs(latestCounter);
             for (int i = 0; i < counterReading.size(); i++) {
                 CounterReadingCreateDTO element = counterReading.get(i);
                 CounterReadingDTO latestElement = latestCounterDTO.get(i);
@@ -75,9 +77,9 @@ public class CounterReadingServiceImpl implements CounterReadingService {
                 return new ArrayList<>();
             }
         }
-        List<CounterReading> counterReading = CounterReadingMapper.INSTANCE.map(dtoCreate, id);
+        List<CounterReading> counterReading = counterReadingMapper.map(dtoCreate, id);
         counterReadingRepository.save(counterReading);
-        return CounterReadingMapper.INSTANCE.entitiesToDTOs(counterReading);
+        return counterReadingMapper.entitiesToDTOs(counterReading);
     }
 
     /**
@@ -89,7 +91,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
         Long id = currentUser.getId();
         List<CounterReading> lastCountingReading = counterReadingRepository.findLastCounterReading(id);
         if (!lastCountingReading.isEmpty()) {
-            return CounterReadingMapper.INSTANCE.entitiesToDTOs(lastCountingReading);
+            return counterReadingMapper.entitiesToDTOs(lastCountingReading);
         } else {
             return new ArrayList<>();
         }
@@ -104,7 +106,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
         Long id = currentUser.getId();
         List<CounterReading> counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, date);
         if (!counterReadingForMonth.isEmpty()) {
-            return CounterReadingMapper.INSTANCE.entitiesToDTOs(counterReadingForMonth);
+            return counterReadingMapper.entitiesToDTOs(counterReadingForMonth);
         } else {
             return new ArrayList<>();
         }
@@ -119,7 +121,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
         if (entities.isEmpty()) {
             return new ArrayList<>();
         } else {
-            return CounterReadingMapper.INSTANCE.entitiesToDTOs(entities);
+            return counterReadingMapper.entitiesToDTOs(entities);
         }
     }
 }

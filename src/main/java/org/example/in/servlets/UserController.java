@@ -5,24 +5,27 @@ import org.example.dto.UserCreateDTO;
 import org.example.dto.UserDTO;
 import org.example.model.User;
 import org.example.service.UserService;
-import org.example.service.UserServiceImpl;
+import org.example.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
     private UserService userService;
+    private UserUtils userUtils;
 
     @Autowired
-    public UserController(UserServiceImpl userService) {
+    public UserController(UserService userService, UserUtils userUtils) {
         this.userService = userService;
+        this.userUtils = userUtils;
     }
 
-    @GetMapping("/signup")
+
+    @PostMapping("/signup")
     public ResponseEntity<String> create(@RequestBody UserCreateDTO userCreateDTO) {
         UserDTO userDTO = userService.registerUser(userCreateDTO);
         if (userDTO != null) {
@@ -36,10 +39,11 @@ public class UserController {
         }
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<String> auth(@RequestBody AuthDTO authDTO) {
         User user = userService.authenticationUser(authDTO);
         if (user != null) {
+            userUtils.setCurrentUser(user);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body("User auth successfully!");

@@ -4,10 +4,12 @@ import org.example.dto.CounterReadingDTO;
 import org.example.dto.UserInfoDTO;
 import org.example.model.User;
 import org.example.model.UserAction;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Component
 public interface AdminService {
     List<CounterReadingDTO> getCRByUser(User currentUser);
     List<CounterReadingDTO> getLastUserInfo(User currentUser);

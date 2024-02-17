@@ -14,7 +14,7 @@ import org.example.repository.UserActionRepository;
 import org.example.repository.UserRepository;
 import org.example.repository.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * Сервис администратора, админ в журналировании не участвует. Его действия не фиксируются
  */
-@Component
+@Service
 public class AdminServiceImpl implements AdminService{
 
     /**
@@ -34,16 +34,18 @@ public class AdminServiceImpl implements AdminService{
     private final UserRepository userRepository;
     private final CounterReadingRepository counterReadingRepository;
     private final AdminRepository adminRepository;
+    private final CounterReadingMapper counterReadingMapper;
 
     /**
      * Конструктор
      */
     @Autowired
-    public AdminServiceImpl(UserActionRepository userActionRepository, UserRepositoryImpl userRepository, CounterReadingRepositoryImpl counterReadingRepository, AdminRepositoryImpl adminRepository) {
+    public AdminServiceImpl(UserActionRepository userActionRepository, UserRepositoryImpl userRepository, CounterReadingRepositoryImpl counterReadingRepository, AdminRepositoryImpl adminRepository, CounterReadingMapper counterReadingMapper) {
         this.userActionRepository = userActionRepository;
         this.userRepository = userRepository;
         this.counterReadingRepository = counterReadingRepository;
         this.adminRepository = adminRepository;
+        this.counterReadingMapper = counterReadingMapper;
     }
 
     /**
@@ -55,7 +57,7 @@ public class AdminServiceImpl implements AdminService{
         if (user.isPresent()) {
             List<CounterReading> result = counterReadingRepository.findAllByUserId(user.get().getId());
             if (!result.isEmpty()) {
-                return CounterReadingMapper.INSTANCE.entitiesToDTOs(result);
+                return counterReadingMapper.entitiesToDTOs(result);
             } else {
                 return new ArrayList<>();
             }
@@ -72,7 +74,7 @@ public class AdminServiceImpl implements AdminService{
         if (user.isPresent()) {
             List<CounterReading> result = counterReadingRepository.findLastCounterReading(user.get().getId());
             if (!result.isEmpty()) {
-                return CounterReadingMapper.INSTANCE.entitiesToDTOs(result);
+                return counterReadingMapper.entitiesToDTOs(result);
             } else {
                 return null;
             }
@@ -92,7 +94,7 @@ public class AdminServiceImpl implements AdminService{
             Long id = user.get().getId();
             List<CounterReading> counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, date);
             if (!counterReadingForMonth.isEmpty()) {
-                return CounterReadingMapper.INSTANCE.entitiesToDTOs(counterReadingForMonth);
+                return counterReadingMapper.entitiesToDTOs(counterReadingForMonth);
             } else {
                 return null;
             }

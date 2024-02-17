@@ -18,7 +18,6 @@ public class MyConnectionPool {
     private int connNum = 0;
     Stack<Connection> freePool = new Stack<>();
     Set<Connection> occupiedPool = new HashSet<>();
-
     public synchronized Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
         Connection conn = null;
         if (isFull()) {
@@ -57,9 +56,9 @@ public class MyConnectionPool {
         Connection conn = null;
         Properties properties = loadProperties();
         Class.forName("org.postgresql.Driver");
-        String jdbcUrl = properties.getProperty("jdbc.url");
-        String jdbcUsername = properties.getProperty("jdbc.username");
-        String jdbcPassword = properties.getProperty("jdbc.password");
+        String jdbcUrl = properties.getProperty("url");
+        String jdbcUsername = properties.getProperty("username");
+        String jdbcPassword = properties.getProperty("password");
         conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
         return conn;
     }
@@ -84,13 +83,9 @@ public class MyConnectionPool {
         return conn;
     }
 
-    public static void initializePool() throws IOException, ClassNotFoundException, SQLException {
-
-    }
-
     private Properties loadProperties() throws IOException {
         Properties properties = new Properties();
-        try (InputStream input = Listener.class.getClassLoader().getResourceAsStream("db.properties")) {
+        try (InputStream input = Listener.class.getClassLoader().getResourceAsStream("application.yml")) {
             properties.load(input);
         }
         return properties;

@@ -78,6 +78,7 @@ dependencies {
     implementation("jakarta.servlet:jakarta.servlet-api:$servletApiVersion")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    // Да, springdoc подтягивает еще и либы спринг бута, НО: Я его нигде абсолютно не использую, в имортах можете сами убедиться
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$swaggerVersion")
     implementation("org.springframework:spring-core:$springVersion")
     implementation("org.springframework:spring-context:$springVersion")
@@ -88,7 +89,7 @@ dependencies {
     runtimeOnly("org.aspectj:aspectjweaver:$aspectjVersion")
     implementation("org.aspectj:aspectjweaver:$aspectjVersion")
 
-
+    testImplementation("org.springframework:spring-test:${springVersion}")
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.testcontainers:postgresql:$testcontainersVersion")

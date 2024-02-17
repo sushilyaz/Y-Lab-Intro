@@ -18,21 +18,19 @@ public class AuthorizationAspect {
         this.userUtils = userUtils;
     }
 
-    @Before("within(org.example.in.servlets.CounterReadingController)")
+    @Before("within(org.example.in.controllers.CounterReadingController)")
     public void authorize() {
         User currentUser = userUtils.getCurrentUser();
         if (currentUser == null) {
             throw new UnauthorizedException("User not authorized");
         }
-        // Дополнительные проверки, если необходимо
     }
 
-    @Before("within(org.example.in.servlets.AdminController)")
+    @Before("within(org.example.in.controllers.AdminController)")
     public void isAdmin() {
         User currentUser = userUtils.getCurrentUser();
         if (currentUser == null || !currentUser.getRoleAsString().equals("ADMIN")) {
             throw new UnauthorizedException("Admin not authorized");
         }
-        // Дополнительные проверки, если необходимо
     }
 }

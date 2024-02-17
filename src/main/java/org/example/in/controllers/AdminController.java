@@ -1,4 +1,4 @@
-package org.example.in.servlets;
+package org.example.in.controllers;
 
 
 import org.example.dto.CounterReadingDTO;

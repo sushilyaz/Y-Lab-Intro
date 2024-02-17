@@ -54,12 +54,14 @@ dependencies {
 
     val servletApiVersion = "6.0.0"
 
+    val swaggerVersion = "2.3.0"
+
     implementation("org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion")
 
     implementation("jakarta.validation:jakarta.validation-api:$jakartaValidationVersion")
 
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+//    implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("org.liquibase:liquibase-core:$liquibaseVersion")
     testImplementation("org.mockito:mockito-core:$mockitoVersion")
     implementation("org.glassfish.expressly:expressly:$glassfishVersion")
@@ -76,6 +78,7 @@ dependencies {
     implementation("jakarta.servlet:jakarta.servlet-api:$servletApiVersion")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$swaggerVersion")
     implementation("org.springframework:spring-core:$springVersion")
     implementation("org.springframework:spring-context:$springVersion")
     implementation("org.springframework:spring-web:$springVersion")
@@ -84,6 +87,7 @@ dependencies {
     implementation("org.springframework:spring-aop:$springVersion")
     runtimeOnly("org.aspectj:aspectjweaver:$aspectjVersion")
     implementation("org.aspectj:aspectjweaver:$aspectjVersion")
+
 
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")

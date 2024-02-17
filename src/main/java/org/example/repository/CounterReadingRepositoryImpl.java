@@ -2,8 +2,10 @@ package org.example.repository;
 
 import org.example.config.MyConnectionPool;
 import org.example.model.CounterReading;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -16,10 +18,16 @@ import java.util.List;
 
 @Component
 public class CounterReadingRepositoryImpl implements CounterReadingRepository {
+    private MyConnectionPool myConnectionPool;
+
+    @Autowired
+    public CounterReadingRepositoryImpl(MyConnectionPool myConnectionPool) {
+        this.myConnectionPool = myConnectionPool;
+    }
 
     public List<CounterReading> findAllByUserId(Long userId) {
         String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? ORDER BY date DESC";
-        try (Connection connection = MyConnectionPool.getConnection();
+        try (Connection connection = myConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             ResultSet resultSet = stmt.executeQuery();
@@ -28,9 +36,9 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
                 CounterReading counterReading = getCR(resultSet);
                 results.add(counterReading);
             }
-            MyConnectionPool.releaseConnection(connection);
+            myConnectionPool.returnConnection(connection);
             return results;
-        } catch (SQLException e) {
+        } catch (SQLException | IOException | ClassNotFoundException e) {
             System.out.println("Trouble with statement: " + e.getMessage());
             return new ArrayList<>();
         }
@@ -41,7 +49,7 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
      */
     public void save(List<CounterReading> counterReadings) {
         String sql = "INSERT INTO mainschema.counter_reading (id, user_id, date, type, value) VALUES (nextval('mainschema.seq_cr'),?,?,?,?)";
-        try (Connection connection = MyConnectionPool.getConnection();
+        try (Connection connection = myConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             for (CounterReading element : counterReadings) {
                 stmt.setLong(1, element.getUserId());
@@ -57,8 +65,8 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
                 }
             }
             connection.commit();
-            MyConnectionPool.releaseConnection(connection);
-        } catch (SQLException e) {
+            myConnectionPool.returnConnection(connection);
+        } catch (SQLException | IOException | ClassNotFoundException e) {
             System.out.println("Trouble with statement: " + e.getMessage());
         }
     }
@@ -69,7 +77,7 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
      */
     public List<CounterReading> findLastCounterReading(Long userId) {
         String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? ORDER BY date DESC LIMIT ?";
-        try (Connection connection = MyConnectionPool.getConnection();
+        try (Connection connection = myConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             int limit = uniqueType(userId).size();
@@ -80,9 +88,9 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
                 CounterReading counterReading = getCR(resultSet);
                 results.add(counterReading);
             }
-            MyConnectionPool.releaseConnection(connection);
+            myConnectionPool.returnConnection(connection);
             return results;
-        } catch (SQLException e) {
+        } catch (SQLException | IOException | ClassNotFoundException e) {
             System.out.println("Trouble with statement: " + e.getMessage());
             return new ArrayList<>();
         }
@@ -93,7 +101,7 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
      */
     public List<CounterReading> findCounterReadingForMonth(Long userId, LocalDate date) {
         String sql = "SELECT * FROM mainschema.counter_reading WHERE user_id = ? and date = ?";
-        try (Connection connection = MyConnectionPool.getConnection();
+        try (Connection connection = myConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             stmt.setDate(2, Date.valueOf(date));
@@ -103,9 +111,9 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
                 CounterReading counterReading = getCR(resultSet);
                 results.add(counterReading);
             }
-            MyConnectionPool.releaseConnection(connection);
+            myConnectionPool.returnConnection(connection);
             return results;
-        } catch (SQLException e) {
+        } catch (SQLException | IOException | ClassNotFoundException e) {
             System.out.println("Trouble with statement: " + e.getMessage());
             return new ArrayList<>();
         }
@@ -116,7 +124,7 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
      */
     public List<String> uniqueType(Long userId) {
         String sql = "SELECT DISTINCT type FROM mainschema.counter_reading WHERE user_id = ?";
-        try (Connection connection = MyConnectionPool.getConnection();
+        try (Connection connection = myConnectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             ResultSet resultSet = stmt.executeQuery();
@@ -124,9 +132,9 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
             while (resultSet.next()) {
                 results.add(resultSet.getString("type"));
             }
-            MyConnectionPool.releaseConnection(connection);
+            myConnectionPool.returnConnection(connection);
             return results;
-        } catch (SQLException e) {
+        } catch (SQLException | IOException | ClassNotFoundException e) {
             System.out.println("Trouble with statement: " + e.getMessage());
             return new ArrayList<>();
         }

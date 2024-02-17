@@ -26,4 +26,13 @@ public class AuthorizationAspect {
         }
         // Дополнительные проверки, если необходимо
     }
+
+    @Before("within(org.example.in.servlets.AdminController)")
+    public void isAdmin() {
+        User currentUser = userUtils.getCurrentUser();
+        if (currentUser == null || !currentUser.getRoleAsString().equals("ADMIN")) {
+            throw new UnauthorizedException("Admin not authorized");
+        }
+        // Дополнительные проверки, если необходимо
+    }
 }

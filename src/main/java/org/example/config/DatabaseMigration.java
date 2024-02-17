@@ -23,6 +23,5 @@ public class DatabaseMigration {
                 new Liquibase("db/changelog/changelog.xml", new ClassLoaderResourceAccessor(), database);
         liquibase.update();
         System.out.println("Migration is completed successfully");
-        MyConnectionPool.releaseConnection(connection);
     }
 }

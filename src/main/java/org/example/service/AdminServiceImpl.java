@@ -52,8 +52,8 @@ public class AdminServiceImpl implements AdminService{
      * Обработчик получения последних внесенных показателей пользователя.
      */
 
-    public List<CounterReadingDTO> getCRByUser(User currentUser) {
-        var user = userRepository.findByUsername(currentUser.getUsername());
+    public List<CounterReadingDTO> getCRByUser(String username) {
+        var user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             List<CounterReading> result = counterReadingRepository.findAllByUserId(user.get().getId());
             if (!result.isEmpty()) {
@@ -69,8 +69,8 @@ public class AdminServiceImpl implements AdminService{
     /**
      * Получение последних данных пользователя
      */
-    public List<CounterReadingDTO> getLastUserInfo(User currentUser) {
-        Optional<User> user = userRepository.findByUsername(currentUser.getUsername());
+    public List<CounterReadingDTO> getLastUserInfo(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             List<CounterReading> result = counterReadingRepository.findLastCounterReading(user.get().getId());
             if (!result.isEmpty()) {
@@ -88,8 +88,8 @@ public class AdminServiceImpl implements AdminService{
      *
      * @return CounterReadingDTO если все ок; null если ошибки при обработке
      */
-    public List<CounterReadingDTO> getUserInfoForMonth(User currentUser, LocalDate date) {
-        var user = userRepository.findByUsername(currentUser.getUsername());
+    public List<CounterReadingDTO> getUserInfoForMonth(String username, LocalDate date) {
+        var user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             Long id = user.get().getId();
             List<CounterReading> counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, date);

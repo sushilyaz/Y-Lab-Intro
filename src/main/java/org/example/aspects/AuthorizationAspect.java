@@ -6,10 +6,12 @@ import org.example.exception.UnauthorizedException;
 import org.example.model.User;
 import org.example.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Order(1)
 public class AuthorizationAspect {
 
     private UserUtils userUtils;
@@ -18,6 +20,9 @@ public class AuthorizationAspect {
         this.userUtils = userUtils;
     }
 
+    /**
+     * Чтобы не загромождать контроллер, реализовал через аспекты авторизацию пользователя
+     */
     @Before("within(org.example.in.controllers.CounterReadingController)")
     public void authorize() {
         User currentUser = userUtils.getCurrentUser();
@@ -25,7 +30,9 @@ public class AuthorizationAspect {
             throw new UnauthorizedException("User not authorized");
         }
     }
-
+    /**
+     * Проверка на администратора (Разграничение доступа)
+     */
     @Before("within(org.example.in.controllers.AdminController)")
     public void isAdmin() {
         User currentUser = userUtils.getCurrentUser();

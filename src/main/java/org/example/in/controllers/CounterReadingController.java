@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Контроллер для работы с показания счетчиков
+ */
 @RestController
 public class CounterReadingController {
     private CounterReadingService counterReadingService;

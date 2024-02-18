@@ -11,8 +11,8 @@ public class UserCreateDTO {
     private String username;
     private String password;
 
-        @JsonCreator
-    public UserCreateDTO(@JsonProperty("username") String username, @JsonProperty("password") String password){
+    @JsonCreator
+    public UserCreateDTO(@JsonProperty("username") String username, @JsonProperty("password") String password) {
         this.username = username;
         this.password = password;
     }

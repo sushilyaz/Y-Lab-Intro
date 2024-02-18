@@ -64,7 +64,7 @@ public class CounterReadingRepositoryImpl implements CounterReadingRepository {
                     throw new SQLException("Trouble with generate id");
                 }
             }
-            connection.commit();
+//            connection.commit();
             myConnectionPool.returnConnection(connection);
         } catch (SQLException | IOException | ClassNotFoundException e) {
             System.out.println("Trouble with statement: " + e.getMessage());

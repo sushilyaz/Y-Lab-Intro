@@ -14,6 +14,7 @@ public class DatabaseMigration {
     /**
      * Метод, выполняющий скрипты миграции. Все сущности создаются в отдельной схеме - mainschema.
      * Служебные таблицы создаются в отдельной от сущностей схеме - public. Все как по ТЗ
+     * Вынес в отдельный класс, чтобы не писать в лисенере
      */
 
     public static void runLiquibaseMigrations(Connection connection) throws SQLException, LiquibaseException {

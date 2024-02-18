@@ -33,7 +33,7 @@ public class AdminRepositoryImpl implements AdminRepository {
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, newKey);
             stmt.executeUpdate();
-            connection.commit();
+//            connection.commit();
             myConnectionPool.returnConnection(connection);
         } catch (SQLException | IOException | ClassNotFoundException e) {
             System.out.println("Trouble with statement: " + e.getMessage());

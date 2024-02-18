@@ -1,49 +1,33 @@
 package org.example.in.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import liquibase.Liquibase;
-import liquibase.database.Database;
-import liquibase.database.DatabaseFactory;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.LiquibaseException;
-import liquibase.resource.ClassLoaderResourceAccessor;
 import org.example.dto.AuthDTO;
 import org.example.dto.UserCreateDTO;
 import org.example.dto.UserDTO;
 import org.example.model.User;
 import org.example.service.UserService;
 import org.example.utils.UserUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.example.utils.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import org.springframework.validation.Errors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Testcontainers
+/**
+ * Тесты для UserController
+ */
 public class UserControllerTest {
-    @Container
-    private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("test_suhoi")
-            .withUsername("test_suhoi")
-            .withPassword("test_qwerty");
-    private static Connection connection;
     private MockMvc mockMvc;
 
     @Mock
@@ -52,27 +36,12 @@ public class UserControllerTest {
     @Mock
     private UserUtils userUtils;
 
+    @Mock
+    private UserValidator userValidator;
+
     @InjectMocks
     private UserController userController;
-    @BeforeAll
-    static void setUp() throws SQLException, LiquibaseException {
-        postgresContainer.start();
-        connection = DriverManager.getConnection(postgresContainer.getJdbcUrl(),
-                postgresContainer.getUsername(), postgresContainer.getPassword());
-        Database database =
-                DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-        Liquibase liquibase =
-                new Liquibase("db/changelog/changelogTest.xml", new ClassLoaderResourceAccessor(), database);
-        liquibase.update();
-        System.out.println("Migration is completed successfully");
-    }
 
-    @AfterAll
-    static void tearDown() throws SQLException {
-        connection.rollback();
-        connection.close();
-        postgresContainer.stop();
-    }
     @BeforeEach
     void setUpEach() {
         MockitoAnnotations.openMocks(this);
@@ -82,7 +51,7 @@ public class UserControllerTest {
     @Test
     void testCreateUserSuccess() throws Exception {
         UserCreateDTO userCreateDTO = new UserCreateDTO("testUser", "testPassword");
-
+        Mockito.doNothing().when(userValidator).validate(Mockito.any(Object.class), Mockito.any(Errors.class));
         UserDTO userDTO = new UserDTO();
         userDTO.setId(1L);
         userDTO.setUsername("testUser");
@@ -97,7 +66,7 @@ public class UserControllerTest {
     @Test
     void testCreateUserConflict() throws Exception {
         UserCreateDTO userCreateDTO = new UserCreateDTO("user1", "user1");
-
+        Mockito.doNothing().when(userValidator).validate(Mockito.any(Object.class), Mockito.any(Errors.class));
         when(userService.registerUser(any(UserCreateDTO.class))).thenReturn(null);
 
         mockMvc.perform(post("/signup")

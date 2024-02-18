@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Контроллер действий администратора
+ */
 @RestController
 public class AdminController {
     private AdminService adminService;

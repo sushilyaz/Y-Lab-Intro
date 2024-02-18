@@ -1,23 +1,33 @@
 package org.example.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 import java.util.Stack;
 
+/**
+ * Написал свой коннекшен пул, как советовали менторы. В репозиториях коннекшен всегда возвращал
+ */
 @Component
 public class MyConnectionPool {
+    private YamlReader yamlConfig;
+
+    @Autowired
+    public MyConnectionPool(YamlReader yamlConfig) {
+        this.yamlConfig = yamlConfig;
+    }
+
     private int MAX_CONNECTIONS = 10;
     private int connNum = 0;
     Stack<Connection> freePool = new Stack<>();
     Set<Connection> occupiedPool = new HashSet<>();
+
     public synchronized Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
         Connection conn = null;
         if (isFull()) {
@@ -54,11 +64,10 @@ public class MyConnectionPool {
 
     private Connection createNewConnection() throws SQLException, IOException, ClassNotFoundException {
         Connection conn = null;
-        Properties properties = loadProperties();
         Class.forName("org.postgresql.Driver");
-        String jdbcUrl = properties.getProperty("url");
-        String jdbcUsername = properties.getProperty("username");
-        String jdbcPassword = properties.getProperty("password");
+        String jdbcUrl = yamlConfig.getUrl();
+        String jdbcUsername = yamlConfig.getUsername();
+        String jdbcPassword = yamlConfig.getPassword();
         conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
         return conn;
     }
@@ -81,13 +90,5 @@ public class MyConnectionPool {
         occupiedPool.add(conn);
         connNum++;
         return conn;
-    }
-
-    private Properties loadProperties() throws IOException {
-        Properties properties = new Properties();
-        try (InputStream input = Listener.class.getClassLoader().getResourceAsStream("application.yml")) {
-            properties.load(input);
-        }
-        return properties;
     }
 }

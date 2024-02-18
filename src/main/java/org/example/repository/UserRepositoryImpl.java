@@ -33,7 +33,7 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getRoleAsString());
             stmt.executeUpdate();
-            connection.commit();
+//            connection.commit();
             ResultSet generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
                 user.setId(generatedKeys.getLong(1));

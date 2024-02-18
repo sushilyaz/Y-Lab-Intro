@@ -11,7 +11,7 @@ import org.example.repository.AdminRepository;
 import org.example.repository.AdminRepositoryImpl;
 import org.example.repository.CounterReadingRepository;
 import org.example.repository.CounterReadingRepositoryImpl;
-import org.example.repository.UserActionRepository;
+import org.example.repository.UserActionRepositoryImpl;
 import org.example.repository.UserRepository;
 import org.example.repository.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class AdminServiceImpl implements AdminService{
     /**
      * Поля аудита, и двух репозиториев, так как админу нужен доступ ко всему
      */
-    private final UserActionRepository userActionRepository;
+    private final UserActionRepositoryImpl userActionRepository;
     private final UserRepository userRepository;
     private final CounterReadingRepository counterReadingRepository;
     private final AdminRepository adminRepository;
@@ -41,7 +41,7 @@ public class AdminServiceImpl implements AdminService{
      * Конструктор
      */
     @Autowired
-    public AdminServiceImpl(UserActionRepository userActionRepository, UserRepositoryImpl userRepository, CounterReadingRepositoryImpl counterReadingRepository, AdminRepositoryImpl adminRepository, CounterReadingMapper counterReadingMapper) {
+    public AdminServiceImpl(UserActionRepositoryImpl userActionRepository, UserRepositoryImpl userRepository, CounterReadingRepositoryImpl counterReadingRepository, AdminRepositoryImpl adminRepository, CounterReadingMapper counterReadingMapper) {
         this.userActionRepository = userActionRepository;
         this.userRepository = userRepository;
         this.counterReadingRepository = counterReadingRepository;

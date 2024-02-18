@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс с методами инициализации
+ */
 public class TestData {
     List<CounterReadingCreateDTO> initCreateDTO() {
         List<CounterReadingCreateDTO> list = new ArrayList<>();

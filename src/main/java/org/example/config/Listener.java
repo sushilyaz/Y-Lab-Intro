@@ -15,7 +15,7 @@ import static org.example.config.DatabaseMigration.runLiquibaseMigrations;
 @Component
 public class Listener implements ApplicationListener<ContextRefreshedEvent> {
     /**
-     * При запуске сервера данный класс прослушивается и инициализируется контекст
+     * При запуске сервера данный класс прослушивается и инициализируется пул соединений и выполняются скрипты миграции
      * @param sce
      */
     private MyConnectionPool myConnectionPool;

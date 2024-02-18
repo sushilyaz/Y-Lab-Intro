@@ -9,11 +9,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Класс Java-конфигурации спринга
+ */
 @Configuration
 @ComponentScan("org.example")
 @EnableWebMvc
 @EnableAspectJAutoProxy
-@PropertySource("classpath:application.yml")
+@PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
 public class SpringConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;

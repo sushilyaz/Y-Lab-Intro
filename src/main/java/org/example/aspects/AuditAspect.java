@@ -8,26 +8,35 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.example.dto.AuthDTO;
 import org.example.model.User;
 import org.example.model.UserAction;
-import org.example.repository.UserActionRepository;
+import org.example.repository.UserActionRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Аспект регистрации действия пользователя
+ */
 @Component
 @Aspect
 public class AuditAspect {
-    private UserActionRepository userActionRepository;
+    private UserActionRepositoryImpl userActionRepository;
 
     @Autowired
-    public AuditAspect(UserActionRepository userActionRepository) {
+    public AuditAspect(UserActionRepositoryImpl userActionRepository) {
         this.userActionRepository = userActionRepository;
     }
 
     @Pointcut("@annotation(org.example.aspects.Audit)")
     public void auditSign() {
     }
+
+    /**
+     * Если возвращаемое значение не пустое или не null - успешное выполнение метода, иначе - неудачное
+     * @param joinPoint
+     * @param result
+     */
     @AfterReturning(pointcut = "auditSign()", returning = "result")
     public void AuditUserAction(JoinPoint joinPoint, Object result) {
         String username = getUsernameArgument(joinPoint);
@@ -54,6 +63,12 @@ public class AuditAspect {
             }
         }
     }
+
+    /**
+     * Получение имени юзера, выполняющий действия
+     * @param joinPoint
+     * @return
+     */
     private String getUsernameArgument(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
@@ -63,6 +78,6 @@ public class AuditAspect {
                 return ((AuthDTO) arg).getUsername();
             }
         }
-        return null;
+        return "Admin";
     }
 }

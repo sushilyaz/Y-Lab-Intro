@@ -31,6 +31,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+/**
+ * Понимаю, тестов маловато, все что успел, в следующей домашке добавлю
+ */
 @Testcontainers
 @ExtendWith(MockitoExtension.class)
 public class UserRepositoryTest {

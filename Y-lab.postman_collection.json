@@ -14,7 +14,12 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"suhoi\",\n    \"password\":\"suhoi\"\n}"
+					"raw": "{\n    \"username\": \"suhoi\",\n    \"password\":\"suhoi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": "http://localhost:8080/signup"
 			},
@@ -27,7 +32,12 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"suhoi\",\n    \"password\":\"suhoi\"\n}"
+					"raw": "{\n    \"username\": \"suhoi\",\n    \"password\":\"suhoi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": "http://localhost:8080/login"
 			},
@@ -40,7 +50,12 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"year\": 2023,\n  \"month\": 1,\n  \"typeOfCounter\": {\n    \"Cold Water\": 100,\n    \"Hot Water\": 100,\n    \"Heating\": 100\n  }\n}"
+					"raw": "[\n  {\n    \"date\": \"2023-03-01\",\n    \"type\": \"Cold Water\",\n    \"value\": 200\n  },\n  {\n    \"date\": \"2023-03-01\",\n    \"type\": \"Hot Water\",\n    \"value\": 200\n  },\n  {\n    \"date\": \"2023-03-01\",\n    \"type\": \"Heating\",\n    \"value\": 200\n  }\n]\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": "http://localhost:8080/put-counter-reading"
 			},
@@ -65,7 +80,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"month\":\"1\",\n    \"year\":2023\n}",
+					"raw": "{\n    \"date\":\"2023-02-01\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -95,7 +110,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"suhoi\",\n    \"month\": 1,\n    \"year\": 2023\n}",
+					"raw": "{\n    \"username\": \"suhoi\",\n    \"date\":\"2023-01-01\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

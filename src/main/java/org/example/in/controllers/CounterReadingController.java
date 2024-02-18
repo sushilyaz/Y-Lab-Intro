@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 public class CounterReadingController {
     private CounterReadingService counterReadingService;
+
     private UserUtils userUtils;
 
     @Autowired
@@ -37,11 +38,11 @@ public class CounterReadingController {
         List<CounterReadingDTO> listResult = counterReadingService.submitCounterReading(userUtils.getCurrentUser(), validDTO);
         if (listResult.isEmpty()) {
             return ResponseEntity
-                    .status(HttpStatus.CREATED)
+                    .status(HttpStatus.CONFLICT)
                     .body("Counter Reading failed submit");
         } else {
             return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
+                    .status(HttpStatus.CREATED)
                     .body("Counter Reading submit successfully");
         }
     }

@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.aspects.Audit;
 import org.example.dto.CounterReadingDTO;
 import org.example.dto.UserInfoDTO;
 import org.example.mapper.CounterReadingMapper;
@@ -51,7 +52,7 @@ public class AdminServiceImpl implements AdminService{
     /**
      * Обработчик получения последних внесенных показателей пользователя.
      */
-
+    @Audit
     public List<CounterReadingDTO> getCRByUser(String username) {
         var user = userRepository.findByUsername(username);
         if (user.isPresent()) {
@@ -69,6 +70,7 @@ public class AdminServiceImpl implements AdminService{
     /**
      * Получение последних данных пользователя
      */
+    @Audit
     public List<CounterReadingDTO> getLastUserInfo(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
@@ -88,6 +90,7 @@ public class AdminServiceImpl implements AdminService{
      *
      * @return CounterReadingDTO если все ок; null если ошибки при обработке
      */
+    @Audit
     public List<CounterReadingDTO> getUserInfoForMonth(String username, LocalDate date) {
         var user = userRepository.findByUsername(username);
         if (user.isPresent()) {
@@ -110,6 +113,7 @@ public class AdminServiceImpl implements AdminService{
      * передается параметр userId (1) - это администратор
      * @return List<String>
      */
+    @Audit
     public List<String> getAllKey() {
         return counterReadingRepository.uniqueType(1L);
     }
@@ -117,6 +121,7 @@ public class AdminServiceImpl implements AdminService{
     /**
      * Добавление новых типов показаний
      */
+    @Audit
     public boolean addNewKey(String newKey) {
         List<String> list = counterReadingRepository.uniqueType(1L);
         if (list.contains(newKey)) {
@@ -130,6 +135,7 @@ public class AdminServiceImpl implements AdminService{
     /**
      * Обработчик получения логов
      */
+    @Audit
     public List<UserAction> getLogs() {
         return userActionRepository.getUserActions();
     }
@@ -138,6 +144,7 @@ public class AdminServiceImpl implements AdminService{
      * Обработчик получения всех показателей всех пользователей.
      * Если информация найдена - возвращает заполненный лист. Если не найдена - пустой
      */
+    @Audit
     public List<UserInfoDTO> getAllUserInfo() {
         return adminRepository.findUsersAndCR();
     }

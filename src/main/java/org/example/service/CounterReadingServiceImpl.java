@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.aspects.Audit;
 import org.example.dto.CounterReadingCreateDTO;
 import org.example.dto.CounterReadingDTO;
 import org.example.mapper.CounterReadingMapper;
@@ -33,6 +34,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
      *
      * @return CounterReading если ошибок валидации нет; null - если ошибка валидации
      */
+    @Audit
     public List<CounterReadingCreateDTO> validationCounter(User currentUser, List<CounterReadingCreateDTO> counterReading) {
         Long id = currentUser.getId();
         List<String> allKeys = counterReadingRepository.uniqueType(1L);
@@ -69,6 +71,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
      *
      * @return CounterReadingDTO, если все нормально; null - если данные в этот месяц уже вносились
      */
+    @Audit
     public List<CounterReadingDTO> submitCounterReading(User currentUser, List<CounterReadingCreateDTO> dtoCreate) {
         Long id = currentUser.getId();
         List<CounterReading> counterList = counterReadingRepository.findAllByUserId(id);
@@ -87,6 +90,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
      *
      * @return CounterReadingDTO если все нормально; null если данные не найдены
      */
+    @Audit
     public List<CounterReadingDTO> getLastUserInfo(User currentUser) {
         Long id = currentUser.getId();
         List<CounterReading> lastCountingReading = counterReadingRepository.findLastCounterReading(id);
@@ -102,6 +106,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
      *
      * @return CounterReadingDTO если все нормально; null если данные не найдены
      */
+    @Audit
     public List<CounterReadingDTO> getUserInfoForMonth(User currentUser, LocalDate date) {
         Long id = currentUser.getId();
         List<CounterReading> counterReadingForMonth = counterReadingRepository.findCounterReadingForMonth(id, date);
@@ -115,6 +120,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
     /**
      * Обработчик получения истории вносимых данных аутентифицированного пользователя
      */
+    @Audit
     public List<CounterReadingDTO> getCRByUser(User currentUser) {
         Long id = currentUser.getId();
         List<CounterReading> entities = counterReadingRepository.findAllByUserId(id);

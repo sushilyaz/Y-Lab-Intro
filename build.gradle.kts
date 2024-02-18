@@ -94,6 +94,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
+    testImplementation("org.mockito:mockito-junit-jupiter:5.9.0")
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:$assertjVersion")
 

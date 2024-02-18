@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.Optional;
 
 @Component
+
 public class UserRepositoryImpl implements UserRepository {
 
     private MyConnectionPool myConnectionPool;

@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+/**
+ * Считывание из application.yml
+ */
 @Configuration
 @PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
 @Data

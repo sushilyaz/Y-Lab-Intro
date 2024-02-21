@@ -17,8 +17,7 @@
         <insert tableName="counter_reading" schemaName="mainschema">
             <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
             <column name="user_id" value="2"/>
-            <column name="year" value="2023"/>
-            <column name="month" value="1"/>
+            <column name="date" value="2023-01-01"/>
             <column name="type" value="Cold Water"/>
             <column name="value" value="100"/>
         </insert>
@@ -26,8 +25,7 @@
         <insert tableName="counter_reading" schemaName="mainschema">
             <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
             <column name="user_id" value="2"/>
-            <column name="year" value="2023"/>
-            <column name="month" value="1"/>
+            <column name="date" value="2023-01-01"/>
             <column name="type" value="Hot Water"/>
             <column name="value" value="100"/>
         </insert>
@@ -35,8 +33,7 @@
         <insert tableName="counter_reading" schemaName="mainschema">
             <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
             <column name="user_id" value="2"/>
-            <column name="year" value="2023"/>
-            <column name="month" value="1"/>
+            <column name="date" value="2023-01-01"/>
             <column name="type" value="Heating"/>
             <column name="value" value="100"/>
         </insert>
@@ -44,8 +41,7 @@
         <insert tableName="counter_reading" schemaName="mainschema">
             <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
             <column name="user_id" value="2"/>
-            <column name="year" value="2023"/>
-            <column name="month" value="2"/>
+            <column name="date" value="2023-02-01"/>
             <column name="type" value="Cold Water"/>
             <column name="value" value="200"/>
         </insert>
@@ -53,8 +49,7 @@
         <insert tableName="counter_reading" schemaName="mainschema">
             <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
             <column name="user_id" value="2"/>
-            <column name="year" value="2023"/>
-            <column name="month" value="2"/>
+            <column name="date" value="2023-02-01"/>
             <column name="type" value="Hot Water"/>
             <column name="value" value="200"/>
         </insert>
@@ -62,8 +57,7 @@
         <insert tableName="counter_reading" schemaName="mainschema">
             <column name="id" valueComputed="nextval('mainschema.seq_cr')"/>
             <column name="user_id" value="2"/>
-            <column name="year" value="2023"/>
-            <column name="month" value="2"/>
+            <column name="date" value="2023-02-01"/>
             <column name="type" value="Heating"/>
             <column name="value" value="200"/>
         </insert>

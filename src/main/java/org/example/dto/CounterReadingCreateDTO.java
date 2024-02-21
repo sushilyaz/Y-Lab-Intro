@@ -1,16 +1,14 @@
 package org.example.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Map;
+import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
 public class CounterReadingCreateDTO {
-    private int year;
-    @Min(value = 1)
-    @Max(value = 12)
-    private int month;
-    private Map<String, Double> typeOfCounter;
+    private LocalDate date;
+    private String type;
+    private Double value;
 }

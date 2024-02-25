@@ -17,8 +17,8 @@ repositories {
 }
 
 dependencies {
-    implementation("org.example:logg:0.0.1-SNAPSHOT")
-    implementation("org.example:audit:0.0.1-SNAPSHOT")
+//    implementation("org.example:logg:0.0.1-SNAPSHOT")
+//    implementation("org.example:audit:0.0.1-SNAPSHOT")
     val liquibaseVersion = "4.25.1"
     val mapstructVersion = "1.5.5.Final"
     val lombokVersion = "1.18.30"

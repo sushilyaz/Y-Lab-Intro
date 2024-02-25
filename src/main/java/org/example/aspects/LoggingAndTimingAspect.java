@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggingAndTimingAspect {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAndTimingAspect.class);
+//    private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAndTimingAspect.class);
 
     /**
      * замеряю время выполнения всех сервисов и репо
@@ -25,7 +25,7 @@ public class LoggingAndTimingAspect {
         Object result = joinPoint.proceed();
         long executionTime = System.currentTimeMillis() - start;
         System.out.println("Метод {" + joinPoint.getSignature() + "} выполнился за {" + executionTime + "} миллисекунд");
-        LOGGER.info("Метод {} выполнился за {} миллисекунд", joinPoint.getSignature(), executionTime);
+//        LOGGER.info("Метод {} выполнился за {} миллисекунд", joinPoint.getSignature(), executionTime);
 
         return result;
     }

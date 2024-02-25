@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Конфигурация сваггера, без спринг бутовских библ
+ * Конфигурация springdoc, без спринг бутовских библ
  */
 @Configuration
 @ComponentScan(basePackages = {"org.springdoc"})

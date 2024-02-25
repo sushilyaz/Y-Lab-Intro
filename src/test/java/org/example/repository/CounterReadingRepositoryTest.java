@@ -1,4 +1,4 @@
-package org.example.org.example.repository;
+package org.example.repository;
 
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -7,9 +7,8 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.example.config.MyConnectionPool;
-import org.example.model.Role;
-import org.example.model.User;
-import org.example.repository.UserRepositoryImpl;
+import org.example.in.controllers.TestData;
+import org.example.model.CounterReading;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,10 +23,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +34,7 @@ import static org.mockito.Mockito.when;
  */
 @Testcontainers
 @ExtendWith(MockitoExtension.class)
-public class UserRepositoryTest {
+public class CounterReadingRepositoryTest {
     @Container
     private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
             .withDatabaseName("test_suhoi")
@@ -48,7 +46,8 @@ public class UserRepositoryTest {
     private MyConnectionPool myConnectionPool;
 
     @InjectMocks
-    private UserRepositoryImpl userRepository;
+    private CounterReadingRepositoryImpl counterReadingRepository;
+
     @BeforeEach
     void setUp() throws SQLException, LiquibaseException {
         postgresContainer.start();
@@ -57,7 +56,7 @@ public class UserRepositoryTest {
         Database database =
                 DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
         Liquibase liquibase =
-                new Liquibase("db/changelog/changelogTest.xml", new ClassLoaderResourceAccessor(), database);
+                new Liquibase("liquibase/changelogTest.xml", new ClassLoaderResourceAccessor(), database);
         liquibase.update();
         System.out.println("Migration is completed successfully");
     }
@@ -66,34 +65,13 @@ public class UserRepositoryTest {
     static void tearDown() {
         postgresContainer.stop();
     }
-
-    /**
-     * Успешный сейв (новый юзер)
-     * @throws Exception
-     */
     @Test
     void testSave() throws Exception{
+        TestData testData = new TestData();
         when(myConnectionPool.getConnection()).thenReturn(connection);
         doNothing().when(myConnectionPool).returnConnection(connection);
-        User user = new User();
-        user.setUsername("testUser");
-        user.setPassword("testUser");
-        user.setRole(Role.SIMPLE_USER);
-        userRepository.save(user);
-        assertEquals(user.getId(), 4L);
-
-    }
-
-    @Test
-    void testFindByUsername() throws Exception{
-        when(myConnectionPool.getConnection()).thenReturn(connection);
-        doNothing().when(myConnectionPool).returnConnection(any(Connection.class));
-        User expected = new User();
-        expected.setId(2L);
-        expected.setUsername("user1");
-        expected.setPassword("user1");
-        expected.setRole(Role.SIMPLE_USER);
-        Optional<User> actual = userRepository.findByUsername("user1");
-        assertEquals(actual.get(), expected);
+        List<CounterReading> res = testData.testCR();
+        counterReadingRepository.save(res);
+        assertEquals(res.get(2).getId(), 12);
     }
 }

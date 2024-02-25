@@ -1,11 +1,15 @@
 package org.example;
 
+import org.example.audit.config.EnableAudit;
 import org.springframework.boot.SpringApplication;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Main {
+@EnableAudit
+public class YlabApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(YlabApplication.class, args);
     }
+
 }

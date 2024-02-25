@@ -1,8 +1,9 @@
 package org.example.service;
 
-import org.example.aspects.Audit;
+import org.example.audit.aspect.Audit;
 import org.example.dto.CounterReadingCreateDTO;
 import org.example.dto.CounterReadingDTO;
+import org.example.logg.Logg;
 import org.example.mapper.CounterReadingMapper;
 import org.example.model.CounterReading;
 import org.example.model.User;
@@ -34,7 +35,6 @@ public class CounterReadingServiceImpl implements CounterReadingService {
      *
      * @return CounterReading если ошибок валидации нет; null - если ошибка валидации
      */
-    @Audit
     public List<CounterReadingCreateDTO> validationCounter(User currentUser, List<CounterReadingCreateDTO> counterReading) {
         Long id = currentUser.getId();
         List<String> allKeys = counterReadingRepository.uniqueType(1L);
@@ -71,6 +71,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
      *
      * @return CounterReadingDTO, если все нормально; null - если данные в этот месяц уже вносились
      */
+    @Logg
     @Audit
     public List<CounterReadingDTO> submitCounterReading(User currentUser, List<CounterReadingCreateDTO> dtoCreate) {
         Long id = currentUser.getId();
@@ -90,6 +91,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
      *
      * @return CounterReadingDTO если все нормально; null если данные не найдены
      */
+    @Logg
     @Audit
     public List<CounterReadingDTO> getLastUserInfo(User currentUser) {
         Long id = currentUser.getId();
@@ -106,6 +108,8 @@ public class CounterReadingServiceImpl implements CounterReadingService {
      *
      * @return CounterReadingDTO если все нормально; null если данные не найдены
      */
+
+    @Logg
     @Audit
     public List<CounterReadingDTO> getUserInfoForMonth(User currentUser, LocalDate date) {
         Long id = currentUser.getId();
@@ -120,6 +124,7 @@ public class CounterReadingServiceImpl implements CounterReadingService {
     /**
      * Обработчик получения истории вносимых данных аутентифицированного пользователя
      */
+    @Logg
     @Audit
     public List<CounterReadingDTO> getCRByUser(User currentUser) {
         Long id = currentUser.getId();

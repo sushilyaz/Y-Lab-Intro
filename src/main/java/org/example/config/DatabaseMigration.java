@@ -1,5 +1,6 @@
 package org.example.config;
 
+
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
@@ -21,7 +22,7 @@ public class DatabaseMigration {
         Database database =
                 DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
         Liquibase liquibase =
-                new Liquibase("db/changelog/changelog.xml", new ClassLoaderResourceAccessor(), database);
+                new Liquibase("liquibase/changelog.xml", new ClassLoaderResourceAccessor(), database);
         liquibase.update();
         System.out.println("Migration is completed successfully");
     }

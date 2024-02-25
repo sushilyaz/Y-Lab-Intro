@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.aspects.Audit;
 import org.example.dto.AuthDTO;
 import org.example.dto.UserCreateDTO;
 import org.example.dto.UserDTO;
@@ -38,7 +37,6 @@ public class UserServiceImpl implements UserService {
             return userMapper.map(newUser);
         }
     }
-    @Audit
     public User authenticationUser(AuthDTO dto) {
         Optional<User> existUser = userRepository.findByUsername(dto.getUsername());
         if (existUser.isPresent()) {

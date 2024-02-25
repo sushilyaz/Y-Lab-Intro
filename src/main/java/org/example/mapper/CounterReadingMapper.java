@@ -3,12 +3,7 @@ package org.example.mapper;
 import org.example.dto.CounterReadingCreateDTO;
 import org.example.dto.CounterReadingDTO;
 import org.example.model.CounterReading;
-import org.mapstruct.BeforeMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 

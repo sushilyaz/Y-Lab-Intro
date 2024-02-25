@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: suhoi
+      POSTGRES_USER: suhoi
+      POSTGRES_PASSWORD: qwerty
+    ports:
+      - "5432:5432"

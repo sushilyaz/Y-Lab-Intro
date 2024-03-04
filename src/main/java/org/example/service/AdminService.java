@@ -15,6 +15,5 @@ public interface AdminService {
     List<CounterReadingDTO> getUserInfoForMonth(String username, LocalDate date);
     List<String> getAllKey();
     boolean addNewKey(String newKey);
-    List<UserAction> getLogs();
     List<UserInfoDTO> getAllUserInfo();
 }

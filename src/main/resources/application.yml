@@ -3,3 +3,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/suhoi
     username: suhoi
     password: qwerty
+  liquibase:
+    change-log: classpath:db/changelog/changelog.xml
+    parameters:
+      searchPath: classpath:/db/changelog/

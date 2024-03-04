@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Тесты для CounterReadingController
  */
+@SpringBootTest
 public class CounterReadingControllerTest {
     private MockMvc mockMvc;
 

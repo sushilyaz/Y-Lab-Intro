@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.dto.AuthDTO;
 import org.example.dto.UserCreateDTO;
 import org.example.dto.UserDTO;
+import org.example.in.controllers.UserController;
 import org.example.model.User;
 import org.example.service.UserService;
 import org.example.utils.UserUtils;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Тесты для UserController
  */
+@SpringBootTest
 public class UserControllerTest {
     private MockMvc mockMvc;
 

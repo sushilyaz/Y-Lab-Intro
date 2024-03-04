@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
  * Считывание из application.yml
  */
 @Configuration
-@PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
+@PropertySource(value = "classpath:application.yml")
 @Data
 public class YamlReader {
 

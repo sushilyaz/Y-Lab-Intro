@@ -3,7 +3,13 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+logg/.gradle
+logg/gradlew.bat
+logg/gradlew
 
+audit/.gradle
+audit/gradlew.bat
+audit/gradlew
 ### IntelliJ IDEA ###
 .idea/
 *.iws
